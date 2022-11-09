@@ -8,6 +8,7 @@
                 <input v-model="Password" type="password" placeholder="Mot de passe" required><br>
                 <input class="boutonsubmit" type="submit" value="Se connecter">
             </form>
+        <p class="ForgotPassword" @click="ForgotPassword">Mot de passe oublié</p>
         </div>
       </div>
       <div class="SignInButtonPart">
@@ -37,6 +38,9 @@ export default {
     },
     SendToSignIn(){
       this.$router.push("/signin");
+    },
+    ForgotPassword(){
+        this.$router.push("/forgetpw");
     }
   }
 }
@@ -101,6 +105,11 @@ export default {
                             margin-bottom: 20px;
                         }
                     }
+                }
+
+                .ForgotPassword{
+                    color: rgb(74, 74, 74);
+                    cursor: pointer;
                 }
             }
         }

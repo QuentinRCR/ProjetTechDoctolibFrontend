@@ -4,9 +4,9 @@
         <h1>Mot de passe oublié</h1>
         <div class="menu">
             <form @submit.prevent="submit" v-on:submit="SubmitForm">
-                <p>Adresse email du compte</p>
+                <p>Entrez l’email auquel vous voulez recevoir un lien pour réinitialiser votre mdp :</p>
                 <input v-model="ClienEmail" type="text" placeholder="Email EMSE" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.emse.fr$" required><br>
-                <input class="boutonsubmit" type="submit" value="Envoyer">
+                <input class="boutonsubmit" type="submit" value="Confirmer">
             </form>
             <p class="messageEmail" v-if="mailSent">Un mail vous a été envoyé pour que vous changiez votre mot de passe. Consultez votre boite mail étudiante</p>
             <button @click="ToLogIn">Retour à la page de connection</button>
