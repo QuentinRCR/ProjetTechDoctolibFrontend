@@ -5,15 +5,25 @@
 <template>
   <div class="home">
     <h1>This is an home page</h1>
+    <button @click="LogOut">Se déconnecter</button>
   </div>
 </template>
 
-<style>
-@media (min-width: 1024px) {
-  .home {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
+<script>
+export default {
+  name: 'HomePage',
+  data: function() {
+    return {
+    }
+  },
+  methods: {
+    LogOut(){
+      console.log("bien déconnecter la personne");
+      this.$router.push("/");
+    }
   }
 }
+</script>
+
+<style>
 </style>
