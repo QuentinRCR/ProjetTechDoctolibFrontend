@@ -1,19 +1,30 @@
 <template>
 <div class="makeApp">
     <div class="croix" @click="closePopup">&#10006</div>
-    <h1>Prendre rendez-vous</h1>
+    <h1>Ajouter un créneau</h1>
     
     <!--<v-date-picker v-model="date" :valid-hours="[0,3,4,5,8,16,20]" is24hr />-->
-    <form @submit.prevent="submit" v-on:submit="SubmitForm(CommunicationMean,date,time)">
+    <form @submit.prevent="submit" v-on:submit="SubmitForm(day,dateSlot,timeSlot)">
         <div class="dateselectorslot">
-            <p class="">Date et Heure</p>
-            <div class="datepicker"><Datepicker v-model="date" autoApply utc="preserve"></Datepicker></div>
+            <p class="">Plage de jours</p>
+            <div class="datepicker"><Datepicker v-model="dateSlot" required autoApply  utc="preserve" range :enableTimePicker="false"></Datepicker></div>
         </div>
-        <select v-model="CommunicationMean" >
-            <option :value="null" disabled>Moyen de communication</option>
-            <option>Skype</option>
-            <option>Whatsapp</option>
-        </select><br>
+        <div class="dateselectorslot">
+            <p class="">Plage de temps (de ... à)</p>
+            <div class="datepicker"><Datepicker required autoApply v-model="timeSlot" range timePicker></Datepicker></div>
+        </div>
+        <div class="dayList">
+            <p>Jours concernés</p>
+            <select v-model="day" multiple required>
+                <option>Lundi</option>
+                <option>Mardi</option>
+                <option>Mercredi</option>
+                <option>Jeudi</option>
+                <option>Vendredi</option>
+                <option>Samedi</option>
+                <option>Dimanche</option>
+            </select><br>
+        </div>
         <input class="boutonsubmit" type="submit" value="Prendre rendez-vous">
     </form>
 </div>    
@@ -38,9 +49,9 @@ export default {
   name: 'SignInPage',
   data: function() {
     return {
-        CommunicationMean: null,
-        date: null,
-        time: null
+        day: [],
+        dateSlot: null,
+        timeSlot: null
     }
   },
   components: {
@@ -48,9 +59,12 @@ export default {
     Datepicker 
   },
   methods: {
-    async SubmitForm(CommunicationMean,date){
-      console.log("faire la prise de rendez-vous");
-      console.log(date);
+    async SubmitForm(day,dateSlot,timeSlot){
+      console.log("faire ajout créneau");
+      console.log(day);
+      console.log(dateSlot);
+      console.log(timeSlot);
+      /*console.log(date);
       let newAppointemen = await axios.post(`${API_HOST}/api/rendez_vous/create_or_modify`,
       {
         id: null,
@@ -62,7 +76,7 @@ export default {
         duree: "PT30M"
         })
       
-      console.log();
+      console.log();*/
       this.$emit('close-popup');
     },
     closePopup(){
@@ -78,7 +92,7 @@ export default {
     background-color: white;
     border: solid $secondColor;
     border-radius: 20px;
-    width: 300px;
+    width: 500px;
     padding: 20px 20px 20px 20px;
     position: relative;
     
@@ -112,11 +126,19 @@ export default {
             border-radius: 20px;
             padding: 5px 5px 5px 5px;
             .datepicker{
-            display: flex;
-            margin-bottom: 20px;
-            height: 40px;
-            align-items: center;
-            margin-left: 5px;
+                display: flex;
+                margin-bottom: 20px;
+                height: 40px;
+                align-items: center;
+                margin-left: 20px;
+            }
+
+            .datepicker{
+                display: flex;
+                margin-bottom: 20px;
+                height: 40px;
+                align-items: center;
+                margin-left: 20px;
             }
 
             p{
@@ -141,7 +163,7 @@ export default {
             font-weight: 600;
         }
 
-        input[type=text], input[type=password], select{
+        input[type=text], input[type=password]{
 
             height: 45px;
             font-size: 16px;
@@ -156,6 +178,31 @@ export default {
 
             &:focus:invalid{
                 outline:solid red;
+            }
+        }
+
+        .dayList{
+            display: flex;
+            font-size: 16px;
+            border-radius: 10px;
+            border-color: black;
+            margin-bottom: 10px;
+            padding-left: 10px;
+
+            select{
+                font-size: 20px;
+                height: 205px;
+            }
+
+            p{
+                font-size: 20px;
+                font-weight: 600;
+                margin-top: 0;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                text-align: center;
+                margin-right: 20px;
             }
         }
     }

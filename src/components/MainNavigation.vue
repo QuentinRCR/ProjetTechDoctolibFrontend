@@ -1,15 +1,17 @@
 <template>
-  <ul class="nav nav-tabs">
-    <li class="nav-item" v-for="panel in panels" :key="panel.id">
-      <a 
-        class="nav-link" 
-        :class="{active: panel.id === currentPanel.id}"
-        aria-current="page" href="#"
-        @click="changePanel(panel)"
-      >{{panel.tabDisplay}}</a>
-    </li>
-  </ul>
-  
+  <div class="SlideMenu">
+    <ul class="nav nav-tabs">
+      <li class="nav-item" v-for="panel in panels" :key="panel.id">
+        <a 
+          class="nav-link" 
+          :class="{active: panel.id === currentPanel.id}"
+          aria-current="page" href="#"
+          @click="changePanel(panel)"
+        >{{panel.tabDisplay}}</a>
+      </li>
+    </ul>
+    <button @click="LogOut">Se déconnecter</button>
+  </div>
 </template>
 
 
@@ -27,6 +29,11 @@ export default {
         id: 1,
         name: 'panelB',
         tabDisplay: 'Mon Compte'
+      },
+      {
+        id: 2,
+        name: 'panelC',
+        tabDisplay: 'Mes rendez-vous'
       }]
     }
   },
@@ -34,6 +41,10 @@ export default {
     changePanel(newPanel) {
       this.currentPanel = newPanel;
       this.$emit('panel-change', newPanel);
+    },
+    LogOut(){
+      console.log("bien déconnecter la personne");
+      this.$router.push("/");
     }
   },
   created: function() {
@@ -42,3 +53,8 @@ export default {
 }
 </script>
 
+<style lang="scss" scoped>
+  .SlideMenu{
+    
+  }
+</style>

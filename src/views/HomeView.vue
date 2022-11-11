@@ -2,17 +2,22 @@
   <div class="home">
     <div class="SideMenu">
       <MainNavigation @panel-change="updatePanel"></MainNavigation>
-      <button @click="LogOut">Se déconnecter</button>
     </div>
     <div class="content">
       <div class="TopMenu">
-        <button @click="ToggleAppoi">Prendre un rendez-vous</button>
+        <div class="TopMenuButtons">
+          <button @click="ToggleAppoi">Prendre un rendez-vous</button>
+          <button @click="ToggleSlot">Ajouter un créneau</button>
+        </div>
+        <div class="fillInDiv"></div>
       </div>
-      <MakeAppoi @close-popup="ToggleAppoi"  v-if="isAddAppointement"></MakeAppoi>
       <div class="pannels">
         <StudentArea class="pannel" v-if="currentPanel.name === 'panelA'"></StudentArea>
         <MyAccount classe="pannel" v-if="currentPanel.name === 'panelB'"></MyAccount>
+        <MyAppointements classe="pannel" v-if="currentPanel.name === 'panelC'"></MyAppointements>
       </div>
+      <div class="MakeAppoi"><MakeAppoi @close-popup="ToggleAppoi"  v-if="isAddAppointement"></MakeAppoi></div>
+      <div class="MakeAppoi"><AddSlot @close-popup="ToggleSlot"  v-if="isAddSlot"></AddSlot></div>
     </div>
 
     
@@ -21,27 +26,35 @@
 
 <script>
 import MakeAppoi from '../components/MakeAppoi.vue';
+import AddSlot from '../components/AddSlot.vue';
 import MainNavigation from '../components/MainNavigation.vue';
 import StudentArea from '../components/StudentArea.vue';
 import MyAccount from '../components/MyAccount.vue'
+import MyAppointements from '../components/MyAppointements.vue'
 
 export default {
   name: 'HomePage',
   components: {
     MakeAppoi,
+    AddSlot,
     MainNavigation,
     StudentArea,
-    MyAccount
+    MyAccount,
+    MyAppointements
   },
   data: function() {
     return {
       isAddAppointement: false,
+      isAddSlot: false,
       currentPanel: {}
     }
   },
   methods: {
     ToggleAppoi(){
       this.isAddAppointement = this.isAddAppointement != true;
+    },
+    ToggleSlot(){
+      this.isAddSlot = this.isAddSlot !=true;
     },
     updatePanel(newPanel) {
       this.currentPanel = newPanel;
@@ -57,8 +70,6 @@ export default {
 <style lang="scss" scoped>
 
 .home{
-  display: flex;
-  border: solid hotpink;
 
   .SideMenu{
     border: solid red;
@@ -66,22 +77,65 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 680px;
+    //height: 100%;
+    position:absolute;
+    top:0px;
+    bottom:0px;
+    left:0px;
   }
 
   .content{
-    width: 90%;
-    border: solid cadetblue;
+
+    .MakeAppoi{
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -65%);
+    }
+    
     .pannels{
       border: solid palegreen;
+      position: absolute;
+      left: 10%;
+      top: 100px;
+      bottom: 0;
+      right: 0;
    }
 
    .TopMenu{
-    width: 50px;
+    position:absolute;
+    height: 100px;
+    top:0px;
+    right:0px;
+    left:10%;
+    border: solid blue;
+    display: flex;
+    justify-content: center;
+
+    .fillInDiv{
+      width: 60%;
+      border: solid red;
+    }
+
+    .TopMenuButtons{
+      border: solid purple;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+
+      button{
+        background-color: $secondColor;
+        border-radius: 20px;
+        //height: 50px;
+        padding: 10px 10px 10px 10px;
+      }
+
+    }
+
    }
 
    .pannel{
-    height: 570px;
+    //height: 570px;
    }
   }
    

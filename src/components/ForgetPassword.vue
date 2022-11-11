@@ -87,7 +87,7 @@ export default {
 
                     input[type=submit]{
                         margin-top: 20px;
-                        background-color: #3694c6;
+                        background-color: $secondColor;
                         border-radius: 84px;
                         height: 42px;
                         font-size: 14px;
@@ -100,7 +100,7 @@ export default {
                         height: 45px;
                         font-size: 16px;
                         border-radius: 10px;
-                        border-color: #3694c6;
+                        border-color: $secondColor;
 
                         &:focus{
                             outline:solid #72ac51;
@@ -123,7 +123,7 @@ export default {
 
                 button{
                     margin-top: 70px;
-                    background-color: #3694c6;
+                    background-color: $secondColor;
                     color: white;
                     font-size: 20px;
                     border-radius: 20px;

@@ -47,7 +47,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
     .content{
         position: absolute;
         top: 50%;
@@ -78,7 +77,7 @@ export default {
 
                     input[type=submit]{
                         margin-top: 20px;
-                        background-color: #3694c6;
+                        background-color: $secondColor;
                         border-radius: 84px;
                         height: 42px;
                         font-size: 14px;
@@ -91,7 +90,7 @@ export default {
                         height: 45px;
                         font-size: 16px;
                         border-radius: 10px;
-                        border-color: #3694c6;
+                        border-color: $secondColor;
 
                         &:focus{
                             outline:solid #72ac51;
@@ -125,7 +124,7 @@ export default {
 
             .bordure{
 
-                border: solid #3694c6;
+                border: solid $secondColor;
                 margin-top: 80px;
                 padding: 5px 5px 5px 5px;
                 border-radius: 20px;
@@ -138,7 +137,7 @@ export default {
                 }
 
                 button{
-                background-color: #3694c6;
+                background-color: $secondColor;
                 height: 45px;
                 border-radius: 90px;
                 color: white;

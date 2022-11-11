@@ -16,7 +16,7 @@
                     <option>Saint Etienne</option>
                     <option>Gardanne</option>
                 </select><br>
-                <input class="boutonsubmit" type="submit" value="Se connecter">
+                <input class="boutonsubmit" type="submit" value="S'inscrire">
             </form>
             <p v-if="formSubmited">Vous devez avoir reçu un mail. Veillez confirmer votre compte</p>
         </div>
@@ -87,7 +87,7 @@ export default {
 
                 input[type=submit]{
                     margin-top: 20px;
-                    background-color: #3694c6;
+                    background-color: $secondColor;
                     border-radius: 84px;
                     height: 42px;
                     font-size: 14px;
@@ -132,7 +132,7 @@ export default {
 
             .bordure{
 
-                border: solid #3694c6;
+                border: solid $secondColor;
                 margin-top: 80px;
                 padding: 5px 5px 5px 5px;
                 border-radius: 20px;
@@ -145,7 +145,7 @@ export default {
                 }
 
                 button{
-                background-color: #3694c6;
+                background-color: $secondColor;
                 height: 45px;
                 border-radius: 90px;
                 color: white;
