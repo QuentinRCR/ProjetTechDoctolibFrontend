@@ -1,7 +1,8 @@
 <template>
 <div class="makeApp">
     <div class="croix" @click="closePopup">&#10006</div>
-    <h1>Prendre rendez-vous</h1>
+    <h1 v-if="!enableModifyMod">Prendre rendez-vous</h1>
+    <h1 v-if="enableModifyMod">Modifier rendez-vous</h1>
     
     <!--<v-date-picker v-model="date" :valid-hours="[0,3,4,5,8,16,20]" is24hr />-->
     <form @submit.prevent="submit" v-on:submit="SubmitForm(CommunicationMean,date,time)">
@@ -36,6 +37,7 @@ import '@vuepic/vue-datepicker/dist/main.css'
 
 export default {
   name: 'SignInPage',
+  props: ['enableModifyMod',"AppointementChoice"],
   data: function() {
     return {
         CommunicationMean: null,
@@ -45,28 +47,36 @@ export default {
   },
   components: {
     VueCal,
-    Datepicker 
+    Datepicker
   },
   methods: {
     async SubmitForm(CommunicationMean,date){
       console.log("faire la prise de rendez-vous");
       console.log(date);
-      let newAppointemen = await axios.post(`${API_HOST}/api/rendez_vous/create_or_modify`,
-      {
-        id: null,
+      let id;
+      if (!this.enableModifyMod){
+        id = null;
+      }
+      else{
+        id = this.AppointementChoice.id
+      }
+      
+      let newAppointemen = await axios.post(`${API_HOST}/api/rendez_vous/create_or_modify`,{
+        id: id,
         idUser: id_Student,
         idCreneau: 3,
         zoomLink: "link.fr",
         dateDebut: `${date.slice(0,-5)}`,
         moyenCommunication: CommunicationMean,
         duree: "PT30M"
-        })
+        }
+      )
       
       console.log();
-      this.$emit('close-popup');
+      this.$emit('close-popup',this.enableModifyMod,newAppointemen);
     },
     closePopup(){
-        this.$emit('close-popup');
+        this.$emit('close-popup',this.enableModifyMod);
     }
   }
 }

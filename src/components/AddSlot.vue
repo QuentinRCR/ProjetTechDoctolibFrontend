@@ -15,7 +15,7 @@
         </div>
         <div class="dayList">
             <p>Jours concernés</p>
-            <select v-model="day" multiple required>
+            <select required v-model="day" multiple >
                 <option>Lundi</option>
                 <option>Mardi</option>
                 <option>Mercredi</option>
@@ -60,23 +60,59 @@ export default {
   },
   methods: {
     async SubmitForm(day,dateSlot,timeSlot){
-      console.log("faire ajout créneau");
-      console.log(day);
-      console.log(dateSlot);
-      console.log(timeSlot);
-      /*console.log(date);
-      let newAppointemen = await axios.post(`${API_HOST}/api/rendez_vous/create_or_modify`,
+
+      let startDate= dateSlot[0].slice(0,-14); //Extract start and end date from proxy
+      let endDate= dateSlot[1].slice(0,-14);
+
+      let startTime= ("0"+timeSlot[0].hours).slice(-2)+":"+("0"+timeSlot[0].minutes).slice(-2)+":"+("0"+timeSlot[0].seconds).slice(-2); //Extract start and end time from proxy
+      let endTime= ("0"+timeSlot[1].hours).slice(-2)+":"+("0"+timeSlot[1].minutes).slice(-2)+":"+("0"+timeSlot[1].seconds).slice(-2); //Formet to hh:mm:ss
+
+      console.log(startTime,endTime);
+      
+      let daysList=[] //Extract days from proxy and translate them
+      for(let i=0;i<day.length;i++){
+        switch (day[i]) {
+            case "Lundi":
+                daysList[daysList.length]="MONDAY";
+                break;
+            case "Mardi":
+                daysList[daysList.length]="TUESDAY";
+                break;
+            case "Mercredi":
+                daysList[daysList.length]="WEDNESDAY";
+                break;
+            case "Jeudi":
+                daysList[daysList.length]="THURSDAY";
+                break;
+            case "Vendredi":
+                daysList[daysList.length]="FRIDAY";
+                break;  
+            case "Samedi":
+                daysList[daysList.length]="SATURDAY";
+                break;
+            case "Dimanche":
+                daysList[daysList.length]="SUNDAY";
+                break;
+            default:
+                console.log("the switch to translate days has a problem");
+            }
+        }
+      
+      let newSlot = await axios.post(`${API_HOST}/api/creneaux/create_or_modify`, //Send the resquest to the api with values defined above
       {
         id: null,
-        idUser: id_Student,
-        idCreneau: 3,
-        zoomLink: "link.fr",
-        dateDebut: `${date.slice(0,-5)}`,
-        moyenCommunication: CommunicationMean,
-        duree: "PT30M"
+        dateDebut: `${startDate}`,
+        dateFin: `${endDate}`,
+        jours: daysList,
+        heuresDebutFin: [
+            {
+                idPlage: null,
+                idCreneaux: 1000,
+                tempsDebut: `${startTime}`,
+                tempsFin: `${endTime}`
+            }
+        ]
         })
-      
-      console.log();*/
       this.$emit('close-popup');
     },
     closePopup(){

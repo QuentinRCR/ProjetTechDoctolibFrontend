@@ -34,7 +34,12 @@ export default {
         id: 2,
         name: 'panelC',
         tabDisplay: 'Mes rendez-vous'
-      }]
+      },
+      {
+        id: 3,
+        name: 'panelD',
+        tabDisplay: 'Créneaux'
+      },]
     }
   },
   methods: {

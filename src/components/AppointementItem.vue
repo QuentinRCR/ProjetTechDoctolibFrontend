@@ -12,8 +12,8 @@
       <template v-if="isExpanded"> <!--Expanded menu-->
         <hr/>
         <div class="details d-flex">
-          <button type="button" @click="deleteAppointement">Cancel appointement</button>
-          <button type="button" @click="deleteWindow">Modify appointement</button>
+          <button type="button" @click="deleteAppointement">Annuler le rendez-vous</button>
+          <button type="button" @click="modifyApp">Déplacer le rendez-vous</button>
         </div>
       </template>
     </div>
@@ -43,6 +43,9 @@
       async deleteAppointement(){
         await axios.delete(`${API_HOST}/api/rendez_vous/${this.appointement.id}`);
         this.$emit('appointement-delete', this.appointement.id);
+      },
+      modifyApp(){
+        this.$emit('appointement-choice',this.appointement)
       }
     }
   }

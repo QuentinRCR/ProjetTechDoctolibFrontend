@@ -7,6 +7,7 @@
         :appointement="appointement"
         :key="appointement.id"  
         @appointement-delete="deleteAppointement"
+        @appointement-choice="modifyApp"
       >
       </AppointementItem>
       </div>
@@ -30,6 +31,7 @@
       AppointementItem
     },
     name: 'MyAppointments',
+    props: ["AppModifyOrCreate"],
     data: function() {
       return {
         /* Initialize appointements with an empty array, while waiting for actual data to be retrieved from the API */
@@ -43,14 +45,18 @@
       this.appointements = appointements;
     },
     methods: {
-      updateAppointement(newAppointement) {
+      updateAppointement() {
+        console.log("udateApp");
         /* Find the place of appointement object with the same Id in the array, and replace it */
-        let index = this.appointements.findIndex(appointement => appointement.id === newAppointement.id);
-        this.appointements.splice(index, 1, newAppointement);
+        //let index = this.appointements.findIndex(appointement => appointement.id === this.AppModifyOrCreate.id);
+        //this.appointements.splice(index, 1, this.AppModifyOrCreate);
       },
       deleteAppointement(identifient){
         let index = this.appointements.findIndex(appointement => appointement.id === identifient)
         this.appointements.splice(index,1)
+      },
+      modifyApp(app){
+        this.$emit('appointement-choice',app)
       }
     }
   }

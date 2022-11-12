@@ -14,9 +14,10 @@
       <div class="pannels">
         <StudentArea class="pannel" v-if="currentPanel.name === 'panelA'"></StudentArea>
         <MyAccount classe="pannel" v-if="currentPanel.name === 'panelB'"></MyAccount>
-        <MyAppointements classe="pannel" v-if="currentPanel.name === 'panelC'"></MyAppointements>
+        <MyAppointements ref="Myrdvs" @appointement-choice="modifyAppMod" :AppModifyOrCreate="AppModifyOrCreate" classe="pannel" v-if="currentPanel.name === 'panelC'"></MyAppointements>
+        <MySlots classe="pannel" v-if="currentPanel.name === 'panelD'"></MySlots>
       </div>
-      <div class="MakeAppoi"><MakeAppoi @close-popup="ToggleAppoi"  v-if="isAddAppointement"></MakeAppoi></div>
+      <div class="MakeAppoi"><MakeAppoi @close-popup="ToggleAppoi" :enableModifyMod="enableModifyMod" :AppointementChoice="AppointementChoice" v-if="isAddAppointement"></MakeAppoi></div>
       <div class="MakeAppoi"><AddSlot @close-popup="ToggleSlot"  v-if="isAddSlot"></AddSlot></div>
     </div>
 
@@ -31,6 +32,7 @@ import MainNavigation from '../components/MainNavigation.vue';
 import StudentArea from '../components/StudentArea.vue';
 import MyAccount from '../components/MyAccount.vue'
 import MyAppointements from '../components/MyAppointements.vue'
+import MySlots from '../components/MySlots.vue'
 
 export default {
   name: 'HomePage',
@@ -40,18 +42,28 @@ export default {
     MainNavigation,
     StudentArea,
     MyAccount,
-    MyAppointements
+    MyAppointements,
+    MySlots,
   },
   data: function() {
     return {
       isAddAppointement: false,
       isAddSlot: false,
-      currentPanel: {}
+      currentPanel: {},
+      enableModifyMod: false,
+      AppointementChoice: null,
+      AppModifyOrCreate: null,
     }
   },
   methods: {
-    ToggleAppoi(){
+    ToggleAppoi(modifyMod,newAppointement){
       this.isAddAppointement = this.isAddAppointement != true;
+      if (modifyMod!=null){
+        this.enableModifyMod=false;
+      }
+      if(newAppointement!=null){
+        this.AppModifyOrCreate=newAppointement;
+      }
     },
     ToggleSlot(){
       this.isAddSlot = this.isAddSlot !=true;
@@ -63,6 +75,11 @@ export default {
       console.log("bien déconnecter la personne");
       this.$router.push("/");
     },
+    modifyAppMod(app){
+      this.enableModifyMod=true;
+      this.AppointementChoice=app;
+      this.ToggleAppoi();
+    }
   }
 }
 </script>
