@@ -14,7 +14,7 @@
         <hr/>
         <div class="details d-flex">
           <button type="button" @click="deleteSlot">Supprimer le créneau</button>
-          <button type="button" @click="deleteWindow">Modifier le créneau</button>
+          <button type="button" @click="ModifySlot">Modifier le créneau</button>
         </div>
       </template>
     </div>
@@ -44,6 +44,9 @@
       async deleteSlot(){
         await axios.delete(`${API_HOST}/api/creneaux/${this.slot.id}`);
         this.$emit('slot-delete', this.slot.id);
+      },
+      ModifySlot(){
+        this.$emit('slot-choice',this.slot)
       }
     }
   }

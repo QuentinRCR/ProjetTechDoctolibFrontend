@@ -3,6 +3,7 @@
       <h1>Mes rendez-vous</h1>
       <div class="appointements-list">
         <AppointementItem 
+        class="AppItem"
         v-for="appointement in appointements"
         :appointement="appointement"
         :key="appointement.id"  
@@ -68,6 +69,9 @@
     overflow: scroll;
     width: 60%;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     h1{
       
@@ -75,6 +79,10 @@
 
     .appointements-list{
       width: 60%;
+
+      .AppItem{
+        margin-bottom: 20px;
+      }
     }
 
   }

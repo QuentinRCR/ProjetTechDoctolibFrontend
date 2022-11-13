@@ -2,11 +2,13 @@
     <div class="myAppoints">
       <h1>Créneaux</h1>
       <div class="slots-list">
-        <SlotItem 
+        <SlotItem
+        class="slotItem"
         v-for="slot in slots"
         :slot="slot"
         :key="slot.id"  
         @slot-delete="deleteSlot"
+        @slot-choice="modifySlot"
       >
       </SlotItem>
       </div>
@@ -30,6 +32,7 @@
       SlotItem
     },
     name: 'MyAppointments',
+    props: ["SlotModifyOrCreate"],
     data: function() {
       return {
         /* Initialize slots with an empty array, while waiting for actual data to be retrieved from the API */
@@ -51,6 +54,9 @@
       deleteSlot(identifient){
         let index = this.slots.findIndex(slot => slot.id === identifient)
         this.slots.splice(index,1)
+      },
+      modifySlot(slot){
+        this.$emit('slot-choice',slot)
       }
     }
   }
@@ -62,6 +68,9 @@
     overflow: scroll;
     width: 60%;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     h1{
       
@@ -69,6 +78,10 @@
 
     .slots-list{
       width: 60%;
+
+      .slotItem{
+        margin-bottom: 20px;
+      }
     }
 
   }

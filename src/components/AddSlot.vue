@@ -1,7 +1,8 @@
 <template>
 <div class="makeApp">
     <div class="croix" @click="closePopup">&#10006</div>
-    <h1>Ajouter un créneau</h1>
+    <h1 v-if=!enableModifyModSlot>Ajouter un créneau</h1>
+    <h1 v-if=enableModifyModSlot>Modifier le créneau</h1>
     
     <!--<v-date-picker v-model="date" :valid-hours="[0,3,4,5,8,16,20]" is24hr />-->
     <form @submit.prevent="submit" v-on:submit="SubmitForm(day,dateSlot,timeSlot)">
@@ -47,6 +48,7 @@ import '@vuepic/vue-datepicker/dist/main.css'
 
 export default {
   name: 'SignInPage',
+  props: ['enableModifyModSlot',"SlotChoice"],
   data: function() {
     return {
         day: [],
@@ -66,8 +68,6 @@ export default {
 
       let startTime= ("0"+timeSlot[0].hours).slice(-2)+":"+("0"+timeSlot[0].minutes).slice(-2)+":"+("0"+timeSlot[0].seconds).slice(-2); //Extract start and end time from proxy
       let endTime= ("0"+timeSlot[1].hours).slice(-2)+":"+("0"+timeSlot[1].minutes).slice(-2)+":"+("0"+timeSlot[1].seconds).slice(-2); //Formet to hh:mm:ss
-
-      console.log(startTime,endTime);
       
       let daysList=[] //Extract days from proxy and translate them
       for(let i=0;i<day.length;i++){
@@ -98,9 +98,17 @@ export default {
             }
         }
       
+        let idSlot;
+        if(this.enableModifyModSlot){
+            idSlot=this.SlotChoice.id
+        }
+        else{
+            idSlot=null;
+        }
+
       let newSlot = await axios.post(`${API_HOST}/api/creneaux/create_or_modify`, //Send the resquest to the api with values defined above
       {
-        id: null,
+        id: idSlot,
         dateDebut: `${startDate}`,
         dateFin: `${endDate}`,
         jours: daysList,

@@ -15,10 +15,10 @@
         <StudentArea class="pannel" v-if="currentPanel.name === 'panelA'"></StudentArea>
         <MyAccount classe="pannel" v-if="currentPanel.name === 'panelB'"></MyAccount>
         <MyAppointements ref="Myrdvs" @appointement-choice="modifyAppMod" :AppModifyOrCreate="AppModifyOrCreate" classe="pannel" v-if="currentPanel.name === 'panelC'"></MyAppointements>
-        <MySlots classe="pannel" v-if="currentPanel.name === 'panelD'"></MySlots>
+        <MySlots classe="pannel" @slot-choice="modifySlotMod" v-if="currentPanel.name === 'panelD'"></MySlots>
       </div>
       <div class="MakeAppoi"><MakeAppoi @close-popup="ToggleAppoi" :enableModifyMod="enableModifyMod" :AppointementChoice="AppointementChoice" v-if="isAddAppointement"></MakeAppoi></div>
-      <div class="MakeAppoi"><AddSlot @close-popup="ToggleSlot"  v-if="isAddSlot"></AddSlot></div>
+      <div class="MakeAppoi"><AddSlot @close-popup="ToggleSlot"  :enableModifyModSlot="enableModifyModSlot" :SlotChoice="SlotChoice" v-if="isAddSlot"></AddSlot></div>
     </div>
 
     
@@ -51,7 +51,9 @@ export default {
       isAddSlot: false,
       currentPanel: {},
       enableModifyMod: false,
+      enableModifyModSlot: false,
       AppointementChoice: null,
+      SlotChoice: null,
       AppModifyOrCreate: null,
     }
   },
@@ -65,8 +67,11 @@ export default {
         this.AppModifyOrCreate=newAppointement;
       }
     },
-    ToggleSlot(){
+    ToggleSlot(modifyModSlot){
       this.isAddSlot = this.isAddSlot !=true;
+      if (modifyModSlot!=null){
+        this.enableModifyModSlot=false;
+      }
     },
     updatePanel(newPanel) {
       this.currentPanel = newPanel;
@@ -79,6 +84,11 @@ export default {
       this.enableModifyMod=true;
       this.AppointementChoice=app;
       this.ToggleAppoi();
+    },
+    modifySlotMod(slot){
+      this.enableModifyModSlot=true;
+      this.SlotChoice=slot;
+      this.ToggleSlot();
     }
   }
 }
