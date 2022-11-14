@@ -2,11 +2,11 @@
   <div class="StudentArea">
     <h1>Section élève</h1>
     <div class="mainContent">
-      <form class="personalInfos" @submit.prevent="submit" v-on:submit="SubmitForm(lastName,firstName,email,campus,phoneNumber,skypeAccount)">
+      <form  class="personalInfos" @submit.prevent="submit" v-on:submit="SubmitForm(lastName,firstName,email,campus,phoneNumber,skypeAccount)"> <!--form used in modify mode-->
         <div class="infoItem">
           <p  class="descrition">Nom:</p>
-          <p v-if=!isInModifyMod>{{StudentData.lastName}}</p>
-          <input v-model="lastName" v-if=isInModifyMod type="text">
+          <p v-if=!isInModifyMod>{{StudentData.lastName}}</p> <!--When not in modify mode, the name is simply displayed-->
+          <input v-model="lastName" v-if=isInModifyMod type="text"> <!--When in modify mode, use inputs prefilled-->
         </div>
         <div class="infoItem">
           <p class="descrition">Prénom:</p>
@@ -21,7 +21,10 @@
         <div class="infoItem">
           <p class="descrition">Campus:</p>
           <p v-if=!isInModifyMod>{{StudentData.campus}}</p>
-          <input v-model="campus" v-if=isInModifyMod type="text">
+          <select selected={{StudentData.campus}} id="updateCampus" v-model="campus" v-if=isInModifyMod>
+            <option>Saint Etienne</option>
+            <option>Gardanne</option>
+          </select>
         </div>
         <div class="infoItem">
           <p class="descrition">Numéro de téléphone:</p>
@@ -33,7 +36,7 @@
           <p v-if=!isInModifyMod>{{StudentData.skypeAccount}}</p>
           <input v-model="skypeAccount" v-if=isInModifyMod type="text">
         </div>
-        <input v-if=isInModifyMod class="boutonsubmit" type="submit" value="Enregistrer">
+        <input v-if=isInModifyMod class="boutonsubmit" type="submit" value="Enregistrer"> <!--to submit the form in modify mode-->
       </form>
       <button v-if=!isInModifyMod @click="toggleModifyMod">Modifier mes informations</button>
     </div>
@@ -42,13 +45,10 @@
 </template>
 
 <script>
-import { f } from 'v-cal-input';
-
 export default {
     name: 'StudentArea',
-    data: function() {
-      return {
-        StudentData: {
+    created(){ //to be able to assign the fetched data to the fields
+      this.StudentData= { 
           id: 1,
           firstName: "Quentin",
           lastName: "REY",
@@ -56,26 +56,39 @@ export default {
           phoneNumber: "0565986535",
           campus: "Saint Etienne",
           skypeAccount: "live:56632625"
-        },
-        isInModifyMod: false,
-        name: null
-      }
+        };
+        this.lastName=this.StudentData.lastName
+        this.firstName=this.StudentData.firstName,
+        this.email=this.StudentData.email,
+        this.campus=this.StudentData.campus,
+        this.phoneNumber=this.StudentData.phoneNumber,
+        this.skypeAccount=this.StudentData.skypeAccount
     },
-    components: {
+    data: function() {
+      return {
+        StudentData: null, //json containing student datas
+        isInModifyMod: false, //true when in modify mode -> paragraphes are replaced by inputs
+        lastName : false, //values used in the v-model for the form
+        firstName : null,
+        email: null,
+        campus: null,
+        phoneNumber: null,
+        skypeAccount: null,
+      }
     },
     methods: {
       toggleModifyMod(){
         this.isInModifyMod = !this.isInModifyMod
       },
       SubmitForm(lastName,firstName,email,campus,phoneNumber,skypeAccount){
-        console.log("update user datas");
-        this.toggleModifyMod()
-        this.StudentData.lastName=lastName;
+        console.log("update user datas"); //post the data to the api
+        this.StudentData.lastName=lastName; //assign to studentdata in order to have the visual effect without needing to fectch again
         this.StudentData.firstName=firstName;
         this.StudentData.email=email;
         this.StudentData.campus=campus;
         this.StudentData.phoneNumber=phoneNumber;
         this.StudentData.skypeAccount=skypeAccount;
+        this.toggleModifyMod()
       }
     }
   }
@@ -103,7 +116,7 @@ export default {
     .personalInfos{
       text-align: center;
 
-      input[type="submit"]{
+      input[type="submit"] {
           font-size: 18px;
           border-radius: 10px;
           background-color: $secondColor;
@@ -122,10 +135,10 @@ export default {
           font-weight: bold;
         }
 
-        input[type="text"]{
+        input[type="text"],select{
           font-size: 18px;
           border-radius: 10px;
-          padding: 0 0 0 0;
+          padding:15px 15px 15px 15px;
         }
       }
     }

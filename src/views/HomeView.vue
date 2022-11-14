@@ -80,14 +80,14 @@ export default {
       console.log("bien déconnecter la personne");
       this.$router.push("/");
     },
-    modifyAppMod(app){
+    modifyAppMod(app){ //use parametter to be able to reuse the creation box to modify
       this.enableModifyMod=true;
-      this.AppointementChoice=app;
+      this.AppointementChoice=app; //to pass the parametter down to MyAppointements
       this.ToggleAppoi();
     },
-    modifySlotMod(slot){
+    modifySlotMod(slot){//use parametter to be able to reuse the creation box to modify
       this.enableModifyModSlot=true;
-      this.SlotChoice=slot;
+      this.SlotChoice=slot; //to pass the parametter down to MySlot
       this.ToggleSlot();
     }
   }
@@ -99,7 +99,7 @@ export default {
 .home{
 
   .SideMenu{
-    border: solid red;
+    background-color: rgb(149, 187, 224);
     width: 10%;
     display: flex;
     flex-direction: column;
@@ -109,6 +109,7 @@ export default {
     top:0px;
     bottom:0px;
     left:0px;
+  
   }
 
   .content{
@@ -121,7 +122,7 @@ export default {
     }
     
     .pannels{
-      border: solid palegreen;
+      //border: solid palegreen;
       position: absolute;
       left: 10%;
       top: 100px;
@@ -135,17 +136,15 @@ export default {
     top:0px;
     right:0px;
     left:10%;
-    border: solid blue;
+    //border: solid blue;
     display: flex;
     justify-content: center;
 
     .fillInDiv{
       width: 60%;
-      border: solid red;
     }
 
     .TopMenuButtons{
-      border: solid purple;
       display: flex;
       align-items: center;
       justify-content: space-around;
