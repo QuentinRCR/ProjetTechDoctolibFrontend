@@ -7,14 +7,23 @@
     <!--<v-date-picker v-model="date" :valid-hours="[0,3,4,5,8,16,20]" is24hr />-->
     <form @submit.prevent="submit" v-on:submit="SubmitForm(CommunicationMean,date,time)">
         <div class="dateselectorslot">
-            <p class="">Date et Heure</p>
-            <div class="datepicker"><Datepicker v-model="date" autoApply utc="preserve"></Datepicker></div>
+            <div class="itemdate">
+              <p class="">Date:</p>
+              <div class="datepicker"><Datepicker inline v-model="date" :enableTimePicker="false" autoApply modelType="yyyy-MM-dd"></Datepicker></div>
+            </div>
+            <div class="itemtime">
+              <p class="">Heure:</p>
+              <div class="timepicker"><Datepicker inline v-model="time" timePicker autoApply></Datepicker></div>
+            </div>
         </div>
-        <select v-model="CommunicationMean" >
-            <option :value="null" disabled>Moyen de communication</option>
-            <option>Skype</option>
-            <option>Whatsapp</option>
-        </select><br>
+        <div class="CommuMean">
+          <p>Moyen de communication</p>
+          <select v-model="CommunicationMean" >
+              <!--<option :value="null" disabled>Moyen de communication:</option>-->
+              <option>Skype</option>
+              <option>Whatsapp</option>
+          </select><br>
+        </div>
         <input class="boutonsubmit" type="submit" value="Prendre rendez-vous">
     </form>
 </div>    
@@ -47,7 +56,7 @@ export default {
     Datepicker
   },
   methods: {
-    async SubmitForm(CommunicationMean,date){
+    async SubmitForm(CommunicationMean,date,time){
       console.log("faire la prise de rendez-vous");
       let id;
       if (!this.enableModifyMod){
@@ -56,13 +65,16 @@ export default {
       else{
         id = this.AppointementChoice.id
       }
-      
+
+      let startTime= ("0"+time.hours).slice(-2)+":"+("0"+time.minutes).slice(-2)+":"+("0"+time.seconds).slice(-2); //Extract start and end time from proxy
+      let dateDebut1 = date+"T"+startTime;
+      console.log(dateDebut1);
       let newAppointemen = await axios.post(`${API_HOST}/api/rendez_vous/create_or_modify`,{
         id: id,
         idUser: id_Student,
         idCreneau: 3,
         zoomLink: "link.fr",
-        dateDebut: `${date.slice(0,-5)}`,
+        dateDebut: `${dateDebut1}`,
         moyenCommunication: CommunicationMean,
         duree: "PT30M"
         }
@@ -83,8 +95,7 @@ export default {
     background-color: white;
     border: solid $secondColor;
     border-radius: 20px;
-    width: 300px;
-    padding: 20px 20px 20px 20px;
+    padding: 30px 30px 30px 30px;
     position: relative;
     
     h1{
@@ -94,47 +105,46 @@ export default {
 
     .croix{
         position: absolute;
-        right: 10px;
-        top: 5px;
+        right: 30px;
+        top: 25px;
         cursor: pointer;
-        font-size: 16px;
+        font-size: 18px;
     }
 
 
     form{
         display: flex;
-        flex-direction: column ;
-        
-
-        
-
+        flex-direction: column;
+        align-items: center;
         .dateselectorslot{
-            display: flex;
-            border:solid $secondColor;
-            justify-content: center;
-            height: 41px;
-            margin-bottom: 20px;
-            border-radius: 20px;
-            padding: 5px 5px 5px 5px;
-            .datepicker{
-            display: flex;
-            margin-bottom: 20px;
-            height: 40px;
-            align-items: center;
-            margin-left: 5px;
-            }
+          display: flex;
+          margin-bottom: 20px;
+          
+          p{
+            font-weight: bold;
+            font-size: 18px;
+            margin: 0 0 5px 0;
+          }
 
-            p{
-            font-size: 20px;
-            font-weight: 600;
-            margin-top: 0;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            text-align: center;
-            }
+          .itemdate{
+            margin-right: 20px;
+          }
         }
-        
+
+        .CommuMean{
+          display: flex;
+          align-items: center;
+
+          p{
+            font-weight: bold;
+            font-size: 18px;
+            margin: 0 20px 0 0;
+          }
+
+          select{
+            padding: 10px 10px 10px 10px;
+          }
+        }
 
         input[type=submit]{
             margin-top: 20px;
@@ -148,12 +158,9 @@ export default {
 
         input[type=text], input[type=password], select{
 
-            height: 45px;
             font-size: 16px;
             border-radius: 10px;
             border-color: black;
-            margin-bottom: 10px;
-            padding-left: 10px;
 
             &:focus{
                 outline:solid #72ac51;

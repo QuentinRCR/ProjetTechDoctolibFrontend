@@ -113,9 +113,9 @@ export default {
 
     .MakeAppoi{
       position: absolute;
-      top: 50%;
+      top: 10%;
       left: 50%;
-      transform: translate(-50%, -65%);
+      transform: translate(-50%,0);
     }
     
     .pannels{

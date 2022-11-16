@@ -49,6 +49,7 @@
   
   <style lang="scss" scoped>
   .slotitem{
+    cursor: pointer;
     border: solid gray;
     border-radius: 20px;
     padding: 20px 20px 20px 20px;

@@ -48,6 +48,7 @@
   
   <style lang="scss" scoped>
   .appointementitem{
+    cursor: pointer;
     border: solid gray;
     border-radius: 20px;
     padding: 20px 20px 20px 20px;
