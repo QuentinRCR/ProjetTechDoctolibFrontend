@@ -50,10 +50,10 @@ export default {
   methods: {
     SubmitForm(ClienEmail,ClientFirstName,ClientLastName,Password,PasswordConfirmation,PhoneNumber,SkypeAccount,Campus){
       console.log("faire l'authentification"); 
-      this.formSubmited=true;
+      this.formSubmited=true; //To display the message saying that the person received a mail to confirm its account
     },
     SendToLogIn(){
-      this.$router.push("/");
+      this.$router.push("/"); //go to the login page
     }
   }
 }

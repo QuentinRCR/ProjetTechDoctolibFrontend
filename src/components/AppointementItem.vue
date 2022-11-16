@@ -1,12 +1,12 @@
 <template>
-    <div class="appointementitem" :class="{expanded: isExpanded}">
+    <div class="appointementitem" :class="{expanded: isExpanded}"> <!--To show or not the modify and delete button-->
       <div class="appointementitemalwaysdisplay" @click="toggleExpand">
         <div class="appointement-date">Date: {{appointement.dateDebut}}</div>
         <div class="appointement-duration">Durée: {{appointement.duree}}</div>
         <div class="appointement-com-channel">Moyen de communication: {{appointement.moyenCommunication}}</div>
   
         <div class="expand-arrow"> <!--add the arrow to deploy the menu-->
-          {{ isExpanded ? '&#9660;' : '&#9658;' }}
+          {{ isExpanded ? '&#9660;' : '&#9658;' }} <!--Unicode charactere for the arrow-->
         </div>
       </div>
       <template v-if="isExpanded"> <!--Expanded menu-->
@@ -25,15 +25,10 @@
   
   export default {
     name: 'AppointementItem',
-    props: ['appointement'],
+    props: ['appointement'], //to get the appointement from the for in MyAppointments
     data: function() {
       return {
         isExpanded: false
-      }
-    }, 
-    computed: {
-      isWindowOpen: function() {
-        return this.appointement.windowStatus === 'OPEN'; 
       }
     },
     methods: {
@@ -44,8 +39,8 @@
         await axios.delete(`${API_HOST}/api/rendez_vous/${this.appointement.id}`);
         this.$emit('appointement-delete', this.appointement.id);
       },
-      modifyApp(){
-        this.$emit('appointement-choice',this.appointement)
+      modifyApp(){ 
+        this.$emit('appointement-choice',this.appointement) //to get the appointement id in the MakeAppointements
       }
     }
   }

@@ -4,7 +4,7 @@
       <div class="appointements-list">
         <AppointementItem 
         class="AppItem"
-        v-for="appointement in appointements"
+        v-for="appointement in appointements" 
         :appointement="appointement"
         :key="appointement.id"  
         @appointement-delete="deleteAppointement"
@@ -32,7 +32,7 @@
       AppointementItem
     },
     name: 'MyAppointments',
-    props: ["AppModifyOrCreate"],
+    props: ["AppModifyOrCreate"], //to use the MakeApp from for modify mod too
     data: function() {
       return {
         /* Initialize appointements with an empty array, while waiting for actual data to be retrieved from the API */
@@ -46,14 +46,8 @@
       this.appointements = appointements;
     },
     methods: {
-      updateAppointement() {
-        console.log("udateApp");
-        /* Find the place of appointement object with the same Id in the array, and replace it */
-        //let index = this.appointements.findIndex(appointement => appointement.id === this.AppModifyOrCreate.id);
-        //this.appointements.splice(index, 1, this.AppModifyOrCreate);
-      },
       deleteAppointement(identifient){
-        let index = this.appointements.findIndex(appointement => appointement.id === identifient)
+        let index = this.appointements.findIndex(appointement => appointement.id === identifient) //search for the correct id corresponding to the appointement id in order to delete it
         this.appointements.splice(index,1)
       },
       modifyApp(app){

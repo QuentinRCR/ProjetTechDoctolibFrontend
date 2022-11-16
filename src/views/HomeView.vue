@@ -14,7 +14,7 @@
       <div class="pannels">
         <StudentArea class="pannel" v-if="currentPanel.name === 'panelA'"></StudentArea>
         <MyAccount classe="pannel" v-if="currentPanel.name === 'panelB'"></MyAccount>
-        <MyAppointements ref="Myrdvs" @appointement-choice="modifyAppMod" :AppModifyOrCreate="AppModifyOrCreate" classe="pannel" v-if="currentPanel.name === 'panelC'"></MyAppointements>
+        <MyAppointements ref="Myrdvs" @appointement-choice="ToggleAppoi" :AppModifyOrCreate="AppModifyOrCreate" classe="pannel" v-if="currentPanel.name === 'panelC'"></MyAppointements> <!--AppModifyOrCreate is to handle modify mode-->
         <MySlots classe="pannel" @slot-choice="modifySlotMod" v-if="currentPanel.name === 'panelD'"></MySlots>
       </div>
       <div class="MakeAppoi"><MakeAppoi @close-popup="ToggleAppoi" :enableModifyMod="enableModifyMod" :AppointementChoice="AppointementChoice" v-if="isAddAppointement"></MakeAppoi></div>
@@ -50,21 +50,18 @@ export default {
       isAddAppointement: false,
       isAddSlot: false,
       currentPanel: {},
-      enableModifyMod: false,
-      enableModifyModSlot: false,
+      enableModifyMod: false, //is declared here because allow 2 components bellow to communicate - is for appointements
+      enableModifyModSlot: false, //is declared here because allow 2 components bellow to communicate
       AppointementChoice: null,
       SlotChoice: null,
       AppModifyOrCreate: null,
     }
   },
   methods: {
-    ToggleAppoi(modifyMod,newAppointement){
+    ToggleAppoi(modifyMod){
       this.isAddAppointement = this.isAddAppointement != true;
-      if (modifyMod!=null){
+      if (modifyMod!=null){ //to automatically cancel modify mode when the popup is close
         this.enableModifyMod=false;
-      }
-      if(newAppointement!=null){
-        this.AppModifyOrCreate=newAppointement;
       }
     },
     ToggleSlot(modifyModSlot){

@@ -32,7 +32,7 @@
       SlotItem
     },
     name: 'MyAppointments',
-    props: ["SlotModifyOrCreate"],
+    props: ["SlotModifyOrCreate"], //to use the AddSlot from for modify mod too
     data: function() {
       return {
         /* Initialize slots with an empty array, while waiting for actual data to be retrieved from the API */
@@ -46,11 +46,12 @@
       this.slots = slots;
     },
     methods: {
-      updateSlot(newSlot) {
-        /* Find the place of slot object with the same Id in the array, and replace it */
+      /*
+      updateSlot(newSlot) { //might be usefull latter
         let index = this.slots.findIndex(slot => slot.id === newSlot.id);
         this.slots.splice(index, 1, newSlot);
       },
+      */
       deleteSlot(identifient){
         let index = this.slots.findIndex(slot => slot.id === identifient)
         this.slots.splice(index,1)

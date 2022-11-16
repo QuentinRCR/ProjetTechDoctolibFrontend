@@ -1,4 +1,4 @@
-<template>
+<template> <!--This template is used to create and to modify a slot. When enableModifyModSlot is true it it the modify module that is displayed-->
 <div class="makeApp">
     <div class="croix" @click="closePopup">&#10006</div>
     <h1 v-if=!enableModifyModSlot>Ajouter un créneau</h1>
@@ -34,12 +34,10 @@
 </template>
 
 <script>
-import {API_HOST,id_Student} from "../config"
-import axios from 'axios';
-import VueCal from 'vue-cal'
-import DatePicker from 'v-cal-input'
+import {API_HOST} from "../config" //to get the API path
+import axios from 'axios'; 
 import Datepicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
+import '@vuepic/vue-datepicker/dist/main.css' //to make datepicker work
 
 
 
@@ -48,7 +46,7 @@ import '@vuepic/vue-datepicker/dist/main.css'
 
 export default {
   name: 'SignInPage',
-  props: ['enableModifyModSlot',"SlotChoice"],
+  props: ['enableModifyModSlot',"SlotChoice"], //to be able to display the correct thing depending if it is modifying mode or not
   data: function() {
     return {
         day: [],
@@ -57,7 +55,6 @@ export default {
     }
   },
   components: {
-    VueCal,
     Datepicker 
   },
   methods: {
@@ -67,7 +64,7 @@ export default {
       let endDate= dateSlot[1].slice(0,-14);
 
       let startTime= ("0"+timeSlot[0].hours).slice(-2)+":"+("0"+timeSlot[0].minutes).slice(-2)+":"+("0"+timeSlot[0].seconds).slice(-2); //Extract start and end time from proxy
-      let endTime= ("0"+timeSlot[1].hours).slice(-2)+":"+("0"+timeSlot[1].minutes).slice(-2)+":"+("0"+timeSlot[1].seconds).slice(-2); //Formet to hh:mm:ss
+      let endTime= ("0"+timeSlot[1].hours).slice(-2)+":"+("0"+timeSlot[1].minutes).slice(-2)+":"+("0"+timeSlot[1].seconds).slice(-2); //Formated to hh:mm:ss
       
       let daysList=[] //Extract days from proxy and translate them
       for(let i=0;i<day.length;i++){
@@ -98,8 +95,8 @@ export default {
             }
         }
       
-        let idSlot;
-        if(this.enableModifyModSlot){
+        let idSlot; 
+        if(this.enableModifyModSlot){ //set idSlot if in modify mode
             idSlot=this.SlotChoice.id
         }
         else{
@@ -123,7 +120,7 @@ export default {
         })
       this.$emit('close-popup');
     },
-    closePopup(){
+    closePopup(){ //for the cross
         this.$emit('close-popup');
     }
   }

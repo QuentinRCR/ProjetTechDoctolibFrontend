@@ -1,4 +1,4 @@
-<template>
+<template> <!--See AppointementItem to simillar code commented-->
     <div class="slotitem" :class="{expanded: isExpanded}">
       <div class="slotitemalwaysdisplay" @click="toggleExpand">
         <div class="slot-date">Date début: {{slot.dateDebut}}</div>
@@ -30,11 +30,6 @@
     data: function() {
       return {
         isExpanded: false
-      }
-    }, 
-    computed: {
-      isWindowOpen: function() {
-        return this.slot.windowStatus === 'OPEN'; 
       }
     },
     methods: {

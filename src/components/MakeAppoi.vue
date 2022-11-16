@@ -25,8 +25,6 @@
 <script>
 import {API_HOST,id_Student} from "../config"
 import axios from 'axios';
-import VueCal from 'vue-cal'
-import DatePicker from 'v-cal-input'
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 
@@ -46,13 +44,11 @@ export default {
     }
   },
   components: {
-    VueCal,
     Datepicker
   },
   methods: {
     async SubmitForm(CommunicationMean,date){
       console.log("faire la prise de rendez-vous");
-      console.log(date);
       let id;
       if (!this.enableModifyMod){
         id = null;
@@ -71,9 +67,8 @@ export default {
         duree: "PT30M"
         }
       )
-      
-      console.log();
-      this.$emit('close-popup',this.enableModifyMod,newAppointemen);
+
+      this.$emit('close-popup',this.enableModifyMod); //to cancer the modify mode
     },
     closePopup(){
         this.$emit('close-popup',this.enableModifyMod);

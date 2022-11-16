@@ -9,7 +9,7 @@
           @click="changePanel(panel)"
         >{{panel.tabDisplay}}</div>
       </div>
-      <p class="DeleteButton" @click="LogOut">Se déconnecter</p>
+      <p class="LogOutButton" @click="LogOut">Se déconnecter</p>
     </div>
     
   </div>
@@ -72,7 +72,7 @@ export default {
       //border: solid blue;
       width: 100%;
       height: 700px;
-      .DeleteButton{
+      .LogOutButton{
         //color: black;
         font-weight: bold;
         cursor: pointer;
