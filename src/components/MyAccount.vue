@@ -44,28 +44,31 @@
 </template>
 
 <script>
+import {id_Student,API_HOST} from "../config" //to get the API path
+import axios from 'axios';
+
 export default {
     name: 'StudentArea',
-    created(){ //to be able to assign the fetched data to the fields
-      this.StudentData= { 
-          id: 1,
-          firstName: "Quentin",
-          lastName: "REY",
-          email: "quentin.rey@etu.emse.fr",
-          phoneNumber: "0565986535",
-          campus: "Saint Etienne",
-          skypeAccount: "live:56632625"
-        };
-        this.lastName=this.StudentData.lastName
-        this.firstName=this.StudentData.firstName,
-        this.email=this.StudentData.email,
-        this.campus=this.StudentData.campus,
-        this.phoneNumber=this.StudentData.phoneNumber,
-        this.skypeAccount=this.StudentData.skypeAccount
+    created: async function(){ //to be able to assign the fetched data to the fields
+      let response = await axios.get(`${API_HOST}/api/user/${id_Student}`); //get front the API
+      this.StudentData = response.data; //assign the data
+      this.lastName=this.StudentData.lastName //update values for the form mod
+      this.firstName=this.StudentData.firstName,
+      this.campus=this.StudentData.campus,
+      this.phoneNumber=this.StudentData.phoneNumber,
+      this.skypeAccount=this.StudentData.skypeAccount
     },
     data: function() {
       return {
-        StudentData: null, //json containing student datas
+        StudentData: { 
+          id: 1, //json containing student datas before real data is loaded
+          firstName: "",
+          lastName: "",
+          email: "",
+          phoneNumber: "",
+          campus: "",
+          skypeAccount: ""
+        },
         isInModifyMod: false, //true when in modify mode -> paragraphes are replaced by inputs
         lastName : false, //values used in the v-model for the form
         firstName : null,
@@ -79,7 +82,18 @@ export default {
       toggleModifyMod(){
         this.isInModifyMod = !this.isInModifyMod
       },
-      SubmitForm(lastName,firstName,campus,phoneNumber,skypeAccount){
+      async SubmitForm(lastName,firstName,campus,phoneNumber,skypeAccount){
+        let newUser = await axios.post(`${API_HOST}/api/user/modify`, //Send the resquest to the api with values defined above
+        {
+          lastName: `${lastName}`,
+          firstName: `${firstName}`,
+          email: null, //not handled in the backend
+          phoneNumber: `${phoneNumber}`,
+          skypeAccount: `${skypeAccount}`,
+          user_role: null, //not handled in the backend
+          campus: `${campus}`,
+          id: `${id_Student}`
+        })
         console.log("update user datas"); //post the data to the api
         this.StudentData.lastName=lastName; //assign to studentdata in order to have the visual effect without needing to fectch again
         this.StudentData.firstName=firstName;
