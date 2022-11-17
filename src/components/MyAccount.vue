@@ -2,7 +2,7 @@
   <div class="StudentArea">
     <h1>Section élève</h1>
     <div class="mainContent">
-      <form  class="personalInfos" @submit.prevent="submit" v-on:submit="SubmitForm(lastName,firstName,email,campus,phoneNumber,skypeAccount)"> <!--form used in modify mode-->
+      <form  class="personalInfos" @submit.prevent="submit" v-on:submit="SubmitForm(lastName,firstName,campus,phoneNumber,skypeAccount)"> <!--form used in modify mode-->
         <div class="infoItem">
           <p  class="descrition">Nom:</p>
           <p v-if=!isInModifyMod>{{StudentData.lastName}}</p> <!--When not in modify mode, the name is simply displayed-->
@@ -14,9 +14,8 @@
           <input v-model="firstName" v-if=isInModifyMod type="text">
         </div>
         <div class="infoItem">
-          <p class="descrition">Email:</p>
-          <p v-if=!isInModifyMod>{{StudentData.email}}</p>
-          <input v-model="email" v-if=isInModifyMod type="text">
+          <p class="descrition">Email:</p> <!--Email can't be changed so no input form-->
+          <p>{{StudentData.email}}</p>
         </div>
         <div class="infoItem">
           <p class="descrition">Campus:</p>
@@ -80,11 +79,10 @@ export default {
       toggleModifyMod(){
         this.isInModifyMod = !this.isInModifyMod
       },
-      SubmitForm(lastName,firstName,email,campus,phoneNumber,skypeAccount){
+      SubmitForm(lastName,firstName,campus,phoneNumber,skypeAccount){
         console.log("update user datas"); //post the data to the api
         this.StudentData.lastName=lastName; //assign to studentdata in order to have the visual effect without needing to fectch again
         this.StudentData.firstName=firstName;
-        this.StudentData.email=email;
         this.StudentData.campus=campus;
         this.StudentData.phoneNumber=phoneNumber;
         this.StudentData.skypeAccount=skypeAccount;
