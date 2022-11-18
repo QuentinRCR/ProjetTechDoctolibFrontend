@@ -96,7 +96,7 @@ export default {
 .home{
 
   .SideMenu{
-    background-color: rgb(149, 187, 224);
+    background-color: rgb(149, 187, 224);/*$lightBlue;*/
     width: 10%;
     display: flex;
     flex-direction: column;
@@ -116,6 +116,7 @@ export default {
       top: 10%;
       left: 50%;
       transform: translate(-50%,0);
+      z-index: 50;
     }
     
     .pannels{

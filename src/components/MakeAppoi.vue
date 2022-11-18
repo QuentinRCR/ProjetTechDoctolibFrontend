@@ -9,11 +9,11 @@
         <div class="dateselectorslot">
             <div class="itemdate">
               <p class="">Date:</p>
-              <div class="datepicker"><Datepicker inline v-model="date" :enableTimePicker="false" autoApply modelType="yyyy-MM-dd"></Datepicker></div>
+              <div class="datepicker"><Datepicker inline v-model="date" :enableTimePicker="false" autoApply modelType="yyyy-MM-dd" :allowedDates="allowedDates"></Datepicker></div>
             </div>
             <div class="itemtime">
               <p class="">Heure:</p>
-              <div class="timepicker"><Datepicker inline v-model="time" timePicker autoApply></Datepicker></div>
+              <div class="timepicker"><Datepicker inline :startTime="startTimeee" minutesIncrement="30" v-model="time" timePicker autoApply modeHeight="276" ></Datepicker></div>
             </div>
         </div>
         <div class="CommuMean">
@@ -37,13 +37,22 @@ import axios from 'axios';
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 
-
+import { ref } from 'vue'; //user in setup
 
 
 
 
 export default {
   name: 'SignInPage',
+  setup: function(){   //to initialise the array with allowed dates 
+    let allowedDates = ref([])
+    const startTimeee = ref({ hours: 12,minutes: 0}); //start of the time in the time selector
+
+    return {
+      allowedDates,
+      startTimeee
+    }
+    },
   props: ['enableModifyMod',"AppointementChoice"],
   data: function() {
     return {
@@ -51,6 +60,53 @@ export default {
         date: null,
         time: null
     }
+  },
+  created: async function(){
+    let allowedDates2=[];
+
+    let response = await axios.get(`${API_HOST}/api/creneaux`); //get slots from the API
+    let slots = response.data; //extract the data
+    this.slots=slots
+
+    for(let j=0;j<this.slots.length;j++){ //to create an intance for each real slot
+        let daysList=[] //Translate days to numbers
+        let day=(this.slots[j].jours);
+        for(let i=0;i<day.length;i++){ //transform days from string to number
+          switch (day[i]) {
+            case "MONDAY":
+              daysList[daysList.length]=1;
+              break;
+            case "TUESDAY":
+              daysList[daysList.length]=2;
+              break;
+            case "WEDNESDAY":
+              daysList[daysList.length]=3;
+              break;
+            case "THURSDAY":
+              daysList[daysList.length]=4;
+              break;
+            case "FRIDAY":
+              daysList[daysList.length]=5;
+              break;  
+            case "SATURDAY":
+              daysList[daysList.length]=6;
+              break;
+            case "SUNDAY":
+              daysList[daysList.length]=0;
+              break;
+            default:
+              console.log("the switch to translate days has a problem");
+          }
+        }
+        let startDate= new Date(this.slots[j].dateDebut)
+        let endDate= new Date(this.slots[j].dateFin)
+        while (startDate <= endDate){ //iterate for every days in a slot
+          if (daysList.includes(startDate.getUTCDay())){ //check if the day is correct
+            this.allowedDates.push(new Date(startDate)) //add the date to the list of allowed dates
+          }
+          startDate.setDate(startDate.getDate() +1) //add one day to the date
+        }
+      }
   },
   components: {
     Datepicker
