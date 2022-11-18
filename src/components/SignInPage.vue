@@ -8,7 +8,7 @@
                 <input v-model="ClientFirstName" type="text" placeholder="Prénom" required><br>
                 <input v-model="ClientLastName" type="text" placeholder="Nom" required><br>
                 <input v-model="Password" type="password" placeholder="Mot de passe" required><br>
-                <input v-model="PasswordConfirmation" type="password" placeholder="Confirmation de mot de passe" required><br>
+                <input :pattern="Password" v-model="PasswordConfirmation" type="password" placeholder="Confirmation de mot de passe" required><br> <!--The patern is to verify that the confiramtion is equal to the original password-->
                 <input v-model="PhoneNumber" type="text" placeholder="Numéro de téléphone" required><br>
                 <input v-model="SkypeAccount" type="text" placeholder="Compte Skype"><br>
                 <select v-model="Campus" >
