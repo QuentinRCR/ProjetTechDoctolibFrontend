@@ -11,7 +11,6 @@
       </div>
       <p class="LogOutButton" @click="LogOut">Se déconnecter</p>
     </div>
-    <button @click="test">test</button>
   </div>
 </template>
 
@@ -51,9 +50,6 @@ export default {
     LogOut(){
       console.log("bien déconnecter la personne");
       this.$router.push("/");
-    },
-    test(){
-      this.changePanel(new Proxy({id: 1,name: "panelB",tabDisplay: "Espace élève"},{}))
     }
   },
   created: function() {

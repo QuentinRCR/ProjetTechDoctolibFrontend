@@ -13,7 +13,7 @@
             </div>
             <div class="itemtime">
               <p class="">Heure:</p>
-              <div class="timepicker"><Datepicker inline :startTime="startTimeee" minutesIncrement="30" v-model="time" timePicker autoApply modeHeight="276" ></Datepicker></div>
+              <div class="timepicker"><Datepicker inline :startTime="startTimeee" minutesIncrement="30" minutesGridIncrement="30" hoursGridIncrement="2" v-model="time" timePicker autoApply modeHeight="276" ></Datepicker></div>
               <p class="errorMessage" v-show="!this.isTimeCorrect">L'heure selectionné n'est pas<br>disponible</p>
             </div>
         </div>
@@ -38,7 +38,7 @@ import axios from 'axios';
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 
-import { ref } from 'vue'; //user in setup
+import { ref } from 'vue'; //used in setup
 
 
 
