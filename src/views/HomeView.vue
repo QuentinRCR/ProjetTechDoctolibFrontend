@@ -17,7 +17,7 @@
         <MyAppointements ref="Myrdvs" @appointement-choice="ToggleAppoi" :AppModifyOrCreate="AppModifyOrCreate" classe="pannel" v-if="currentPanel.name === 'panelC'"></MyAppointements> <!--AppModifyOrCreate is to handle modify mode-->
         <MySlots classe="pannel" @slot-choice="modifySlotMod" v-if="currentPanel.name === 'panelD'"></MySlots>
       </div>
-      <div class="MakeAppoi"><MakeAppoi @close-popup="ToggleAppoi" :enableModifyMod="enableModifyMod" :AppointementChoice="AppointementChoice" v-if="isAddAppointement"></MakeAppoi></div>
+      <div class="MakeAppoi"><MakeAppoi :realSlots=this.realSlot @close-popup="ToggleAppoi" :enableModifyMod="enableModifyMod" :AppointementChoice="AppointementChoice" v-if="isAddAppointement"></MakeAppoi></div>
       <div class="MakeAppoi"><AddSlot @close-popup="ToggleSlot"  :enableModifyModSlot="enableModifyModSlot" :SlotChoice="SlotChoice" v-if="isAddSlot"></AddSlot></div>
     </div>
 
@@ -33,6 +33,10 @@ import StudentArea from '../components/StudentArea.vue';
 import MyAccount from '../components/MyAccount.vue'
 import MyAppointements from '../components/MyAppointements.vue'
 import MySlots from '../components/MySlots.vue'
+
+
+import axios from 'axios'; //for api request
+import {API_HOST, id_Student} from '../config';
 
 export default {
   name: 'HomePage',
@@ -55,6 +59,62 @@ export default {
       AppointementChoice: null,
       SlotChoice: null,
       AppModifyOrCreate: null,
+      realSlot: null,
+    }
+  },
+  created: async function() {
+    //to add slots
+    let response = await axios.get(`${API_HOST}/api/creneaux`); //get slots from the API
+    let slots = response.data; //extract the data
+    this.slots = slots; //put it in a new variable
+    this.realSlot=[]
+
+    for(let j=0;j<slots.length;j++){ //to create an intance for each real slot
+      let daysList=[] //Translate days to numbers
+      let day=(this.slots[j].jours);
+      for(let i=0;i<day.length;i++){ //transform days from string to number
+        switch (day[i]) {
+          case "MONDAY":
+            daysList[daysList.length]=1;
+            break;
+          case "TUESDAY":
+            daysList[daysList.length]=2;
+            break;
+          case "WEDNESDAY":
+            daysList[daysList.length]=3;
+            break;
+          case "THURSDAY":
+            daysList[daysList.length]=4;
+            break;
+          case "FRIDAY":
+            daysList[daysList.length]=5;
+            break;  
+          case "SATURDAY":
+            daysList[daysList.length]=6;
+            break;
+          case "SUNDAY":
+            daysList[daysList.length]=0;
+            break;
+          default:
+            console.log("the switch to translate days has a problem");
+        }
+      }
+
+      let startDate= new Date(this.slots[j].dateDebut)
+      let endDate= new Date(this.slots[j].dateFin)
+      let listTimeSlot=[] //create a list with start and and time for each timeslot
+      this.slots[j].heuresDebutFin.forEach(timeSlot => {
+        listTimeSlot.push([timeSlot.tempsDebut,timeSlot.tempsFin])
+      });
+      while (startDate <= endDate){ //iterate for every days in a slot
+        if (daysList.includes(startDate.getUTCDay())){ //check if the day is correct
+          listTimeSlot.forEach(timeslot => { //create one event for each time slot
+            this.realSlot.push([startDate.toISOString().slice(0,-14)+" "+timeslot[0].slice(0,-3),startDate.toISOString().slice(0,-14)+" "+timeslot[1].slice(0,-3)]) //day of the slot + start time + endtime
+          });
+          
+        }
+        startDate.setDate(startDate.getDate() +1) //add one day to the date
+      }
     }
   },
   methods: {

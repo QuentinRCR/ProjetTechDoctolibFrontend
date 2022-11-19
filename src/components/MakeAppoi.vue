@@ -1,5 +1,5 @@
 <template>
-<div class="makeApp">
+<div @click="test" class="makeApp">
     <div class="croix" @click="closePopup">&#10006</div>
     <h1 v-if="!enableModifyMod">Prendre rendez-vous</h1>
     <h1 v-if="enableModifyMod">Modifier rendez-vous</h1>
@@ -50,70 +50,33 @@ export default {
 
     return {
       allowedDates,
-      startTimeee
+      startTimeee,
     }
     },
-  props: ['enableModifyMod',"AppointementChoice"],
+  props: ['enableModifyMod',"AppointementChoice","realSlots"],
   data: function() {
     return {
         CommunicationMean: null,
         date: null,
-        time: null
+        time:null
     }
   },
-  created: async function(){
-    let allowedDates2=[];
-
-    let response = await axios.get(`${API_HOST}/api/creneaux`); //get slots from the API
-    let slots = response.data; //extract the data
-    this.slots=slots
-
-    for(let j=0;j<this.slots.length;j++){ //to create an intance for each real slot
-        let daysList=[] //Translate days to numbers
-        let day=(this.slots[j].jours);
-        for(let i=0;i<day.length;i++){ //transform days from string to number
-          switch (day[i]) {
-            case "MONDAY":
-              daysList[daysList.length]=1;
-              break;
-            case "TUESDAY":
-              daysList[daysList.length]=2;
-              break;
-            case "WEDNESDAY":
-              daysList[daysList.length]=3;
-              break;
-            case "THURSDAY":
-              daysList[daysList.length]=4;
-              break;
-            case "FRIDAY":
-              daysList[daysList.length]=5;
-              break;  
-            case "SATURDAY":
-              daysList[daysList.length]=6;
-              break;
-            case "SUNDAY":
-              daysList[daysList.length]=0;
-              break;
-            default:
-              console.log("the switch to translate days has a problem");
-          }
-        }
-        let startDate= new Date(this.slots[j].dateDebut)
-        let endDate= new Date(this.slots[j].dateFin)
-        while (startDate <= endDate){ //iterate for every days in a slot
-          if (daysList.includes(startDate.getUTCDay())){ //check if the day is correct
-            this.allowedDates.push(new Date(startDate)) //add the date to the list of allowed dates
-          }
-          startDate.setDate(startDate.getDate() +1) //add one day to the date
-        }
+  created: function(){
+    let correctDates=[];
+    let realSlots1= new Array(this.realSlots)[0]
+    for (let i = 0; i < realSlots1.length; i++) {
+      if (!correctDates.includes(realSlots1[i][0].slice(0,-6))) {
+        this.allowedDates.push(new Date(realSlots1[i][0].slice(0,-6)))
       }
+    }
   },
   components: {
     Datepicker
   },
   methods: {
     async SubmitForm(CommunicationMean,date,time){
-      console.log("faire la prise de rendez-vous");
+      //console.log(time);
+
       let id;
       if (!this.enableModifyMod){
         id = null;
@@ -140,6 +103,9 @@ export default {
     },
     closePopup(){
         this.$emit('close-popup',this.enableModifyMod);
+    },
+    test(){
+      
     }
   }
 }

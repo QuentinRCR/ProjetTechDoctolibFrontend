@@ -117,17 +117,6 @@ export default {
         })
       });
 
-      
-      
-      /*for(let k=0;k<this.realApp.length;k++){ //add the instance to the event in the calender
-        this.events.push({
-        start: `${this.realSlot[k][0]}`,
-        end: `${this.realSlot[k][1]}`,
-        title: '',
-        class: 'apps'
-        })
-      }*/
-
     },
   methods: {
     
