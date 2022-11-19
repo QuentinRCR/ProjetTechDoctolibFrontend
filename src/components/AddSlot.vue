@@ -12,7 +12,7 @@
         </div>
         <div class="dateselectorslot">
             <p class="">Plage de temps (de ... à)</p>
-            <div class="datepicker"><Datepicker required autoApply :startTime="startTimeee" v-model="timeSlot" range minutesIncrement="30" timePicker></Datepicker></div>
+            <div class="datepicker"><Datepicker required autoApply v-model="timeSlot" range minutesIncrement="30" timePicker></Datepicker></div>
         </div>
         <div class="dayList">
             <p>Jours concernés</p>
@@ -40,20 +40,10 @@ import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css' //to make datepicker work
 
 
-import { ref } from 'vue';
-
-
 
 export default {
   name: 'SignInPage',
   props: ['enableModifyModSlot',"SlotChoice"], //to be able to display the correct thing depending if it is modifying mode or not
-  setup: function(){   //to initialise the array with allowed dates 
-        const startTimeee = ref({ hours: 12,minutes: 0});
-
-        return {
-            startTimeee
-        }
-    },
   data: function() {
     return {
         day: [],
@@ -126,6 +116,7 @@ export default {
         ]
         })
       this.$emit('close-popup');
+      this.$emit('reload'); //for the reload of the page to have the correct appointement
     },
     closePopup(){ //for the cross
         this.$emit('close-popup');

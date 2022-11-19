@@ -12,15 +12,15 @@
         <div class="fillInDiv"></div>
       </div>
       <div class="pannels">
-        <StudentArea class="pannel" v-if="currentPanel.name === 'panelA'"></StudentArea>
+        <StudentArea class="pannel" v-if="currentPanel.name === 'panelA' && this.forceReload"></StudentArea>
         <MyAccount classe="pannel" v-if="currentPanel.name === 'panelB'"></MyAccount>
-        <MyAppointements ref="Myrdvs" @appointement-choice="ToggleAppoi" :AppModifyOrCreate="AppModifyOrCreate" classe="pannel" v-if="currentPanel.name === 'panelC'"></MyAppointements> <!--AppModifyOrCreate is to handle modify mode-->
-        <MySlots classe="pannel" @slot-choice="modifySlotMod" v-if="currentPanel.name === 'panelD'"></MySlots>
+        <MyAppointements ref="Myrdvs" @appointement-choice="ToggleAppoi" :AppModifyOrCreate="AppModifyOrCreate" classe="pannel" v-if="currentPanel.name === 'panelC' && this.forceReload"></MyAppointements> <!--AppModifyOrCreate is to handle modify mode-->
+        <MySlots classe="pannel" @slot-choice="modifySlotMod" v-if="currentPanel.name === 'panelD' && this.forceReload"></MySlots>
       </div>
-      <div class="MakeAppoi"><MakeAppoi :realSlots=this.realSlot @close-popup="ToggleAppoi" :enableModifyMod="enableModifyMod" :AppointementChoice="AppointementChoice" v-if="isAddAppointement"></MakeAppoi></div>
-      <div class="MakeAppoi"><AddSlot @close-popup="ToggleSlot"  :enableModifyModSlot="enableModifyModSlot" :SlotChoice="SlotChoice" v-if="isAddSlot"></AddSlot></div>
+      <div class="MakeAppoi"><MakeAppoi @reload="reload" :realSlots=this.realSlot @close-popup="ToggleAppoi" :enableModifyMod="enableModifyMod" :AppointementChoice="AppointementChoice" v-if="isAddAppointement"></MakeAppoi></div>
+      <div class="MakeAppoi"><AddSlot @reload="reload" @close-popup="ToggleSlot"  :enableModifyModSlot="enableModifyModSlot" :SlotChoice="SlotChoice" v-if="isAddSlot"></AddSlot></div>
     </div>
-
+    
     
   </div>
 </template>
@@ -60,6 +60,7 @@ export default {
       SlotChoice: null,
       AppModifyOrCreate: null,
       realSlot: null,
+      forceReload: true //to reload the components that have this varaible in their v-if
     }
   },
   created: async function() {
@@ -146,6 +147,14 @@ export default {
       this.enableModifyModSlot=true;
       this.SlotChoice=slot; //to pass the parametter down to MySlot
       this.ToggleSlot();
+    },
+    async reload(){ //reload the complonents that have forceReload in there v-if
+      // Remove MyComponent from the DOM
+      this.forceReload = false;
+			// Wait for the change to get flushed to the DOM
+      await this.$nextTick();
+      // Add the component back in
+      this.forceReload = true;
     }
   }
 }

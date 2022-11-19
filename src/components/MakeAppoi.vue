@@ -119,6 +119,7 @@ export default {
         )
 
         this.$emit('close-popup',this.enableModifyMod); //to cancer the modify mode
+        this.$emit('reload'); //for the reload of the page to have the correct appointement
       }
     },
     closePopup(){
