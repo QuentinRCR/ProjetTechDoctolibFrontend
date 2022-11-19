@@ -14,6 +14,7 @@
             <div class="itemtime">
               <p class="">Heure:</p>
               <div class="timepicker"><Datepicker inline :startTime="startTimeee" minutesIncrement="30" v-model="time" timePicker autoApply modeHeight="276" ></Datepicker></div>
+              <p class="errorMessage" v-show="!this.isTimeCorrect">L'heure selectionné n'est pas<br>disponible</p>
             </div>
         </div>
         <div class="CommuMean">
@@ -58,54 +59,72 @@ export default {
     return {
         CommunicationMean: null,
         date: null,
-        time:null
+        time:new Proxy({hours: 12,minutes: 0, seconds: 0}, {}), //to initialise the time to 12:00 since it is what is displayed by default
+        isTimeCorrect: true
     }
   },
   created: function(){
-    let correctDates=[];
-    let realSlots1= new Array(this.realSlots)[0]
+    let correctDates=[]; //stores the dates that you can select
+    let realSlots1= new Array(this.realSlots)[0] //create a copy of the effective times slots day by day to make sur to not accidentally modify something that should not be modified
     for (let i = 0; i < realSlots1.length; i++) {
-      if (!correctDates.includes(realSlots1[i][0].slice(0,-6))) {
-        this.allowedDates.push(new Date(realSlots1[i][0].slice(0,-6)))
+      if (!correctDates.includes(realSlots1[i][0].slice(0,-6))) { //if the date is not allready in the correct dates, we add it (while removing the hours)
+        correctDates.push(new Date(realSlots1[i][0].slice(0,-6)))
       }
     }
+    this.allowedDates=correctDates;
   },
   components: {
     Datepicker
   },
   methods: {
     async SubmitForm(CommunicationMean,date,time){
-      //console.log(time);
-
-      let id;
-      if (!this.enableModifyMod){
-        id = null;
-      }
-      else{
-        id = this.AppointementChoice.id
-      }
-
-      let startTime= ("0"+time.hours).slice(-2)+":"+("0"+time.minutes).slice(-2)+":"+("0"+time.seconds).slice(-2); //Extract start and end time from proxy
-      let dateDebut1 = date+"T"+startTime;
-      console.log(dateDebut1);
-      let newAppointemen = await axios.post(`${API_HOST}/api/rendez_vous/create_or_modify`,{
-        id: id,
-        idUser: id_Student,
-        idCreneau: 3,
-        zoomLink: "link.fr",
-        dateDebut: `${dateDebut1}`,
-        moyenCommunication: CommunicationMean,
-        duree: "PT30M"
+      //let timeHour= time.hours;
+      //let timeMinute = time.minutes
+      let timeApp=("0"+time.hours).slice(-2)+":"+("0"+time.minutes).slice(-2); //get the time of the appointement
+      let realSlots2=new Array(this.realSlots)[0] //dup just in case
+      realSlots2.forEach(slot => { 
+        if(date==slot[0].slice(0,-6)){ //if the date is correct, continue
+          if (timeApp>=slot[0].slice(-5) && timeApp<=slot[1].slice(-5)){ //if the time is in the slot, that's ok
+            this.isTimeCorrect=true;
+          }
+          else{
+            this.isTimeCorrect=false;
+          }
         }
-      )
+      });
 
-      this.$emit('close-popup',this.enableModifyMod); //to cancer the modify mode
+
+      //if the time of the appointement is not good it does not submit the form
+      if(this.isTimeCorrect){
+
+        let id;
+        if (!this.enableModifyMod){
+          id = null;
+        }
+        else{
+          id = this.AppointementChoice.id
+        }
+
+        let startTime= ("0"+time.hours).slice(-2)+":"+("0"+time.minutes).slice(-2)+":"+("0"+time.seconds).slice(-2); //Extract start and end time from proxy
+        let dateDebut1 = date+"T"+startTime;
+        let newAppointemen = await axios.post(`${API_HOST}/api/rendez_vous/create_or_modify`,{
+          id: id,
+          idUser: id_Student,
+          idCreneau: 3,
+          zoomLink: "link.fr",
+          dateDebut: `${dateDebut1}`,
+          moyenCommunication: CommunicationMean,
+          duree: "PT30M"
+          }
+        )
+
+        this.$emit('close-popup',this.enableModifyMod); //to cancer the modify mode
+      }
     },
     closePopup(){
         this.$emit('close-popup',this.enableModifyMod);
     },
     test(){
-      
     }
   }
 }
@@ -150,6 +169,13 @@ export default {
 
           .itemdate{
             margin-right: 20px;
+          }
+
+          .itemtime{
+            .errorMessage{
+              color: red;
+              text-align: center;
+            }
           }
         }
 

@@ -109,7 +109,7 @@ export default {
       while (startDate <= endDate){ //iterate for every days in a slot
         if (daysList.includes(startDate.getUTCDay())){ //check if the day is correct
           listTimeSlot.forEach(timeslot => { //create one event for each time slot
-            this.realSlot.push([startDate.toISOString().slice(0,-14)+" "+timeslot[0].slice(0,-3),startDate.toISOString().slice(0,-14)+" "+timeslot[1].slice(0,-3)]) //day of the slot + start time + endtime
+            this.realSlot.push([startDate.toISOString().slice(0,-14)+"T"+timeslot[0].slice(0,-3),startDate.toISOString().slice(0,-14)+"T"+timeslot[1].slice(0,-3)]) //day of the slot + start time + endtime
           });
           
         }
