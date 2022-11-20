@@ -12,7 +12,7 @@
         <div class="fillInDiv"></div>
       </div>
       <div class="pannels">
-        <StudentArea class="pannel" v-if="currentPanel.name === 'panelA' && this.forceReload"></StudentArea>
+        <StudentArea class="pannel" :realSlots=this.realSlot v-if="currentPanel.name === 'panelA' && this.forceReload"></StudentArea>
         <MyAccount classe="pannel" v-if="currentPanel.name === 'panelB'"></MyAccount>
         <MyAppointements ref="Myrdvs" @appointement-choice="ToggleAppoi" :AppModifyOrCreate="AppModifyOrCreate" classe="pannel" v-if="currentPanel.name === 'panelC' && this.forceReload"></MyAppointements> <!--AppModifyOrCreate is to handle modify mode-->
         <MySlots classe="pannel" @slot-choice="modifySlotMod" v-if="currentPanel.name === 'panelD' && this.forceReload"></MySlots>
