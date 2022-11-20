@@ -47,6 +47,7 @@ export default {
         background: true
         })
       }
+      
     }, 100);
   
     
