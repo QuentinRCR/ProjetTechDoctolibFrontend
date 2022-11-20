@@ -21,6 +21,7 @@ import {API_HOST, id_Student} from '../config';
 
 export default {
   name: 'MyAccount',
+  props: ["realSlots"],
   data: function() {
     
     return {
@@ -31,59 +32,11 @@ export default {
     VueCal
   },
   created: async function() {
-      //to add slots
-      let response = await axios.get(`${API_HOST}/api/creneaux`); //get slots from the API
-      let slots = response.data; //extract the data
-      this.slots = slots; //put it in a new variable
-      this.realSlot=[]
-
-      for(let j=0;j<slots.length;j++){ //to create an intance for each real slot
-        let daysList=[] //Translate days to numbers
-        let day=(this.slots[j].jours);
-        for(let i=0;i<day.length;i++){ //transform days from string to number
-          switch (day[i]) {
-            case "MONDAY":
-              daysList[daysList.length]=1;
-              break;
-            case "TUESDAY":
-              daysList[daysList.length]=2;
-              break;
-            case "WEDNESDAY":
-              daysList[daysList.length]=3;
-              break;
-            case "THURSDAY":
-              daysList[daysList.length]=4;
-              break;
-            case "FRIDAY":
-              daysList[daysList.length]=5;
-              break;  
-            case "SATURDAY":
-              daysList[daysList.length]=6;
-              break;
-            case "SUNDAY":
-              daysList[daysList.length]=0;
-              break;
-            default:
-              console.log("the switch to translate days has a problem");
-          }
-        }
-
-        let startDate= new Date(this.slots[j].dateDebut)
-        let endDate= new Date(this.slots[j].dateFin)
-        let listTimeSlot=[] //create a list with start and and time for each timeslot
-        this.slots[j].heuresDebutFin.forEach(timeSlot => {
-          listTimeSlot.push([timeSlot.tempsDebut,timeSlot.tempsFin])
-        });
-        while (startDate <= endDate){ //iterate for every days in a slot
-          if (daysList.includes(startDate.getUTCDay())){ //check if the day is correct
-            listTimeSlot.forEach(timeslot => { //create one event for each time slot
-              this.realSlot.push([startDate.toISOString().slice(0,-14)+" "+timeslot[0].slice(0,-3),startDate.toISOString().slice(0,-14)+" "+timeslot[1].slice(0,-3)]) //day of the slot + start time + endtime
-            });
-            
-          }
-          startDate.setDate(startDate.getDate() +1) //add one day to the date
-        }
-      }
+    setTimeout(() => {
+      this.realSlot=[];
+      this.realSlots.forEach(slot => {
+        this.realSlot.push(slot.map(dateee => dateee.replace("T"," "))); //replace the original T by a space
+      });
       
       for(let k=0;k<this.realSlot.length;k++){ //add the instance to the event in the calender
         this.events.push({
@@ -94,28 +47,28 @@ export default {
         background: true
         })
       }
+    }, 30);
+  
+    
+    //to add appointements
+    let response1 = await axios.get(`${API_HOST}/api/rendez_vous`); //get slots from the API
+    let appointements = response1.data; //extract the data
+    this.appointements = appointements; //put it in a new variable
 
+    this.appointements.forEach(appointement => {
+      let startDateTime= new Date(appointement.dateDebut);
+      let endDateTime= new Date(startDateTime.getTime() + (30 -startDateTime.getTimezoneOffset())*60000);
+      startDateTime = (appointement.dateDebut.replace('T',' ').slice(0,-3)); //adjuste format
+      endDateTime = (endDateTime.toISOString().replace('T',' ').slice(0,-5)); //adjuste format
+      this.events.push({
+      start: `${startDateTime}`,
+      end: `${endDateTime}`,
+      title: '',
+      class: 'apps'
+      })
+    });
 
-
-
-
-      //to add appointements
-      let response1 = await axios.get(`${API_HOST}/api/rendez_vous`); //get slots from the API
-      let appointements = response1.data; //extract the data
-      this.appointements = appointements; //put it in a new variable
-
-      this.appointements.forEach(appointement => {
-        let startDateTime= new Date(appointement.dateDebut);
-        let endDateTime= new Date(startDateTime.getTime() + (30 -startDateTime.getTimezoneOffset())*60000);
-        startDateTime = (appointement.dateDebut.replace('T',' ').slice(0,-3)); //adjuste format
-        endDateTime = (endDateTime.toISOString().replace('T',' ').slice(0,-5)); //adjuste format
-        this.events.push({
-        start: `${startDateTime}`,
-        end: `${endDateTime}`,
-        title: '',
-        class: 'apps'
-        })
-      });
+      
 
     },
   methods: {
