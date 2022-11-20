@@ -4,7 +4,7 @@
         <h1>S'inscrire</h1>
         <div class="menu">
             <form @submit.prevent="submit" v-on:submit="SubmitForm(ClienEmail,ClientFirstName,ClientLastName,Password,PasswordConfirmation,PhoneNumber,SkypeAccount,Campus)">
-                <input v-model="ClienEmail" type="text" placeholder="Email EMSE" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.emse.fr$" required><br>
+                <input v-model="ClienEmail" type="text" placeholder="Email EMSE" pattern="[a-z0-9._%+-]+@[a-z0-9.-]*emse\.fr$" required><br> <!--match a emse adress-->
                 <input v-model="ClientFirstName" type="text" placeholder="Prénom" required><br>
                 <input v-model="ClientLastName" type="text" placeholder="Nom" required><br>
                 <input v-model="Password" type="password" placeholder="Mot de passe" required><br>
