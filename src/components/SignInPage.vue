@@ -10,7 +10,7 @@
                 <input v-model="Password" type="password" placeholder="Mot de passe" required><br>
                 <input :pattern="Password" v-model="PasswordConfirmation" type="password" placeholder="Confirmation de mot de passe" required><br> <!--The patern is to verify that the confiramtion is equal to the original password-->
                 <input v-model="PhoneNumber" type="text" placeholder="Numéro de téléphone" required><br>
-                <input v-model="SkypeAccount" type="text" placeholder="Compte Skype"><br>
+                <input v-model="SkypeAccount" type="text" placeholder="Pseudo Skype         ex: live:.cd.4d256a842e696f6" pattern="live:[a-z0-9._%+-]+"><br>
                 <select v-model="Campus" >
                     <option :value="null" disabled>Campus</option>
                     <option>Saint Etienne</option>
