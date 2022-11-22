@@ -63,8 +63,50 @@ export default {
       forceReload: true //to reload the components that have this varaible in their v-if
     }
   },
-  created: async function() {
-    //to add slots
+  created: function() {
+    this.createListRealSlots();
+  },
+  methods: {
+    ToggleAppoi(modifyMod){
+      this.isAddAppointement = this.isAddAppointement != true;
+      if (modifyMod!=null){ //to automatically cancel modify mode when the popup is close
+        this.enableModifyMod=false;
+      }
+    },
+    ToggleSlot(modifyModSlot){
+      this.isAddSlot = this.isAddSlot !=true;
+      if (modifyModSlot!=null){
+        this.enableModifyModSlot=false;
+      }
+    },
+    updatePanel(newPanel) {
+      this.currentPanel = newPanel;
+    },
+    LogOut(){
+      console.log("bien déconnecter la personne");
+      this.$router.push("/");
+    },
+    modifyAppMod(app){ //use parametter to be able to reuse the creation box to modify
+      this.enableModifyMod=true;
+      this.AppointementChoice=app; //to pass the parametter down to MyAppointements
+      this.ToggleAppoi();
+    },
+    modifySlotMod(slot){//use parametter to be able to reuse the creation box to modify
+      this.enableModifyModSlot=true;
+      this.SlotChoice=slot; //to pass the parametter down to MySlot
+      this.ToggleSlot();
+    },
+    async reload(){ //reload the complonents that have forceReload in there v-if
+      // Remove MyComponent from the DOM
+      this.createListRealSlots();
+      this.forceReload = false;
+			// Wait for the change to get flushed to the DOM
+      await this.$nextTick();
+      // Add the component back in
+      this.forceReload = true;
+    },
+    async createListRealSlots(){
+      //to add slots
     let response = await axios.get(`${API_HOST}/api/creneaux`); //get slots from the API
     let slots = response.data; //extract the data
     this.slots = slots; //put it in a new variable
@@ -117,44 +159,6 @@ export default {
         startDate.setDate(startDate.getDate() +1) //add one day to the date
       }
     }
-  },
-  methods: {
-    ToggleAppoi(modifyMod){
-      this.isAddAppointement = this.isAddAppointement != true;
-      if (modifyMod!=null){ //to automatically cancel modify mode when the popup is close
-        this.enableModifyMod=false;
-      }
-    },
-    ToggleSlot(modifyModSlot){
-      this.isAddSlot = this.isAddSlot !=true;
-      if (modifyModSlot!=null){
-        this.enableModifyModSlot=false;
-      }
-    },
-    updatePanel(newPanel) {
-      this.currentPanel = newPanel;
-    },
-    LogOut(){
-      console.log("bien déconnecter la personne");
-      this.$router.push("/");
-    },
-    modifyAppMod(app){ //use parametter to be able to reuse the creation box to modify
-      this.enableModifyMod=true;
-      this.AppointementChoice=app; //to pass the parametter down to MyAppointements
-      this.ToggleAppoi();
-    },
-    modifySlotMod(slot){//use parametter to be able to reuse the creation box to modify
-      this.enableModifyModSlot=true;
-      this.SlotChoice=slot; //to pass the parametter down to MySlot
-      this.ToggleSlot();
-    },
-    async reload(){ //reload the complonents that have forceReload in there v-if
-      // Remove MyComponent from the DOM
-      this.forceReload = false;
-			// Wait for the change to get flushed to the DOM
-      await this.$nextTick();
-      // Add the component back in
-      this.forceReload = true;
     }
   }
 }

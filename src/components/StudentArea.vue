@@ -32,24 +32,9 @@ export default {
     VueCal
   },
   created: async function() {
-    setTimeout(() => {
-      this.realSlot=[];
-      this.realSlots.forEach(slot => {
-        this.realSlot.push(slot.map(dateee => dateee.replace("T"," "))); //replace the original T by a space
-      });
-      
-      for(let k=0;k<this.realSlot.length;k++){ //add the instance to the event in the calender
-        this.events.push({
-        start: `${this.realSlot[k][0]}`,
-        end: `${this.realSlot[k][1]}`,
-        title: '',
-        class: 'slots',
-        background: true
-        })
-      }
-      
-    }, 100);
-  
+
+    
+    this.loadSlots()
     
     //to add appointements
     let response1 = await axios.get(`${API_HOST}/api/rendez_vous`); //get slots from the API
@@ -73,7 +58,25 @@ export default {
 
     },
   methods: {
-    
+    async loadSlots(){
+      setTimeout(() => {
+        this.realSlot=[];
+        this.realSlots.forEach(slot => {
+          this.realSlot.push(slot.map(dateee => dateee.replace("T"," "))); //replace the original T by a space
+        });
+        
+        for(let k=0;k<this.realSlot.length;k++){ //add the instance to the event in the calender
+          this.events.push({
+          start: `${this.realSlot[k][0]}`,
+          end: `${this.realSlot[k][1]}`,
+          title: '',
+          class: 'slots',
+          background: true
+          })
+        }
+      
+      }, 500);
+    }
   }
 }
 </script>
