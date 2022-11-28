@@ -4,7 +4,6 @@
     hide-view-selector 
     :time-from="8 * 60"
     :time-to="22 * 60"
-    hide-weekends
     :events="events"
     locale="fr"
     ><template v-slot:no-event> <!--remove the no event label when nothing is in the day-->
@@ -58,7 +57,15 @@ export default {
 
     },
   methods: {
-    async loadSlots(){
+    
+    async loadSlots(){/*
+      let waitFor = async function waitFor(f){
+      while(f == null) await sleep(1000);
+      return "a";
+      };
+
+      await waitFor(() => this.realSlots)*/
+
       setTimeout(() => {
         this.realSlot=[];
         this.realSlots.forEach(slot => {
@@ -76,7 +83,8 @@ export default {
         }
       
       }, 500);
-    }
+    },
+    
   }
 }
 </script>

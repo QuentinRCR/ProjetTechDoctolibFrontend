@@ -1,14 +1,13 @@
 <template>
   <div class="home">
     <div class="SideMenu">
-      <MainNavigation @panel-change="updatePanel"></MainNavigation>
+      <MainNavigation class="MainNavigation" @panel-change="updatePanel"></MainNavigation>
     </div>
     <div class="content">
       <div class="TopMenu">
-        <div class="TopMenuButtons">
-          <button @click="ToggleAppoi">Prendre un rendez-vous</button>
-          <button @click="ToggleSlot">Ajouter un créneau</button>
-        </div>
+        <div class="fillInDiv"></div>
+        <button @click="ToggleAppoi">Prendre un rendez-vous</button>
+        <button @click="ToggleSlot">Ajouter un créneau</button>
         <div class="fillInDiv"></div>
       </div>
       <div class="pannels">
@@ -167,22 +166,16 @@ export default {
 <style lang="scss" scoped>
 
 .home{
+  border: solid black;
 
   .SideMenu{
+    //border: solid red;
     background-color: rgb(149, 187, 224);/*$lightBlue;*/
-    width: 10%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    //height: 100%;
-    position:absolute;
-    top:0px;
-    bottom:0px;
-    left:0px;
-  
   }
 
   .content{
+
+    border-color: solid blue;
 
     .MakeAppoi{
       position: absolute;
@@ -194,39 +187,28 @@ export default {
     
     .pannels{
       //border: solid palegreen;
-      position: absolute;
-      left: 10%;
-      top: 100px;
-      bottom: 0;
-      right: 0;
    }
 
    .TopMenu{
-    position:absolute;
-    height: 100px;
-    top:0px;
-    right:0px;
-    left:10%;
     //border: solid blue;
+    
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
+    margin-top: 10px;
+    margin-bottom: 10px;
 
-    .fillInDiv{
-      width: 60%;
+    button{
+      background-color: $secondColor;
+      color: white;
+      font-weight: 600;
+      border-radius: 30px;
+      font-size: 17px;
+      //height: 50px;
+      padding: 15px 8px 15px 8px;
+      cursor: pointer;
     }
 
-    .TopMenuButtons{
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-
-      button{
-        background-color: $secondColor;
-        border-radius: 20px;
-        //height: 50px;
-        padding: 10px 10px 10px 10px;
-      }
-
+    .fillInDiv{
     }
 
    }

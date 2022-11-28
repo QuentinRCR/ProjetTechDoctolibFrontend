@@ -9,7 +9,7 @@
           @click="changePanel(panel)"
         >{{panel.tabDisplay}}</div>
       </div>
-      <p class="LogOutButton" @click="LogOut">Se déconnecter</p>
+      <div class="LogOutButton" @click="LogOut">Se déconnecter</div>
     </div>
   </div>
 </template>
@@ -60,31 +60,32 @@ export default {
 
 <style lang="scss" scoped>
   .SlideMenu{
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-weight: 600;
+    font-size: 16px;
     //border: solid pink;
-    position: relative;
     .nav{
-      //position: absolute;
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: space-around;
-      //border: solid blue;
-      width: 100%;
-      height: 700px;
+      flex-flow: row wrap;
+      align-items: center;
+
       .LogOutButton{
-        //color: black;
-        font-weight: bold;
         cursor: pointer;
-        margin-top: 0;
+        
+        margin: 3px 5px 3px 5px;
       }
       .nav-item{
         //border: solid green;
         cursor: pointer;
 
         .nav-link{
-          text-decoration: none;
+          //text-decoration: none;
           color: black;
-          font-weight: bold;
+          margin: 3px 5px 3px 5px;
+          //border: solid pink;
         }
       }
     }

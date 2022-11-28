@@ -69,6 +69,7 @@
 import {API_HOST} from "../config" //to get the API path
 import axios from 'axios'; 
 import Datepicker from '@vuepic/vue-datepicker';
+//import {fr} from 'vuejs-datepicker/dist/locale'
 import '@vuepic/vue-datepicker/dist/main.css' //to make datepicker work
 import { ref } from 'vue'; //used in setup
 

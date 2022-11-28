@@ -23,6 +23,9 @@
               <!--<option :value="null" disabled>Moyen de communication:</option>-->
               <option>Skype</option>
               <option>Whatsapp</option>
+              <option>Téléphone
+                
+              </option>
           </select><br>
         </div>
         <input class="boutonsubmit" type="submit" value="Prendre rendez-vous">
@@ -158,8 +161,8 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: center;
+
         .dateselectorslot{
-          display: flex;
           margin-bottom: 20px;
           
           p{
@@ -169,10 +172,11 @@ export default {
           }
 
           .itemdate{
-            margin-right: 20px;
+            margin-bottom: 20px
           }
 
           .itemtime{
+        
             .errorMessage{
               color: red;
               text-align: center;
@@ -220,6 +224,19 @@ export default {
             }
         }
     }
+}
+
+@media (min-width: 1280px)
+{
+  .dateselectorslot{
+    display: flex;
+    flex-direction: row;
+    border: solid red;
+
+    .itemdate{
+      margin-right: 20px;
+    }
+  }
 }
 
 </style>

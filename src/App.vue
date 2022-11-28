@@ -1,6 +1,7 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import LogInPage from './components/LogInPage.vue'
+
 </script>
 
 <template>
@@ -12,6 +13,8 @@ import LogInPage from './components/LogInPage.vue'
   <RouterView />
 </template>
 
-<style >
+<script>
+</script>
 
+<style >
 </style>

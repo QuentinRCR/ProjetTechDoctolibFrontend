@@ -23,6 +23,9 @@
 </template>
 
 <script>
+import axios from 'axios'; 
+import {API_HOST} from "../config" //to get the API path
+
 export default {
   name: 'LogInPage',
   data: function() {
@@ -32,7 +35,28 @@ export default {
     }
   },
   methods: {
-    SubmitForm(name,password){
+    async SubmitForm(ClienEmail,password){
+        let response = await axios.get(`${API_HOST}/api/creneaux`)
+        
+        /*let response = await axios.post(`${API_HOST}/api/registration`, //Send the resquest to the api with values defined above
+        {
+  campus: "string",
+  email: "dssssssssseee",
+  nom: "string",
+  password: "string",
+  phonenumber: "string",
+  prenom: "string",
+  skypeAccount: "string"
+})*/
+        /*let response = await axios.post(`${API_HOST}/api/login`, //Send the resquest to the api with values defined above
+        {
+            email: `${ClienEmail}`,
+            password: `${password}`,
+            
+            })*/
+      let slots = response.data;
+      this.slots = slots;
+      console.log(this.slots);
       console.log("vérifier que l'authentification est bonne");
       this.$router.push("/home");
     },
@@ -48,47 +72,42 @@ export default {
 
 <style lang="scss" scoped>
     .content{
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -65%);
         display: flex;
+        flex-direction: column;
+        align-items: center;
 
         .boiteblanche{
-            //border: solid red;
-            background-color: white;
-            width: 570px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
 
             h1{
-                font-size: 50px;
+                font-size: 35px;
                 font-weight: 400;
-                padding-left: 60px;
-                margin-left: 100px;
             }
     
 
             .menu{
-                padding-left: 60px;
 
                 form{
                     display: flex;
                     flex-direction: column ;
-                    width: 450px;
+                    align-items: center;
 
                     input[type=submit]{
                         margin-top: 20px;
                         background-color: $secondColor;
                         border-radius: 84px;
-                        height: 42px;
                         font-size: 14px;
                         color: #eee;
                         font-weight: 600;
+                        padding: 15px 15px 15px 15px;
                     }
 
                     input[type=text], input[type=password]{
 
-                        height: 45px;
                         font-size: 16px;
+                        padding: 15px 15px 15px 15px;
                         border-radius: 10px;
                         border-color: $secondColor;
 
@@ -125,7 +144,6 @@ export default {
             .bordure{
 
                 border: solid $secondColor;
-                margin-top: 80px;
                 padding: 5px 5px 5px 5px;
                 border-radius: 20px;
                 border-width: 5px;
