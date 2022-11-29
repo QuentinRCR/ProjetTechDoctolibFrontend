@@ -41,7 +41,7 @@
       }
     },
     created: async function() {
-      let response = await axios.get(`${API_HOST}/api/creneaux`);
+      let response = await axios.get(`${API_HOST}/api/creneaux`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}});
       let slots = response.data;
       this.slots = slots;
     },

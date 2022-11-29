@@ -107,7 +107,8 @@ export default {
     },
     async createListRealSlots(){
       //to add slots
-    let response = await axios.get(`${API_HOST}/api/creneaux`); //get slots from the API
+    let response = await axios.get(`${API_HOST}/api/creneaux`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}}); //get slots from the API
+    console.log(response);
     let slots = response.data; //extract the data
     this.slots = slots; //put it in a new variable
     this.realSlot=[]

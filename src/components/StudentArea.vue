@@ -36,7 +36,7 @@ export default {
     this.loadSlots()
     
     //to add appointements
-    let response1 = await axios.get(`${API_HOST}/api/rendez_vous`); //get slots from the API
+    let response1 = await axios.get(`${API_HOST}/api/rendez_vous`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}}); //get slots from the API
     let appointements = response1.data; //extract the data
     this.appointements = appointements; //put it in a new variable
 

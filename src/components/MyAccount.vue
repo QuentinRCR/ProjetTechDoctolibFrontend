@@ -50,7 +50,7 @@ import axios from 'axios';
 export default {
     name: 'StudentArea',
     created: async function(){ //to be able to assign the fetched data to the fields
-      let response = await axios.get(`${API_HOST}/api/user/${id_Student}`); //get front the API
+      let response = await axios.get(`${API_HOST}/api/user/${id_Student}`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}}); //get front the API
       this.StudentData = response.data; //assign the data
       this.lastName=this.StudentData.lastName //update values for the form mod
       this.firstName=this.StudentData.firstName,
@@ -93,7 +93,7 @@ export default {
           user_role: null, //not handled in the backend
           campus: `${campus}`,
           id: `${id_Student}`
-        })
+        },{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}})
         console.log("update user datas"); //post the data to the api
         this.StudentData.lastName=lastName; //assign to studentdata in order to have the visual effect without needing to fectch again
         this.StudentData.firstName=firstName;

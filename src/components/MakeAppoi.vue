@@ -118,7 +118,7 @@ export default {
           dateDebut: `${dateDebut1}`,
           moyenCommunication: CommunicationMean,
           duree: "PT30M"
-          }
+          },{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}}
         )
 
         this.$emit('close-popup',this.enableModifyMod); //to cancer the modify mode

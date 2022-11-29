@@ -158,7 +158,7 @@ export default {
                     tempsFin: `${endTime}`
                 }
             ]
-            })
+            },{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}})
         this.$emit('close-popup');
         this.$emit('reload'); //for the reload of the page to have the correct appointement
         }
