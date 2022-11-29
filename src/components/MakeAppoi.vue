@@ -226,12 +226,12 @@ export default {
     }
 }
 
-@media (min-width: 1280px)
+@media (min-width: 600px)
 {
   .dateselectorslot{
     display: flex;
     flex-direction: row;
-    border: solid red;
+    //border: solid red;
 
     .itemdate{
       margin-right: 20px;

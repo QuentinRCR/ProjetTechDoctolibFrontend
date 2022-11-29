@@ -8,7 +8,8 @@
                 <input v-model="Password" type="password" placeholder="Mot de passe" required><br>
                 <input class="boutonsubmit" type="submit" value="Se connecter">
             </form>
-        <p class="ForgotPassword" @click="ForgotPassword">Mot de passe oublié</p>
+            <p class="wrongEmail" v-if="this.incorrectPassword">L'email ou  le mot de passe saisit n'est pas correcte</p>
+            <p class="ForgotPassword" @click="ForgotPassword">Mot de passe oublié</p>
         </div>
       </div>
       <div class="SignInButtonPart">
@@ -31,34 +32,26 @@ export default {
   data: function() {
     return {
         ClienEmail: null,
-        Password: null
+        Password: null,
+        incorrectPassword: false
     }
   },
   methods: {
     async SubmitForm(ClienEmail,password){
-        let response = await axios.get(`${API_HOST}/api/creneaux`)
+        //let response = await axios.get(`${API_HOST}/api/creneaux`)
+        var data = new FormData(); //so that the backend understand the data correctly 
+        data.append('email', `${ClienEmail}`)
+        data.append('password', `${password}`)
         
-        /*let response = await axios.post(`${API_HOST}/api/registration`, //Send the resquest to the api with values defined above
-        {
-  campus: "string",
-  email: "dssssssssseee",
-  nom: "string",
-  password: "string",
-  phonenumber: "string",
-  prenom: "string",
-  skypeAccount: "string"
-})*/
-        /*let response = await axios.post(`${API_HOST}/api/login`, //Send the resquest to the api with values defined above
-        {
-            email: `${ClienEmail}`,
-            password: `${password}`,
-            
-            })*/
-      let slots = response.data;
-      this.slots = slots;
-      console.log(this.slots);
-      console.log("vérifier que l'authentification est bonne");
-      this.$router.push("/home");
+        let response = await axios.post(`${API_HOST}/api/login`, data)
+        const token=response.data.access_token;
+        if (typeof(token) == "undefined"){
+            this.incorrectPassword=true;
+        }
+        else{
+            console.log(token);
+            this.$router.push("/home");
+        };
     },
     SendToSignIn(){
       this.$router.push("/signin");
@@ -72,14 +65,16 @@ export default {
 
 <style lang="scss" scoped>
     .content{
-        display: flex;
-        flex-direction: column;
+        //border: solid pink;
+        margin: auto;
         align-items: center;
 
         .boiteblanche{
             display: flex;
             flex-direction: column;
             align-items: center;
+            width: 100%;
+            //border: solid purple;
 
             h1{
                 font-size: 35px;
@@ -88,11 +83,13 @@ export default {
     
 
             .menu{
+                //border: solid green;
+                width: 100%;
 
                 form{
                     display: flex;
                     flex-direction: column ;
-                    align-items: center;
+                    align-items: stretch;
 
                     input[type=submit]{
                         margin-top: 20px;
@@ -129,11 +126,17 @@ export default {
                     color: rgb(74, 74, 74);
                     cursor: pointer;
                 }
+
+                .wrongEmail{
+                    color:red;
+                    font-weight: 600;
+                }
             }
         }
 
         .SignInButtonPart{
             //border: solid rebeccapurple;
+            margin: auto;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -169,6 +172,19 @@ export default {
                 
         }
         
+    }
+
+    @media (min-width: 600px){
+        .content{
+            width: 45%;
+            display: flex;
+            margin-top: 10%;
+            //border: solid blue;
+        }
+
+        .boiteblanche{
+            margin-right:10%;
+        }
     }
 
 </style>
