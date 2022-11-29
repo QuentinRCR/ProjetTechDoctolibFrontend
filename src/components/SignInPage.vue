@@ -32,6 +32,8 @@
 </template>
 
 <script>
+import axios from 'axios'; 
+import {API_HOST} from "../config" //to get the API path
 export default {
   name: 'SignInPage',
   data: function() {
@@ -48,8 +50,19 @@ export default {
     }
   },
   methods: {
-    SubmitForm(ClienEmail,ClientFirstName,ClientLastName,Password,PasswordConfirmation,PhoneNumber,SkypeAccount,Campus){
+    async SubmitForm(ClienEmail,ClientFirstName,ClientLastName,Password,PasswordConfirmation,PhoneNumber,SkypeAccount,Campus){
       console.log("faire l'authentification"); 
+      let response = await axios.post(`${API_HOST}/api/registration`,
+            {
+        campus: `${Campus}`,
+        email: `${ClienEmail}`,
+        nom: `${ClientLastName}`,
+        password: `${Password}`,
+        phonenumber: `${PhoneNumber}`,
+        prenom: `${ClientFirstName}`,
+        skypeAccount: `${SkypeAccount}`
+        })
+        console.log(response.data);
       this.formSubmited=true; //To display the message saying that the person received a mail to confirm its account
     },
     SendToLogIn(){
