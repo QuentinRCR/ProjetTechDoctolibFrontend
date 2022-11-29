@@ -48,12 +48,16 @@ export default {
       this.$emit('panel-change', newPanel);
     },
     LogOut(){
+      this.$store.commit('set', {token: null}) //delete the token
       console.log("bien déconnecter la personne");
       this.$router.push("/");
     }
   },
   created: function() {
-    this.changePanel(this.panels[0]);
+    this.changePanel(this.panels[0]); //define default panel
+    if (this.$store.state.auth != "ADMIN"){ //hide the slot menu when connected as a client
+      this.panels.splice(3,1);
+    }
   }
 }
 </script>

@@ -7,12 +7,16 @@ import { createStore } from 'vuex'
 const store = createStore({
   state () {
     return {
-      generalToken: null
+      generalToken: null,
+      auth: null
     }
   },
   mutations: {
     set (state,payload) {
       state.generalToken = payload.token;
+    },
+    setAuth (state,payload) {
+      state.auth = payload.auth;
     }
   }
 })

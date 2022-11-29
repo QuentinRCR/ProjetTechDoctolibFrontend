@@ -7,7 +7,7 @@
       <div class="TopMenu">
         <div class="fillInDiv"></div>
         <button @click="ToggleAppoi">Prendre un rendez-vous</button>
-        <button @click="ToggleSlot">Ajouter un créneau</button>
+        <button v-if="this.$store.state.auth == 'ADMIN'" @click="ToggleSlot">Ajouter un créneau</button>
         <div class="fillInDiv"></div>
       </div>
       <div class="pannels">
@@ -63,7 +63,6 @@ export default {
     }
   },
   created: function() {
-    console.log(this.$store.state.generalToken)
     this.createListRealSlots();
   },
   methods: {
@@ -81,10 +80,6 @@ export default {
     },
     updatePanel(newPanel) {
       this.currentPanel = newPanel;
-    },
-    LogOut(){
-      console.log("bien déconnecter la personne");
-      this.$router.push("/");
     },
     modifyAppMod(app){ //use parametter to be able to reuse the creation box to modify
       this.enableModifyMod=true;
@@ -108,7 +103,6 @@ export default {
     async createListRealSlots(){
       //to add slots
     let response = await axios.get(`${API_HOST}/api/creneaux`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}}); //get slots from the API
-    console.log(response);
     let slots = response.data; //extract the data
     this.slots = slots; //put it in a new variable
     this.realSlot=[]

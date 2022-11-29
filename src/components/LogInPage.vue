@@ -26,6 +26,7 @@
 <script>
 import axios from 'axios'; 
 import {API_HOST} from "../config" //to get the API path
+import VueJwtDecode from 'vue-jwt-decode'; //to decode Jwt token
 
 export default {
   name: 'LogInPage',
@@ -47,10 +48,10 @@ export default {
         const token=response.data.access_token;
         if (typeof(token) == "undefined"){
             this.incorrectPassword=true;
-            
         }
         else{
             this.$store.commit('set', {token: `${token}`}) //set the value of the token to a global state
+            this.$store.commit('setAuth', {auth: `${VueJwtDecode.decode(token).roles[0]}`}) //Set the role as a global variable
             this.$router.push("/home");
         };
     },

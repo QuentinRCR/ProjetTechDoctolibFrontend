@@ -163,7 +163,6 @@ export default {
         this.$emit('reload'); //for the reload of the page to have the correct appointement
         }
         else{
-            console.log("aaa");
             if(dateSlot==null){
                 this.isDateSelected=true;
             }
