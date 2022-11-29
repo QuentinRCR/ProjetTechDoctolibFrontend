@@ -47,9 +47,10 @@ export default {
         const token=response.data.access_token;
         if (typeof(token) == "undefined"){
             this.incorrectPassword=true;
+            
         }
         else{
-            console.log(token);
+            this.$store.commit('set', {token: `${token}`}) //set the value of the token to a global state
             this.$router.push("/home");
         };
     },

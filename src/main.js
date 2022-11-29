@@ -1,7 +1,21 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
+import { createStore } from 'vuex'
 //import VCalendar from "v-calendar"
+
+const store = createStore({
+  state () {
+    return {
+      generalToken: null
+    }
+  },
+  mutations: {
+    set (state,payload) {
+      state.generalToken = payload.token;
+    }
+  }
+})
 
 import VueCal from 'vue-cal'
 import 'vue-cal/dist/vuecal.css'
@@ -16,6 +30,7 @@ export default {
 const app = createApp(App)
 app.component(Datepicker,'Datepicker')
 app.use(router)
+app.use(store)
 
 //app.use(VCalendar, {})
 app.mount('#app')

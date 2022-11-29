@@ -63,6 +63,7 @@ export default {
     }
   },
   created: function() {
+    console.log(this.$store.state.generalToken)
     this.createListRealSlots();
   },
   methods: {
