@@ -41,7 +41,9 @@
       }
     },
     created: async function() {
-      let response = await axios.get(`${API_HOST}/api/rendez_vous/user/${id_Student}`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}});
+      //let response = await axios.get(`${API_HOST}/api/rendez_vous/user/${id_Student}`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}});
+      let response = await axios.get(`${API_HOST}/api/rendez_vous/auth`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}});
+      console.log(response);
       let appointements = response.data;
       this.appointements = appointements;
     },

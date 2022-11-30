@@ -52,6 +52,7 @@ export default {
         else{
             this.$store.commit('set', {token: `${token}`}) //set the value of the token to a global state
             this.$store.commit('setAuth', {auth: `${VueJwtDecode.decode(token).roles[0]}`}) //Set the role as a global variable
+            console.log(VueJwtDecode.decode(token));
             this.$router.push("/home");
         };
     },
