@@ -1,14 +1,9 @@
 # protech_doctolib_frontend
 
-This template should help get you started developing with Vue 3 in Vite.
+The project is the frontend from an appoitement scheduler
 
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+## Warning
+If you are using the backend, make sur to use the adress ``http://localhost:5173/`` to avoid CORS issues
 
 ## Project Setup
 
@@ -27,3 +22,5 @@ npm run dev
 ```sh
 npm run build
 ```
+
+
