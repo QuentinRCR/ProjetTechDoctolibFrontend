@@ -50,7 +50,7 @@ import axios from 'axios';
 export default {
     name: 'StudentArea',
     created: async function(){ //to be able to assign the fetched data to the fields
-      let response = await axios.get(`${API_HOST}/api/user/${id_Student}`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}}); //get front the API
+      let response = await axios.get(`${API_HOST}/api/user/getbyId`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}}); //get front the API
       this.StudentData = response.data; //assign the data
       this.lastName=this.StudentData.lastName //update values for the form mod
       this.firstName=this.StudentData.firstName,

@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import {API_HOST,id_Student} from "../config"
+import {API_HOST} from "../config"
 import axios from 'axios';
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
@@ -112,7 +112,7 @@ export default {
         let dateDebut1 = date+"T"+startTime;
         let newAppointemen = await axios.post(`${API_HOST}/api/rendez_vous/create_or_modify`,{
           id: id,
-          idUser: id_Student,
+          idUser: null, //automatically assigned by the backend
           idCreneau: 3,
           zoomLink: "link.fr",
           dateDebut: `${dateDebut1}`,

@@ -18,7 +18,7 @@
   
   <script>
   import axios from 'axios';
-  import {API_HOST, id_Student} from '../config';
+  import {API_HOST} from '../config';
   import AppointementItem from './AppointementItem.vue';
   
   
@@ -41,7 +41,6 @@
       }
     },
     created: async function() {
-      //let response = await axios.get(`${API_HOST}/api/rendez_vous/user/${id_Student}`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}});
       let response = await axios.get(`${API_HOST}/api/rendez_vous/auth`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}});
       console.log(response);
       let appointements = response.data;
