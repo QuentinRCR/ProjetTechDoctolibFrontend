@@ -73,69 +73,78 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
     .content{
-        display: flex;
-        justify-content: center;
+        //border: solid pink;
+        margin-left: auto;
+        margin-right: auto;
+        align-items: center;
 
         .boiteblanche{
-            background-color: white;
-            width: 570px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 40px;
+            //border: solid purple;
 
             h1{
-                font-size: 50px;
+                font-size: 35px;
                 font-weight: 400;
-                padding-left: 60px;
-                margin-left: 100px;
             }
-        }
+    
 
-        .menu{
-            padding-left: 60px;
+            .menu{
+                //border: solid green;
+                width: 100%;
 
-            form{
-                display: flex;
-                flex-direction: column ;
-                width: 450px;
+                form{
+                    display: flex;
+                    flex-direction: column ;
+                    align-items: stretch;
 
-                input[type=submit]{
-                    margin-top: 20px;
-                    background-color: $secondColor;
-                    border-radius: 84px;
-                    height: 42px;
-                    font-size: 14px;
-                    color: #eee;
+                    input[type=submit]{
+                        margin-top: 20px;
+                        background-color: $secondColor;
+                        border-radius: 84px;
+                        font-size: 14px;
+                        color: #eee;
+                        font-weight: 600;
+                        padding: 15px 15px 15px 15px;
+                    }
+
+                    input[type=text], input[type=password], select{
+
+                        font-size: 16px;
+                        padding: 15px 15px 15px 15px;
+                        border-radius: 10px;
+                        border-color: $secondColor;
+                        margin-bottom: 20px;
+
+                        &:focus{
+                            outline:solid #72ac51;
+                        }
+
+                        &:focus:invalid{
+                            outline:solid red;
+                        }
+                    }
+                }
+
+                .ForgotPassword{
+                    color: rgb(74, 74, 74);
+                    cursor: pointer;
+                }
+
+                .wrongEmail{
+                    color:red;
                     font-weight: 600;
                 }
-
-                input[type=text], input[type=password], select{
-
-                    height: 45px;
-                    font-size: 16px;
-                    border-radius: 10px;
-                    border-color: black;
-                    margin-bottom: 10px;
-                    padding-left: 10px;
-
-                    &:focus{
-                        outline:solid #72ac51;
-                    }
-
-                    &:focus:invalid{
-                        outline:solid red;
-                    }
-                }
-            }
-
-            p{
-                color: green;
-                font-weight: 600;
-                font-size: 20px;
             }
         }
 
         .SignInButtonPart{
             //border: solid rebeccapurple;
+            margin: auto;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -146,7 +155,6 @@ export default {
             .bordure{
 
                 border: solid $secondColor;
-                margin-top: 80px;
                 padding: 5px 5px 5px 5px;
                 border-radius: 20px;
                 border-width: 5px;
@@ -159,17 +167,29 @@ export default {
 
                 button{
                 background-color: $secondColor;
-                height: 45px;
                 border-radius: 90px;
                 color: white;
                 font-weight: 600;
                 text-align: center;
-                padding: 10px 20px 10px 20px;
+                padding: 10px 30px 10px 20px;
                 }
 
             }
 
                 
+        }
+        
+    }
+
+    @media (min-width: 600px){
+        .content{
+            width: 45%;
+            display: flex;
+            //border: solid blue;
+        }
+
+        .boiteblanche{
+            margin-right:10%;
         }
     }
 

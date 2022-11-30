@@ -139,6 +139,7 @@ export default {
 
         .SignInButtonPart{
             //border: solid rebeccapurple;
+            margin-top: 20px;
             margin: auto;
             display: flex;
             flex-direction: column;
@@ -162,7 +163,6 @@ export default {
 
                 button{
                 background-color: $secondColor;
-                height: 45px;
                 border-radius: 90px;
                 color: white;
                 font-weight: 600;
@@ -191,4 +191,3 @@ export default {
     }
 
 </style>
-cd
