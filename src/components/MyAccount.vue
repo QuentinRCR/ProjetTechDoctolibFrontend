@@ -6,12 +6,12 @@
         <div class="infoItem">
           <p  class="descrition">Nom:</p>
           <p v-if=!isInModifyMod>{{StudentData.lastName}}</p> <!--When not in modify mode, the name is simply displayed-->
-          <input v-model="lastName" v-if=isInModifyMod type="text"> <!--When in modify mode, use inputs prefilled-->
+          <input v-model="lastName" v-if=isInModifyMod type="text" required> <!--When in modify mode, use inputs prefilled-->
         </div>
         <div class="infoItem">
           <p class="descrition">Prénom:</p>
           <p v-if=!isInModifyMod>{{StudentData.firstName}}</p>
-          <input v-model="firstName" v-if=isInModifyMod type="text">
+          <input v-model="firstName" v-if=isInModifyMod type="text" required>
         </div>
         <div class="infoItem">
           <p class="descrition">Email:</p> <!--Email can't be changed so no input form-->
@@ -28,12 +28,12 @@
         <div class="infoItem">
           <p class="descrition">Numéro de téléphone:</p>
           <p v-if=!isInModifyMod>{{StudentData.phoneNumber}}</p>
-          <input v-model="phoneNumber" v-if=isInModifyMod type="text">
+          <input v-model="phoneNumber" v-if=isInModifyMod type="text" required>
         </div>
         <div class="infoItem">
           <p class="descrition">Compte Skype:</p>
           <p v-if=!isInModifyMod>{{StudentData.skypeAccount}}</p>
-          <input v-model="skypeAccount" v-if=isInModifyMod type="text">
+          <input v-model="skypeAccount" v-if=isInModifyMod type="text" pattern="live:[a-z0-9._%+-]+">
         </div>
         <input v-if=isInModifyMod class="boutonsubmit" type="submit" value="Enregistrer"> <!--to submit the form in modify mode-->
       </form>
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import {id_Student,API_HOST} from "../config" //to get the API path
+import {API_HOST} from "../config" //to get the API path
 import axios from 'axios';
 
 export default {
@@ -92,7 +92,7 @@ export default {
           skypeAccount: `${skypeAccount}`,
           user_role: null, //not handled in the backend
           campus: `${campus}`,
-          id: `${id_Student}`
+          id: null
         },{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}})
         console.log("update user datas"); //post the data to the api
         this.StudentData.lastName=lastName; //assign to studentdata in order to have the visual effect without needing to fectch again
@@ -151,7 +151,15 @@ export default {
           font-size: 18px;
           border-radius: 10px;
           padding:15px 15px 15px 15px;
-        }
+
+          &:focus{
+            outline:solid #72ac51;
+          }
+
+          &:focus:invalid{
+            outline:solid red;
+          }
+         }
       }
     }
   }
