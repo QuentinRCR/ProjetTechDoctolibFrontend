@@ -110,6 +110,7 @@ export default {
                         color: #eee;
                         font-weight: 600;
                         padding: 15px 15px 15px 15px;
+                        cursor: pointer;
                     }
 
                     input[type=text], input[type=password], select{
@@ -162,7 +163,6 @@ export default {
 
                 p{
                     font-size: 20px;
-                    
                 }
 
                 button{
@@ -170,8 +170,8 @@ export default {
                 border-radius: 90px;
                 color: white;
                 font-weight: 600;
-                text-align: center;
-                padding: 10px 30px 10px 20px;
+                padding: 10px 10px 10px 10px;
+                cursor: pointer;
                 }
 
             }

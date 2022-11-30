@@ -102,6 +102,7 @@ export default {
                         color: #eee;
                         font-weight: 600;
                         padding: 15px 15px 15px 15px;
+                        cursor: pointer;
                     }
 
                     input[type=text], input[type=password]{
@@ -139,7 +140,6 @@ export default {
 
         .SignInButtonPart{
             //border: solid rebeccapurple;
-            margin-top: 20px;
             margin: auto;
             display: flex;
             flex-direction: column;
@@ -168,6 +168,7 @@ export default {
                 font-weight: 600;
                 text-align: center;
                 padding: 10px 20px 10px 20px;
+                cursor: pointer;
                 }
 
             }
