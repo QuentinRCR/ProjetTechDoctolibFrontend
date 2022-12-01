@@ -162,7 +162,6 @@ export default {
 <style lang="scss" scoped>
 
 .home{
-  border: solid black;
 
   .SideMenu{
     //border: solid red;

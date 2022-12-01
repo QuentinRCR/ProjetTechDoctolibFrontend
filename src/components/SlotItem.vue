@@ -1,10 +1,10 @@
 <template> <!--See AppointementItem to simillar code commented-->
     <div @click="test" class="slotitem" :class="{expanded: isExpanded}">
       <div class="slotitemalwaysdisplay" @click="toggleExpand">
-        <div class="slot-date">Date début: {{this.dateTimeFormat.format(new Date(this.slot.dateDebut))}}</div>
-        <div class="slot-duration">Date fin: {{this.dateTimeFormat.format(new Date(this.slot.dateFin))}}</div>
+        <div class="slot-date">Entre le {{this.dateTimeFormat.format(new Date(this.slot.dateDebut))}}</div>
+        <div class="slot-duration">Et le {{this.dateTimeFormat.format(new Date(this.slot.dateFin))}}</div>
         <div class="slot-com-channel">Jours: {{this.daysList.slice(0,-2)}}</div>
-        <div class="slot-com-channel">Plage de temps: De {{slot.heuresDebutFin[0].tempsDebut.slice(0,-3)}} à {{slot.heuresDebutFin[0].tempsFin.slice(0,-3)}}</div> <!--Ecrit les heures de début et de fin-->
+        <div class="slot-com-channel">Plage de temps: De {{slot.heuresDebutFin[0].tempsDebut.slice(0,-3).replace(":","h")}} à {{slot.heuresDebutFin[0].tempsFin.slice(0,-3).replace(":","h")}}</div> <!--Ecrit les heures de début et de fin-->
   
         <div class="expand-arrow"> <!--add the arrow to deploy the menu-->
           {{ isExpanded ? '&#9660;' : '&#9658;' }}

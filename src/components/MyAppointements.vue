@@ -60,19 +60,16 @@
   
   <style lang="scss" scoped>
   .myAppoints{
-    overflow: scroll;
-    width: 60%;
-    width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    text-align: center;
+    align-items: stretch;
 
     h1{
       
     }
 
     .appointements-list{
-      width: 60%;
 
       .AppItem{
         margin-bottom: 20px;
