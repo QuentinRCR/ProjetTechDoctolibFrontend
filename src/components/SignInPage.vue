@@ -62,7 +62,6 @@ export default {
         prenom: `${ClientFirstName}`,
         skypeAccount: `${SkypeAccount}`
         })
-        console.log(response.data);
       this.formSubmited=true; //To display the message saying that the person received a mail to confirm its account
     },
     SendToLogIn(){

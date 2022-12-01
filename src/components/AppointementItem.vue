@@ -1,8 +1,9 @@
 <template>
-    <div class="appointementitem" :class="{expanded: isExpanded}"> <!--To show or not the modify and delete button-->
+    <div @click="test" class="appointementitem" :class="{expanded: isExpanded}"> <!--To show or not the modify and delete button-->
       <div class="appointementitemalwaysdisplay" @click="toggleExpand">
-        <div class="appointement-date">Date: {{appointement.dateDebut}}</div>
-        <div class="appointement-duration">Durée: {{appointement.duree}}</div>
+        <div class="appointement-date">Le {{this.dateFormat.format(new Date(this.appointement.dateDebut))}}</div>
+        <div class="appointement-time">&#0192 {{this.appointement.dateDebut.slice(11,-3).replace(":","h")}}</div>
+        <div class="appointement-duration">Durée: {{appointement.duree.slice(2,4)}} minutes</div>
         <div class="appointement-com-channel">Moyen de communication: {{appointement.moyenCommunication}}</div>
   
         <div class="expand-arrow"> <!--add the arrow to deploy the menu-->
@@ -28,7 +29,12 @@
     props: ['appointement'], //to get the appointement from the for in MyAppointments
     data: function() {
       return {
-        isExpanded: false
+        isExpanded: false,
+        dateFormat : new Intl.DateTimeFormat('fr', { //to converte the date to human readable
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+        })
       }
     },
     methods: {
@@ -41,6 +47,11 @@
       },
       modifyApp(){ 
         this.$emit('appointement-choice',this.appointement) //to get the appointement id in the MakeAppointements
+      },
+      test(){
+        console.log("enlever la fonction test dans AppoitnementItem");
+        console.log(this.dateFormat.format(new Date(this.appointement.dateDebut)));
+        console.log(this.appointement.dateDebut.slice(11,-3).replace(":","h"));
       }
     }
   }

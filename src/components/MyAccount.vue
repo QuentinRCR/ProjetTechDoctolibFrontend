@@ -95,7 +95,6 @@ export default {
         this.isInModifyMod = !this.isInModifyMod
       },
       async SubmitForm(lastName,firstName,campus,phoneNumber,skypeAccount,Password){
-        console.log(`${Password}`);
         let newUser = await axios.post(`${API_HOST}/api/user/modify`, //Send the resquest to the api with values defined above
         {
           lastName: `${lastName}`,
