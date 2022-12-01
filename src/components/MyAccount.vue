@@ -2,42 +2,51 @@
   <div class="StudentArea">
     <h1>Section élève</h1>
     <div class="mainContent">
-      <form  class="personalInfos" @submit.prevent="submit" v-on:submit="SubmitForm(lastName,firstName,campus,phoneNumber,skypeAccount)"> <!--form used in modify mode-->
+      <form  class="personalInfos" @submit.prevent="submit" v-on:submit="SubmitForm(lastName,firstName,campus,phoneNumber,skypeAccount,Password)"> <!--form used in modify mode-->
         <div class="infoItem">
-          <p  class="descrition">Nom:</p>
-          <p v-if=!isInModifyMod>{{StudentData.lastName}}</p> <!--When not in modify mode, the name is simply displayed-->
+          <p  class="descrition">Nom</p>
+          <p class="info" v-if=!isInModifyMod>{{StudentData.lastName}}</p> <!--When not in modify mode, the name is simply displayed-->
           <input v-model="lastName" v-if=isInModifyMod type="text" required> <!--When in modify mode, use inputs prefilled-->
         </div>
         <div class="infoItem">
-          <p class="descrition">Prénom:</p>
-          <p v-if=!isInModifyMod>{{StudentData.firstName}}</p>
+          <p class="descrition">Prénom</p>
+          <p class="info" v-if=!isInModifyMod>{{StudentData.firstName}}</p>
           <input v-model="firstName" v-if=isInModifyMod type="text" required>
         </div>
         <div class="infoItem">
-          <p class="descrition">Email:</p> <!--Email can't be changed so no input form-->
-          <p>{{StudentData.email}}</p>
+          <p class="descrition">Email</p> <!--Email can't be changed so no input form-->
+          <p class="info" >{{StudentData.email}}</p>
         </div>
         <div class="infoItem">
-          <p class="descrition">Campus:</p>
-          <p v-if=!isInModifyMod>{{StudentData.campus}}</p>
+          <p class="descrition">Campus</p>
+          <p class="info" v-if=!isInModifyMod>{{StudentData.campus}}</p>
           <select selected={{StudentData.campus}} id="updateCampus" v-model="campus" v-if=isInModifyMod>
             <option>Saint Etienne</option>
             <option>Gardanne</option>
           </select>
         </div>
         <div class="infoItem">
-          <p class="descrition">Numéro de téléphone:</p>
-          <p v-if=!isInModifyMod>{{StudentData.phoneNumber}}</p>
+          <p class="descrition">Numéro de téléphone</p>
+          <p class="info" v-if=!isInModifyMod>{{StudentData.phoneNumber}}</p>
           <input v-model="phoneNumber" v-if=isInModifyMod type="text" required>
         </div>
         <div class="infoItem">
-          <p class="descrition">Compte Skype:</p>
-          <p v-if=!isInModifyMod>{{StudentData.skypeAccount}}</p>
+          <p class="descrition">Compte Skype</p>
+          <p class="info" v-if=!isInModifyMod>{{StudentData.skypeAccount}}</p>
           <input v-model="skypeAccount" v-if=isInModifyMod type="text" pattern="live:[a-z0-9._%+-]+">
+        </div>
+        <div class="infoItem" v-if="this.modifyPasswordMod">
+          <p class="descrition">Nouveau mot de passe</p>
+          <input v-model="Password" type="password" required>
+        </div>
+        <div class="infoItem" v-if="this.modifyPasswordMod">
+          <p class="descrition">Confirmation de mot de passe</p>
+          <input :pattern="Password" v-model="PasswordConfirmation" type="password" required>
         </div>
         <input v-if=isInModifyMod class="boutonsubmit" type="submit" value="Enregistrer"> <!--to submit the form in modify mode-->
       </form>
-      <button v-if=!isInModifyMod @click="toggleModifyMod">Modifier mes informations</button>
+      <button class="modifyInfos" v-if=!isInModifyMod @click="toggleModifyMod">Modifier mes informations</button>
+      <button class="modifyPw" @click="toogleModifyPwMode" v-if=isInModifyMod >{{ modifyPasswordMod ? 'Ne pas modifier mon mot de passe' : 'Modifier mon mot de passe' }}</button>
     </div>
   </div>
       
@@ -70,19 +79,23 @@ export default {
           skypeAccount: ""
         },
         isInModifyMod: false, //true when in modify mode -> paragraphes are replaced by inputs
-        lastName : false, //values used in the v-model for the form
+        lastName : null, //values used in the v-model for the form
         firstName : null,
         email: null,
         campus: null,
         phoneNumber: null,
         skypeAccount: null,
+        PasswordConfirmation: null,
+        Password: null,
+        modifyPasswordMod: false
       }
     },
     methods: {
       toggleModifyMod(){
         this.isInModifyMod = !this.isInModifyMod
       },
-      async SubmitForm(lastName,firstName,campus,phoneNumber,skypeAccount){
+      async SubmitForm(lastName,firstName,campus,phoneNumber,skypeAccount,Password){
+        console.log(`${Password}`);
         let newUser = await axios.post(`${API_HOST}/api/user/modify`, //Send the resquest to the api with values defined above
         {
           lastName: `${lastName}`,
@@ -92,7 +105,8 @@ export default {
           skypeAccount: `${skypeAccount}`,
           user_role: null, //not handled in the backend
           campus: `${campus}`,
-          id: null
+          id: null,
+          password: `${Password}`
         },{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}})
         console.log("update user datas"); //post the data to the api
         this.StudentData.lastName=lastName; //assign to studentdata in order to have the visual effect without needing to fectch again
@@ -100,13 +114,35 @@ export default {
         this.StudentData.campus=campus;
         this.StudentData.phoneNumber=phoneNumber;
         this.StudentData.skypeAccount=skypeAccount;
+        this.modifyPasswordMod=false;
         this.toggleModifyMod()
+      },
+      toogleModifyPwMode(){
+        this.modifyPasswordMod = !this.modifyPasswordMod
       }
     }
   }
 </script>
 
 <style lang="scss" scoped>
+@media (min-width: 600px){
+  .mainContent{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+
+    .infoItem{  
+    }
+
+    input[type="text"],input[type="password"],select{
+      width: 500px;
+      margin: 0;
+    }
+  }
+  
+}
+
 .StudentArea{
   display: flex;
   justify-content: center;
@@ -114,18 +150,32 @@ export default {
   align-items: center;
 
   .mainContent{
-      display: flex;
+      width: 100%;
+      //border: solid blue;
       align-items: center;
+      text-align: center;
 
-      button{
-        margin-left: 70px;
+      .modifyInfos{
         background-color: $secondColor;
         color: white;
         font-size: 18px;
         border-radius: 20px;
         padding: 15px 15px 15px 15px;
+        margin-left: 5%;
       }
+
+      .modifyPw{
+        margin-top:30px;
+        background-color: rgb(153, 10, 10);
+        font-size: 18px;
+        border-radius: 20px;
+        padding: 15px 15px 15px 15px;
+        color: white;
+        margin-left: 5%;
+      }
+
     .personalInfos{
+      //border: solid brown;
       text-align: center;
 
       input[type="submit"] {
@@ -133,24 +183,34 @@ export default {
           border-radius: 10px;
           background-color: $secondColor;
           padding: 15px 15px 15px 15px;
-          margin-top: 30px;
-        }
+          margin-top: 10px;
+      }
+
       .infoItem{
-        display: flex;
-        font-size: 20px;
+        font-size: 18px;
         //border: solid rebeccapurple;
-        align-items: center;
 
         .descrition{
-          margin-right: 5px;
+          //border: solid pink;
           color: #333;
           font-weight: bold;
+          margin: 0;
+          font-size: 20px;
         }
 
-        input[type="text"],select{
+        .info{
+          margin-top: 0;
+          margin-bottom: 20px;
+          font-size:20px;
+          //border: solid blue;
+        }
+
+        input[type="text"],input[type="password"],select{
           font-size: 18px;
           border-radius: 10px;
-          padding:15px 15px 15px 15px;
+          padding:10px 10px 10px 10px;
+          margin-bottom: 20px;
+          width: 80%;
 
           &:focus{
             outline:solid #72ac51;
@@ -165,5 +225,7 @@ export default {
   }
   
 }
+
+
 
 </style>

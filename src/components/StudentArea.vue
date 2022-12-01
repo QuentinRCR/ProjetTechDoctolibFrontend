@@ -16,7 +16,7 @@
 <script>
 import VueCal from 'vue-cal' //to display the calendar
 import axios from 'axios'; //for api request
-import {API_HOST, id_Student} from '../config';
+import {API_HOST} from '../config';
 
 export default {
   name: 'MyAccount',

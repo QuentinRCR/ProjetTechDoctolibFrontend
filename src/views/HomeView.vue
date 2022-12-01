@@ -6,7 +6,7 @@
     <div class="content">
       <div class="TopMenu">
         <div class="fillInDiv"></div>
-        <button @click="ToggleAppoi">Prendre un rendez-vous</button>
+        <button @click="ToggleAppoi" v-if="currentPanel.name != 'panelB'">Prendre un rendez-vous</button>
         <button v-if="this.$store.state.auth == 'ADMIN'" @click="ToggleSlot">Ajouter un créneau</button>
         <div class="fillInDiv"></div>
       </div>
@@ -35,7 +35,7 @@ import MySlots from '../components/MySlots.vue'
 
 
 import axios from 'axios'; //for api request
-import {API_HOST, id_Student} from '../config';
+import {API_HOST} from '../config';
 
 export default {
   name: 'HomePage',

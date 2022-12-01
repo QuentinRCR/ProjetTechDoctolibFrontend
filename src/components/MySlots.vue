@@ -18,7 +18,7 @@
   
   <script>
   import axios from 'axios';
-  import {API_HOST, id_Student} from '../config';
+  import {API_HOST} from '../config';
   import SlotItem from './SlotItem.vue';
   
   
