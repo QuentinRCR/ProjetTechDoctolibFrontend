@@ -19,7 +19,7 @@
         </div>
         <div class="CommuMean">
           <p>Moyen de communication</p>
-          <select v-model="CommunicationMean" >
+          <select v-model="CommunicationMean" required>
               <!--<option :value="null" disabled>Moyen de communication:</option>-->
               <option>Skype</option>
               <option>Whatsapp</option>

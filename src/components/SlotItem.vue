@@ -1,10 +1,10 @@
 <template> <!--See AppointementItem to simillar code commented-->
-    <div class="slotitem" :class="{expanded: isExpanded}">
+    <div @click="test" class="slotitem" :class="{expanded: isExpanded}">
       <div class="slotitemalwaysdisplay" @click="toggleExpand">
-        <div class="slot-date">Date début: {{slot.dateDebut}}</div>
-        <div class="slot-duration">Date fin: {{slot.dateFin}}</div>
-        <div class="slot-com-channel">Jours: {{slot.jours}}</div>
-        <div class="slot-com-channel">Plage de temps: De {{slot.heuresDebutFin[0].tempsDebut}} à {{slot.heuresDebutFin[0].tempsFin}}</div> <!--Ecrit les heures de début et de fin-->
+        <div class="slot-date">Date début: {{this.dateTimeFormat.format(new Date(this.slot.dateDebut))}}</div>
+        <div class="slot-duration">Date fin: {{this.dateTimeFormat.format(new Date(this.slot.dateFin))}}</div>
+        <div class="slot-com-channel">Jours: {{this.daysList.slice(0,-2)}}</div>
+        <div class="slot-com-channel">Plage de temps: De {{slot.heuresDebutFin[0].tempsDebut.slice(0,-3)}} à {{slot.heuresDebutFin[0].tempsFin.slice(0,-3)}}</div> <!--Ecrit les heures de début et de fin-->
   
         <div class="expand-arrow"> <!--add the arrow to deploy the menu-->
           {{ isExpanded ? '&#9660;' : '&#9658;' }}
@@ -29,7 +29,42 @@
     props: ['slot'],
     data: function() {
       return {
-        isExpanded: false
+        isExpanded: false,
+        dateTimeFormat : new Intl.DateTimeFormat('fr', { //to converte the date to human readable
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        }),
+        daysList: ""
+      }
+    },
+    created: function(){
+      for(let i=0;i<this.slot.jours.length;i++){
+        switch (this.slot.jours[i]) {
+        case "MONDAY":
+          this.daysList +="Lundi, ";
+          break;
+        case "TUESDAY":
+          this.daysList +="Mardi, ";
+          break;
+        case "WEDNESDAY":
+          this.daysList +="Mercredi, ";
+          break;
+        case "THURSDAY":
+          this.daysList +="Jeudi, ";
+          break;
+        case "FRIDAY":
+          this.daysList +="Vendredi, ";
+          break;  
+        case "SATURDAY":
+          this.daysList +="Samedi, ";
+          break;
+        case "SUNDAY":
+          this.daysList +="Dimanche, ";
+          break;
+        default:
+            console.log("the switch to translate days has a problem");
+        }
       }
     },
     methods: {
@@ -42,6 +77,9 @@
       },
       ModifySlot(){
         this.$emit('slot-choice',this.slot)
+      },
+      test(){
+        console.log("enlever test dans slot item");
       }
     }
   }
@@ -53,6 +91,7 @@
     border: solid gray;
     border-radius: 20px;
     padding: 20px 20px 20px 20px;
+    width: 100%;
 
     .slotitemalwaysdisplay{
       position: relative;
