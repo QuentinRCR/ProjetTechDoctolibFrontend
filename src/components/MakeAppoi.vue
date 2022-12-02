@@ -93,7 +93,6 @@ export default {
   },
   methods: {
     async SubmitForm(CommunicationMean,date,time,student){
-      console.log(student);
       //let timeHour= time.hours;
       //let timeMinute = time.minutes
       let timeApp=("0"+time.hours).slice(-2)+":"+("0"+time.minutes).slice(-2); //get the time of the appointement

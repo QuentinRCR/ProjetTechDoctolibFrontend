@@ -15,6 +15,9 @@ const store = createStore({
     set (state,payload) {
       state.generalToken = payload.token;
     },
+    setRefTok (state,payload) {
+      state.refreshToken = payload.refresh_token;
+    },
     setAuth (state,payload) {
       state.auth = payload.auth;
     }

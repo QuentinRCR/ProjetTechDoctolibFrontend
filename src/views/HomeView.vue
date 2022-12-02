@@ -32,6 +32,7 @@ import StudentArea from '../components/StudentArea.vue';
 import MyAccount from '../components/MyAccount.vue'
 import MyAppointements from '../components/MyAppointements.vue'
 import MySlots from '../components/MySlots.vue'
+import VueJwtDecode from 'vue-jwt-decode'; //to decode Jwt token
 
 
 import axios from 'axios'; //for api request
@@ -62,7 +63,14 @@ export default {
       forceReload: true //to reload the components that have this varaible in their v-if
     }
   },
-  created: function() {
+  created: async function() {
+    if (typeof(this.$store.state.generalToken)!="undefined"){ //if the page is reloaded the token is reloaded
+      let token= this.$route.query.token; //we get the token back from the url
+      this.$store.commit('set', {token: `${token}`}) //set the value of the token to a global state
+      this.$store.commit('setAuth', {auth: `${VueJwtDecode.decode(token).roles[0]}`}) //Set the role as a global variable
+      //this.$store.commit('setRefTok', {refresh_token: `${response.data.refresh_token}`}) ////Set the refresh token
+      this.$router.push({ path: 'home', query: { token: `${token}` }}) //change path and add token to url
+    }
     this.createListRealSlots();
   },
   methods: {

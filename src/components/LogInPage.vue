@@ -50,10 +50,17 @@ export default {
             this.incorrectPassword=true;
         }
         else{
+            //const resfreshToken=response.data.refresh_token;
+            //let refresh_token =response.data.refresh_token;
             this.$store.commit('set', {token: `${token}`}) //set the value of the token to a global state
             this.$store.commit('setAuth', {auth: `${VueJwtDecode.decode(token).roles[0]}`}) //Set the role as a global variable
-            this.$router.push("/home");
+            //this.$store.commit('setRefTok', {refresh_token: `${refresh_token}`}) ////Set the refresh token
+            this.$router.push({ path: 'home', query: { token: `${token}` }}) //change path and add token to url
+            console.log(this.$route.query.token);
         };
+
+        
+        
     },
     SendToSignIn(){
       this.$router.push("/signin");
