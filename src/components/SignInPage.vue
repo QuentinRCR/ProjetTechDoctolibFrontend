@@ -77,6 +77,7 @@ export default {
         margin-left: auto;
         margin-right: auto;
         align-items: center;
+        width: 95%;
 
         .boiteblanche{
             display: flex;

@@ -53,6 +53,7 @@ export default {
         font-size: 18px;
         margin: auto;
         align-items: center;
+        width: 90%;
 
         .boiteblanche{
             display: flex;

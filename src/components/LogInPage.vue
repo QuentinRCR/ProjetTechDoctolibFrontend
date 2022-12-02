@@ -70,6 +70,7 @@ export default {
         //border: solid pink;
         margin: auto;
         align-items: center;
+        width: 95%;
 
         .boiteblanche{
             display: flex;
