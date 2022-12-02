@@ -86,7 +86,6 @@
         this.isExpanded = !this.isExpanded;
       },
       async deleteSlot(){
-        await axios.delete(`${API_HOST}/api/creneaux/${this.slot.id}`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}});
         this.$emit('slot-delete', this.slot.id);
       },
       ModifySlot(){

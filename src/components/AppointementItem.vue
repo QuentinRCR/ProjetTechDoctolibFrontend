@@ -54,7 +54,6 @@
         this.isExpanded = !this.isExpanded;
       },
       async deleteAppointement(){
-        await axios.delete(`${API_HOST}/api/rendez_vous/${this.appointement.id}`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}});
         this.$emit('appointement-delete', this.appointement.id);
       },
       modifyApp(){ 

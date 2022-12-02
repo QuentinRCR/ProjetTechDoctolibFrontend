@@ -29,7 +29,7 @@
         <div v-if="this.$store.state.auth == 'ADMIN'" class="chooseStudent">
           <p>&#0201lève</p> <!--élève-->
           <select v-model="student" required>
-            <option v-bind:value="u.id" v-for="u in users">{{u.firstName}} </option>
+            <option v-bind:value="u.id" v-for="u in users">{{u.lastName}} {{u.firstName}}</option>
           </select><br>
         </div>
         <input class="boutonsubmit" type="submit" value="Prendre rendez-vous">
