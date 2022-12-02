@@ -1,6 +1,10 @@
 <template>
     <div class="appointementitem" :class="{expanded: isExpanded}"> <!--To show or not the modify and delete button-->
       <div class="appointementitemalwaysdisplay" @click="toggleExpand">
+        <div v-if="this.$store.state.auth == 'ADMIN'" class="lign">
+          <div class="sentence">&#0201lève: </div> <!--élève-->
+          <div class="info">{{studentDescription}}</div> <!--To print the date in a human readable manner-->
+        </div>
         <div class="lign">
           <div class="sentence">Le </div>
           <div class="info">{{this.dateFormat.format(new Date(this.appointement.dateDebut))}}</div> <!--To print the date in a human readable manner-->
@@ -46,7 +50,15 @@
         year: 'numeric',
         month: 'long',
         day: 'numeric'
-        })
+        }),
+        studentDescription: ""
+      }
+    },
+    created: async function() {
+      if("this.$store.state.auth == 'ADMIN'"){
+        let response = await axios.get(`${API_HOST}/api/user/submit/${this.appointement.idUser}`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}});
+        let user = response.data;
+        this.studentDescription=`${user.lastName} ${user.firstName}`;
       }
     },
     methods: {
