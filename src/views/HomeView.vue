@@ -7,7 +7,7 @@
       <div class="TopMenu">
         <div class="fillInDiv"></div>
         <button @click="ToggleAppoi" v-if="currentPanel.name != 'panelB'">Prendre un rendez-vous</button>
-        <button v-if="this.$store.state.auth == 'ADMIN'" @click="ToggleSlot">Ajouter un créneau</button>
+        <button v-if="this.$store.state.auth == 'ADMIN' && currentPanel.name != 'panelB'" @click="ToggleSlot">Ajouter un créneau</button>
         <div class="fillInDiv"></div>
       </div>
       <div class="pannels">

@@ -5,7 +5,7 @@
     <h1 v-if="enableModifyMod">Modifier rendez-vous</h1>
     
     <!--<v-date-picker v-model="date" :valid-hours="[0,3,4,5,8,16,20]" is24hr />-->
-    <form @submit.prevent="submit" v-on:submit="SubmitForm(CommunicationMean,date,time)">
+    <form @submit.prevent="submit" v-on:submit="SubmitForm(CommunicationMean,date,time,student)">
         <div class="dateselectorslot">
             <div class="itemdate">
               <p class="">Date:</p>
@@ -23,9 +23,13 @@
               <!--<option :value="null" disabled>Moyen de communication:</option>-->
               <option>Skype</option>
               <option>Whatsapp</option>
-              <option>Téléphone
-                
-              </option>
+              <option>Téléphone</option>
+          </select><br>
+        </div>
+        <div v-if="this.$store.state.auth == 'ADMIN'" class="chooseStudent">
+          <p>&#0201lève</p> <!--élève-->
+          <select v-model="student" required>
+            <option v-bind:value="u.id" v-for="u in users">{{u.firstName}} </option>
           </select><br>
         </div>
         <input class="boutonsubmit" type="submit" value="Prendre rendez-vous">
@@ -63,10 +67,18 @@ export default {
         CommunicationMean: null,
         date: null,
         time:new Proxy({hours: 12,minutes: 0, seconds: 0}, {}), //to initialise the time to 12:00 since it is what is displayed by default
-        isTimeCorrect: true
+        isTimeCorrect: true,
+        student: null,
+        users: []
     }
   },
-  created: function(){
+  created: async function(){
+
+    if(this.$store.state.auth == 'ADMIN'){
+      let response = await axios.get(`${API_HOST}/api/user`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}});
+      this.users = response.data;
+    }
+
     let correctDates=[]; //stores the dates that you can select
     let realSlots1= new Array(this.realSlots)[0] //create a copy of the effective times slots day by day to make sur to not accidentally modify something that should not be modified
     for (let i = 0; i < realSlots1.length; i++) {
@@ -80,7 +92,8 @@ export default {
     Datepicker
   },
   methods: {
-    async SubmitForm(CommunicationMean,date,time){
+    async SubmitForm(CommunicationMean,date,time,student){
+      console.log(student);
       //let timeHour= time.hours;
       //let timeMinute = time.minutes
       let timeApp=("0"+time.hours).slice(-2)+":"+("0"+time.minutes).slice(-2); //get the time of the appointement
@@ -112,7 +125,7 @@ export default {
         let dateDebut1 = date+"T"+startTime;
         let newAppointemen = await axios.post(`${API_HOST}/api/rendez_vous/create_or_modify`,{
           id: id,
-          idUser: null, //automatically assigned by the backend
+          idUser: `${student}`, //automatically assigned by the backend
           idCreneau: 3,
           zoomLink: "link.fr",
           dateDebut: `${dateDebut1}`,
@@ -184,9 +197,10 @@ export default {
           }
         }
 
-        .CommuMean{
+        .CommuMean,.chooseStudent{
           display: flex;
           align-items: center;
+          margin-bottom: 20px;
 
           p{
             font-weight: bold;
@@ -200,7 +214,6 @@ export default {
         }
 
         input[type=submit]{
-            margin-top: 20px;
             background-color: $secondColor;
             border-radius: 84px;
             height: 42px;
