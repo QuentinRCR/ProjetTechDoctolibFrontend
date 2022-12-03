@@ -105,8 +105,8 @@
   }
 
 .ConfirmationDelete{
-  position: absolute;
-  top: 50%;
+  position: fixed;
+  top: 25%;
   left: 50%;
   transform: translate(-50%,50%);
   background-color: white;
