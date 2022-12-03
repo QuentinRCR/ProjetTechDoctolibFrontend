@@ -81,8 +81,13 @@ export default {
 
       .LogOutButton{
         cursor: pointer;
-        
-        margin: 3px 5px 3px 5px;
+        padding: 5px 7px 5px 7px;
+
+        &:hover{
+            text-decoration: underline;
+            background-color: rgb(132, 164, 196);
+            border-radius: 10px;
+          }
       }
       .nav-item{
         //border: solid green;
@@ -91,8 +96,15 @@ export default {
         .nav-link{
           //text-decoration: none;
           color: black;
-          margin: 3px 5px 3px 5px;
+          //margin: 3px 5px 3px 5px;
+          padding: 5px 7px 5px 7px;
           //border: solid pink;
+
+          &:hover{
+            text-decoration: underline;
+            background-color: rgb(132, 164, 196);
+            border-radius: 10px;
+          }
         }
       }
     }

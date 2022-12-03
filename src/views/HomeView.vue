@@ -170,6 +170,7 @@ export default {
     async refreshToken(){ //function to get a new token from the refresh token and update the url
         let response = await axios.get(`${API_HOST}/api/token/refresh`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.refreshToken}`}}); //get slots from the API
         this.$store.commit('set', {token: `${response.data.access_token}`}) //set the value of the token to a global state
+        this.$store.commit('setAuth', {auth: `${VueJwtDecode.decode(response.data.access_token).roles[0]}`}) //Set the role as a global variable
         this.$store.commit('setRefTok', {refresh_token: `${response.data.refresh_token}`}) ////Set the refresh token
         this.$router.push({ path: 'home', query: { token: `${response.data.access_token}`,refresh_token: `${response.data.refresh_token}` }}) //change path and add token to url
         console.log("token mis à jour");
