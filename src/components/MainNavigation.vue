@@ -16,6 +16,8 @@
 
 
 <script>
+import axios from 'axios'; //for api request
+import {API_HOST} from '../config';
 export default {
   name: 'MainNavigation',
   data: function() {
@@ -49,6 +51,7 @@ export default {
     },
     LogOut(){
       this.$store.commit('set', {token: null}) //delete the token
+      clearInterval(this.$store.state.refreshTokenFunction); //reset the function that refresh the token every x minutes
       console.log("bien déconnecter la personne");
       this.$router.push("/");
     }

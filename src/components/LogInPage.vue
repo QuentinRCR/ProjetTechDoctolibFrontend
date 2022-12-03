@@ -25,7 +25,7 @@
 
 <script>
 import axios from 'axios'; 
-import {API_HOST} from "../config" //to get the API path
+import {API_HOST,timeBetweenRefreshs} from "../config" //to get the API path
 import VueJwtDecode from 'vue-jwt-decode'; //to decode Jwt token
 
 export default {
@@ -39,34 +39,40 @@ export default {
   },
   methods: {
     async SubmitForm(ClienEmail,password){
-        //let response = await axios.get(`${API_HOST}/api/creneaux`)
         var data = new FormData(); //so that the backend understand the data correctly 
         data.append('email', `${ClienEmail}`)
         data.append('password', `${password}`)
         
+        //create a request to get acces and authentification tokens
         let response = await axios.post(`${API_HOST}/api/login`, data)
         const token=response.data.access_token;
-        if (typeof(token) == "undefined"){
+        if (typeof(token) == "undefined"){ //it means that the serveur send the connexion page, which means that the password is wrong
             this.incorrectPassword=true;
         }
         else{
-            //const resfreshToken=response.data.refresh_token;
-            //let refresh_token =response.data.refresh_token;
+            let refresh_token =response.data.refresh_token;
             this.$store.commit('set', {token: `${token}`}) //set the value of the token to a global state
             this.$store.commit('setAuth', {auth: `${VueJwtDecode.decode(token).roles[0]}`}) //Set the role as a global variable
-            //this.$store.commit('setRefTok', {refresh_token: `${refresh_token}`}) ////Set the refresh token
-            this.$router.push({ path: 'home', query: { token: `${token}` }}) //change path and add token to url
-            console.log(this.$route.query.token);
+            this.$store.commit('setRefTok', {refresh_token: `${refresh_token}`}) ////Set the refresh token
+            this.$router.push({ path: 'home', query: { token: `${token}`,refresh_token: `${refresh_token}` }}) //change path and add token to url
+            this.$store.commit('setRefreshFunction', {refresh_token_function: setInterval(() => this.refreshToken(), timeBetweenRefreshs)}) //Set the function to periodicaly reset the token
         };
 
         
-        
+        //this.$route.query.refreshTokenFunction();
     },
     SendToSignIn(){
       this.$router.push("/signin");
     },
     ForgotPassword(){
         this.$router.push("/forgetpw");
+    },
+    async refreshToken(){ //get a new tokens, update the url and global variables
+        let response = await axios.get(`${API_HOST}/api/token/refresh`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.refreshToken}`}}); //get slots from the API
+        this.$store.commit('set', {token: `${response.data.access_token}`}) //set the value of the token to a global state
+        this.$store.commit('setRefTok', {refresh_token: `${response.data.refresh_token}`}) ////Set the refresh token
+        this.$router.push({ path: 'home', query: { token: `${response.data.access_token}`,refresh_token: `${response.data.refresh_token}` }}) //change path and add token to url
+        console.log("token mis à jour");
     }
   }
 }

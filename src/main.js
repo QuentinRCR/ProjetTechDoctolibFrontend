@@ -8,7 +8,9 @@ const store = createStore({
   state () {
     return {
       generalToken: null,
-      auth: null
+      auth: null,
+      refresh_token: null,
+      refreshTokenFunction: null
     }
   },
   mutations: {
@@ -17,6 +19,9 @@ const store = createStore({
     },
     setRefTok (state,payload) {
       state.refreshToken = payload.refresh_token;
+    },
+    setRefreshFunction (state,payload) {
+      state.refreshTokenFunction = payload.refresh_token_function;
     },
     setAuth (state,payload) {
       state.auth = payload.auth;

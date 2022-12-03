@@ -36,7 +36,7 @@ import VueJwtDecode from 'vue-jwt-decode'; //to decode Jwt token
 
 
 import axios from 'axios'; //for api request
-import {API_HOST} from '../config';
+import {API_HOST,timeBetweenRefreshs} from '../config';
 
 export default {
   name: 'HomePage',
@@ -63,14 +63,17 @@ export default {
       forceReload: true //to reload the components that have this varaible in their v-if
     }
   },
-  created: async function() {
-    if (typeof(this.$store.state.generalToken)!="undefined"){ //if the page is reloaded the token is reloaded
+  created: function() {
+    if (this.$store.state.generalToken==null){ //if the page is reloaded the token is delete. This part is to get the tokens back from the url
       let token= this.$route.query.token; //we get the token back from the url
+      let refresh_token= this.$route.query.refresh_token; //we get the refresh token back from the url
       this.$store.commit('set', {token: `${token}`}) //set the value of the token to a global state
       this.$store.commit('setAuth', {auth: `${VueJwtDecode.decode(token).roles[0]}`}) //Set the role as a global variable
-      //this.$store.commit('setRefTok', {refresh_token: `${response.data.refresh_token}`}) ////Set the refresh token
-      this.$router.push({ path: 'home', query: { token: `${token}` }}) //change path and add token to url
+      this.$store.commit('setRefTok', {refresh_token: `${refresh_token}`}) ////Set the refresh token
+      this.$store.commit('setRefreshFunction', {refresh_token_function: setInterval(() => this.refreshToken(), timeBetweenRefreshs)}) //Set the function to periodicaly reset the token
     }
+
+    
     this.createListRealSlots();
   },
   methods: {
@@ -162,6 +165,13 @@ export default {
         startDate.setDate(startDate.getDate() +1) //add one day to the date
       }
     }
+    },
+    async refreshToken(){ //function to get a new token from the refresh token and update the url
+        let response = await axios.get(`${API_HOST}/api/token/refresh`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.refreshToken}`}}); //get slots from the API
+        this.$store.commit('set', {token: `${response.data.access_token}`}) //set the value of the token to a global state
+        this.$store.commit('setRefTok', {refresh_token: `${response.data.refresh_token}`}) ////Set the refresh token
+        this.$router.push({ path: 'home', query: { token: `${response.data.access_token}`,refresh_token: `${response.data.refresh_token}` }}) //change path and add token to url
+        console.log("token mis à jour");
     }
   }
 }
