@@ -10,7 +10,8 @@ const store = createStore({
       generalToken: null,
       auth: null,
       refresh_token: null,
-      refreshTokenFunction: null
+      refreshTokenFunction: null,
+      thisMainNavigation: null
     }
   },
   mutations: {
@@ -20,11 +21,14 @@ const store = createStore({
     setRefTok (state,payload) {
       state.refreshToken = payload.refresh_token;
     },
-    setRefreshFunction (state,payload) {
+    setRefreshFunction (state,payload) { //the function that refresh the token every x minutes
       state.refreshTokenFunction = payload.refresh_token_function;
     },
     setAuth (state,payload) {
       state.auth = payload.auth;
+    },
+    setThisMainNavigation (state,payload) {
+      state.auth = payload.thisMainNavigation;
     }
   }
 })

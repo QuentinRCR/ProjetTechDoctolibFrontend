@@ -1,9 +1,9 @@
 <template>
     <div class="appointementitem" :class="{expanded: isExpanded}"> <!--To show or not the modify and delete button-->
       <div class="appointementitemalwaysdisplay" @click="toggleExpand">
-        <div v-if="this.$store.state.auth == 'ADMIN'" class="lign">
+        <div @click="getStudentInfos" v-if="this.$store.state.auth == 'ADMIN'" class="lign">
           <div class="sentence">&#0201lève: </div> <!--élève-->
-          <div class="info">{{studentDescription}}</div> <!--To print the date in a human readable manner-->
+          <div class="info studentname">{{studentDescription}}</div> <!--To print the date in a human readable manner-->
         </div>
         <div class="lign">
           <div class="sentence">Le </div>
@@ -70,6 +70,9 @@
       },
       modifyApp(){ 
         this.$emit('appointement-choice',this.appointement) //to get the appointement id in the MakeAppointements
+      },
+      getStudentInfos(){
+        this.$emit('get-student-info',this.appointement.idUser)
       }
     }
   }
@@ -106,6 +109,10 @@
           font-weight: 600;
           color: $secondColor;
           font-size: 20px;
+        }
+
+        .studentname:hover{
+          text-decoration: underline;
         }
 
       }

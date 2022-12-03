@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="SideMenu">
-      <MainNavigation class="MainNavigation" @panel-change="updatePanel"></MainNavigation>
+      <MainNavigation ref="mainNavigation" class="MainNavigation" @panel-change="updatePanel"></MainNavigation>
     </div>
     <div class="content">
       <div class="TopMenu">
@@ -12,8 +12,8 @@
       </div>
       <div class="pannels">
         <StudentArea class="pannel" :realSlots=this.realSlot v-if="currentPanel.name === 'panelA' && this.forceReload"></StudentArea>
-        <MyAccount classe="pannel" v-if="currentPanel.name === 'panelB'"></MyAccount>
-        <MyAppointements ref="Myrdvs" @appointement-choice="ToggleAppoi" :AppModifyOrCreate="AppModifyOrCreate" classe="pannel" v-if="currentPanel.name === 'panelC' && this.forceReload"></MyAppointements> <!--AppModifyOrCreate is to handle modify mode-->
+        <MyAccount @reset_studentInfos="reset_studentInfos" :studentInfos="studentInfos" classe="pannel" v-if="currentPanel.name === 'panelB'"></MyAccount>
+        <MyAppointements ref="Myrdvs" @get-student-info="getStudentInfos" @appointement-choice="ToggleAppoi" :AppModifyOrCreate="AppModifyOrCreate" classe="pannel" v-if="currentPanel.name === 'panelC' && this.forceReload"></MyAppointements> <!--AppModifyOrCreate is to handle modify mode-->
         <MySlots classe="pannel" @slot-choice="modifySlotMod" v-if="currentPanel.name === 'panelD' && this.forceReload"></MySlots>
       </div>
       <div class="MakeAppoi"><MakeAppoi @reload="reload" :realSlots=this.realSlot @close-popup="ToggleAppoi" :enableModifyMod="enableModifyMod" :AppointementChoice="AppointementChoice" v-if="isAddAppointement"></MakeAppoi></div>
@@ -60,7 +60,8 @@ export default {
       SlotChoice: null,
       AppModifyOrCreate: null,
       realSlot: null,
-      forceReload: true //to reload the components that have this varaible in their v-if
+      forceReload: true, //to reload the components that have this varaible in their v-if
+      studentInfos: null
     }
   },
   created: function() {
@@ -172,6 +173,13 @@ export default {
         this.$store.commit('setRefTok', {refresh_token: `${response.data.refresh_token}`}) ////Set the refresh token
         this.$router.push({ path: 'home', query: { token: `${response.data.access_token}`,refresh_token: `${response.data.refresh_token}` }}) //change path and add token to url
         console.log("token mis à jour");
+    },
+    getStudentInfos(id){
+      this.studentInfos=id;
+      this.$refs.mainNavigation.changePanel({ id: 1, name: "panelB", tabDisplay: "Mon Compte" }) //force to got to the my account pannel
+    },
+    reset_studentInfos(){
+      this.studentInfos=null;
     }
   }
 }

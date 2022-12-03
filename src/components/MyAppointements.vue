@@ -10,6 +10,7 @@
           :key="appointement.id"  
           @appointement-delete="deleteAppointement"
           @appointement-choice="modifyApp"
+          @get-student-info="getStudentInfos"
         >
         </AppointementItem>
         </div>
@@ -72,6 +73,9 @@
       },
       modifyApp(app){
         this.$emit('appointement-choice',app)
+      },
+      getStudentInfos(id){
+        this.$emit('get-student-info',id)
       }
     }
   }

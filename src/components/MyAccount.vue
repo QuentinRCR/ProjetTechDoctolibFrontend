@@ -1,6 +1,7 @@
 <template>
   <div class="StudentArea">
-    <h1>Section élève</h1>
+    <h1 v-if="!this.viewInfoOthers">Mes informations</h1>
+    <h1 v-if="this.viewInfoOthers">Informations {{StudentData.firstName}} {{StudentData.lastName}} </h1>
     <div class="mainContent">
       <form  class="personalInfos" @submit.prevent="submit" v-on:submit="SubmitForm(lastName,firstName,campus,phoneNumber,skypeAccount,Password)"> <!--form used in modify mode-->
         <div class="infoItem">
@@ -45,7 +46,7 @@
         </div>
         <input v-if=isInModifyMod class="boutonsubmit" type="submit" value="Enregistrer"> <!--to submit the form in modify mode-->
       </form>
-      <button class="modifyInfos" v-if=!isInModifyMod @click="toggleModifyMod">Modifier mes informations</button>
+      <button class="modifyInfos" v-if="(!isInModifyMod && !this.viewInfoOthers)" @click="toggleModifyMod">Modifier mes informations</button>
       <button class="modifyPw" @click="toogleModifyPwMode" v-if=isInModifyMod >{{ modifyPasswordMod ? 'Ne pas modifier mon mot de passe' : 'Modifier mon mot de passe' }}</button>
     </div>
   </div>
@@ -58,8 +59,20 @@ import axios from 'axios';
 
 export default {
     name: 'StudentArea',
+    props:['studentInfos'],
     created: async function(){ //to be able to assign the fetched data to the fields
-      let response = await axios.get(`${API_HOST}/api/user/getbyId`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}}); //get front the API
+      if(this.studentInfos!=null){ //if it is used to display infos of a student
+        this.viewInfoOthers=true;
+      }
+
+      let response;
+      if(this.viewInfoOthers){  //if is used to view datas of others
+        response = await axios.get(`${API_HOST}/api/user/submit/${this.studentInfos}`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}}); //get front the API
+        this.$emit('reset_studentInfos') //to put studentInfos to 0 again
+      }
+      else{ //if in normal mod
+        response = await axios.get(`${API_HOST}/api/user/getbyId`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}}); //get front the API
+      }
       this.StudentData = response.data; //assign the data
       this.lastName=this.StudentData.lastName //update values for the form mod
       this.firstName=this.StudentData.firstName,
@@ -87,7 +100,8 @@ export default {
         skypeAccount: null,
         PasswordConfirmation: null,
         Password: null,
-        modifyPasswordMod: false
+        modifyPasswordMod: false,
+        viewInfoOthers: false //when admin view the infos of a user
       }
     },
     methods: {
