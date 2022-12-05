@@ -9,7 +9,8 @@
         <div class="dateselectorslot">
             <div class="itemdate">
               <p class="">Date:</p>
-              <div class="datepicker"><Datepicker inline v-model="date" :enableTimePicker="false" autoApply modelType="yyyy-MM-dd" :allowedDates="allowedDates"></Datepicker></div>
+              <div class="datepicker"><Datepicker :month-change-on-scroll="false" inline v-model="date" :enableTimePicker="false" autoApply modelType="yyyy-MM-dd" :allowedDates="allowedDates"></Datepicker></div>
+              <div class="errorMessage" v-show="this.isDateNotSelected">Aucun date n'est selectionné</div>
             </div>
             <div class="itemtime">
               <p class="">Heure:</p>
@@ -69,7 +70,9 @@ export default {
         time:new Proxy({hours: 12,minutes: 0, seconds: 0}, {}), //to initialise the time to 12:00 since it is what is displayed by default
         isTimeCorrect: true,
         student: null,
-        users: []
+        users: [],
+        isDate: false,
+        isDateNotSelected: false
     }
   },
   created: async function(){
@@ -93,31 +96,39 @@ export default {
   },
   methods: {
     async SubmitForm(CommunicationMean,date,time,student){
-      //let timeHour= time.hours;
-      //let timeMinute = time.minutes
-      let timeApp=("0"+time.hours).slice(-2)+":"+("0"+time.minutes).slice(-2); //get the time of the appointement
-      let realSlots2=new Array(this.realSlots)[0] //dup just in case
-      realSlots2.forEach(slot => { 
-        if(date==slot[0].slice(0,-6)){ //if the date is correct, continue
-          if (timeApp>=slot[0].slice(-5) && timeApp<=slot[1].slice(-5)){ //if the time is in the slot, that's ok
-            this.isTimeCorrect=true;
+      if (date==null) { //if no date was selected
+        this.isDateNotSelected=true;
+      }
+      else{
+        this.isDateNotSelected=false;
+      }
+
+      if(!this.isDateNotSelected){
+        let timeApp=("0"+time.hours).slice(-2)+":"+("0"+time.minutes).slice(-2); //get the time of the appointement
+        let realSlots2=new Array(this.realSlots)[0] //dup just in case
+        realSlots2.forEach(slot => { 
+          if(date==slot[0].slice(0,-6)){ //if the date is correct, continue
+            if (timeApp>=slot[0].slice(-5) && timeApp<=slot[1].slice(-5)){ //if the time is in the slot, that's ok
+              this.isTimeCorrect=true;
+            }
+            else{
+              this.isTimeCorrect=false;
+            }
           }
-          else{
-            this.isTimeCorrect=false;
-          }
-        }
-      });
+        });
+      }
 
 
       //if the time of the appointement is not good it does not submit the form
-      if(this.isTimeCorrect){
-
+      if(this.isTimeCorrect && !this.isDateNotSelected){
         let id;
         if (!this.enableModifyMod){
           id = null;
+          console.log(this.enableModifyMod);
         }
         else{
           id = this.AppointementChoice.id
+          console.log("en mode modification");
         }
 
         let startTime= ("0"+time.hours).slice(-2)+":"+("0"+time.minutes).slice(-2)+":"+("0"+time.seconds).slice(-2); //Extract start and end time from proxy
@@ -184,7 +195,15 @@ export default {
           }
 
           .itemdate{
-            margin-bottom: 20px
+            margin-bottom: 20px;
+
+            .errorMessage{
+              color: red;
+              text-align: center;
+              font-size: 18px;
+              font-weight: bold;
+              margin-top: 5px;
+            }
           }
 
           .itemtime{
@@ -192,6 +211,7 @@ export default {
             .errorMessage{
               color: red;
               text-align: center;
+              font-size: 18px;
             }
           }
         }

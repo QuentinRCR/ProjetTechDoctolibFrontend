@@ -9,7 +9,7 @@
         <div class="timesection">
             <div class="dateselectorslot">
                 <p>Plage de jours</p>
-                <div class="datepicker"><Datepicker v-model="dateSlot" inline required autoApply closeOnScroll  utc="preserve" range :enableTimePicker="false"></Datepicker></div>
+                <div class="datepicker"><Datepicker :month-change-on-scroll="false" v-model="dateSlot" inline required autoApply closeOnScroll  utc="preserve" range :enableTimePicker="false"></Datepicker></div>
                 <p class="errorMessage" v-if="this.isDateSelected">Veillez selectionner<br>une plage de jours</p>
             </div>
             <div class="timeSelectorWrapper">

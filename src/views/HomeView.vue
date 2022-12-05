@@ -13,7 +13,7 @@
       <div class="pannels">
         <StudentArea class="pannel" :realSlots=this.realSlot v-if="currentPanel.name === 'panelA' && this.forceReload"></StudentArea>
         <MyAccount @reset_studentInfos="reset_studentInfos" :studentInfos="studentInfos" classe="pannel" v-if="currentPanel.name === 'panelB'"></MyAccount>
-        <MyAppointements ref="Myrdvs" @get-student-info="getStudentInfos" @appointement-choice="ToggleAppoi" :AppModifyOrCreate="AppModifyOrCreate" classe="pannel" v-if="currentPanel.name === 'panelC' && this.forceReload"></MyAppointements> <!--AppModifyOrCreate is to handle modify mode-->
+        <MyAppointements ref="Myrdvs" @get-student-info="getStudentInfos" @appointement-choice="modifyAppMod" :AppModifyOrCreate="AppModifyOrCreate" classe="pannel" v-if="currentPanel.name === 'panelC' && this.forceReload"></MyAppointements> <!--AppModifyOrCreate is to handle modify mode-->
         <MySlots classe="pannel" @slot-choice="modifySlotMod" v-if="currentPanel.name === 'panelD' && this.forceReload"></MySlots>
       </div>
       <div class="MakeAppoi"><MakeAppoi @reload="reload" :realSlots=this.realSlot @close-popup="ToggleAppoi" :enableModifyMod="enableModifyMod" :AppointementChoice="AppointementChoice" v-if="isAddAppointement"></MakeAppoi></div>

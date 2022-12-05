@@ -18,7 +18,7 @@
                 </select><br>
                 <input class="boutonsubmit" type="submit" value="S'inscrire">
             </form>
-            <p v-if="formSubmited">Vous devez avoir reçu un mail. Veillez confirmer votre compte</p>
+            <p v-if="this.formSubmited">Vous devez avoir reçu un mail pour activer votre compte</p>
         </div>
       </div>
       <div class="SignInButtonPart">
@@ -131,14 +131,11 @@ export default {
                     }
                 }
 
-                .ForgotPassword{
-                    color: rgb(74, 74, 74);
-                    cursor: pointer;
-                }
-
-                .wrongEmail{
-                    color:red;
-                    font-weight: 600;
+                p{
+                    text-align: center;
+                    font-size: 18px;
+                    color: green;
+                    font-weight: bold;
                 }
             }
         }
