@@ -48,6 +48,7 @@
       </form>
       <button class="modifyInfos" v-if="(!isInModifyMod && !this.viewInfoOthers)" @click="toggleModifyMod">Modifier mes informations</button>
       <button class="modifyPw" @click="toogleModifyPwMode" v-if=isInModifyMod >{{ modifyPasswordMod ? 'Ne pas modifier mon mot de passe' : 'Modifier mon mot de passe' }}</button>
+      <!--<button @click="deleteAccount">Supprimer mon compte</button>-->
     </div>
   </div>
       
@@ -132,6 +133,11 @@ export default {
       },
       toogleModifyPwMode(){
         this.modifyPasswordMod = !this.modifyPasswordMod
+      },
+      async deleteAccount(){
+        console.log("aa");
+        await axios.post(`${API_HOST}/api/user`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}})
+        console.log("bb");
       }
     }
   }
