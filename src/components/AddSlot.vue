@@ -58,7 +58,12 @@
             </div>
         </div>
 
-        <input class="boutonsubmit" type="submit" value="Prendre rendez-vous">
+        <div class="submitpart">
+            <input class="boutonsubmit" type="submit" value="Ajouter le créneau" :style="{
+                        color: submitClicked ? '#3694c6' : 'white' //when the button is clicked, we hide the connection button
+                    }">
+            <div v-if="submitClicked" class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+        </div>
     </form>
 </div>    
 
@@ -84,7 +89,8 @@ export default {
         timeSlotStart: new Proxy({hours: 12,minutes: 0, seconds: 0}, {}), //to initialise the time to 12:00 since it is what is displayed by default
         timeSlotEnd: new Proxy({hours: 12,minutes: 0, seconds: 0}, {}), //to initialise the time to 12:00 since it is what is displayed by default
         areTimesInTheRightOrder: true,
-        isDateSelected: false
+        isDateSelected: false,
+        submitClicked: false
     }
   },
   setup: function(){   //to initialise the array with allowed dates
@@ -99,77 +105,80 @@ export default {
   },
   methods: {
     async SubmitForm(day,dateSlot,timeSlotStart,timeSlotEnd){
-
-      let startTime= ("0"+timeSlotStart.hours).slice(-2)+":"+("0"+timeSlotStart.minutes).slice(-2)+":"+("0"+timeSlotStart.seconds).slice(-2); //Extract start and end time from proxy
-      let endTime= ("0"+timeSlotEnd.hours).slice(-2)+":"+("0"+timeSlotEnd.minutes).slice(-2)+":"+("0"+timeSlotEnd.seconds).slice(-2); //Formated to hh:mm:ss
-     
-      if(startTime<endTime && dateSlot!=null){ //check that the dates are in the right order
-        let startDate= dateSlot[0].slice(0,-14); //Extract start and end date from proxy
-        let endDate= dateSlot[1].slice(0,-14);
-
-        let daysList=[] //Extract days from proxy and translate them
-        for(let i=0;i<day.length;i++){
-            switch (day[i]) {
-                case "Lundi":
-                    daysList[daysList.length]="MONDAY";
-                    break;
-                case "Mardi":
-                    daysList[daysList.length]="TUESDAY";
-                    break;
-                case "Mercredi":
-                    daysList[daysList.length]="WEDNESDAY";
-                    break;
-                case "Jeudi":
-                    daysList[daysList.length]="THURSDAY";
-                    break;
-                case "Vendredi":
-                    daysList[daysList.length]="FRIDAY";
-                    break;  
-                case "Samedi":
-                    daysList[daysList.length]="SATURDAY";
-                    break;
-                case "Dimanche":
-                    daysList[daysList.length]="SUNDAY";
-                    break;
-                default:
-                    console.log("the switch to translate days has a problem");
-                }
-            }
+      if(!this.submitClicked) {//to prevent spamming
+        this.submitClicked=true;
+        let startTime= ("0"+timeSlotStart.hours).slice(-2)+":"+("0"+timeSlotStart.minutes).slice(-2)+":"+("0"+timeSlotStart.seconds).slice(-2); //Extract start and end time from proxy
+        let endTime= ("0"+timeSlotEnd.hours).slice(-2)+":"+("0"+timeSlotEnd.minutes).slice(-2)+":"+("0"+timeSlotEnd.seconds).slice(-2); //Formated to hh:mm:ss
         
-            let idSlot; 
-            if(this.enableModifyModSlot){ //set idSlot if in modify mode
-                idSlot=this.SlotChoice.id
+        if(startTime<endTime && dateSlot!=null){ //check that the dates are in the right order
+            let startDate= dateSlot[0].slice(0,-14); //Extract start and end date from proxy
+            let endDate= dateSlot[1].slice(0,-14);
+
+            let daysList=[] //Extract days from proxy and translate them
+            for(let i=0;i<day.length;i++){
+                switch (day[i]) {
+                    case "Lundi":
+                        daysList[daysList.length]="MONDAY";
+                        break;
+                    case "Mardi":
+                        daysList[daysList.length]="TUESDAY";
+                        break;
+                    case "Mercredi":
+                        daysList[daysList.length]="WEDNESDAY";
+                        break;
+                    case "Jeudi":
+                        daysList[daysList.length]="THURSDAY";
+                        break;
+                    case "Vendredi":
+                        daysList[daysList.length]="FRIDAY";
+                        break;  
+                    case "Samedi":
+                        daysList[daysList.length]="SATURDAY";
+                        break;
+                    case "Dimanche":
+                        daysList[daysList.length]="SUNDAY";
+                        break;
+                    default:
+                        console.log("the switch to translate days has a problem");
+                    }
+                }
+            
+                let idSlot; 
+                if(this.enableModifyModSlot){ //set idSlot if in modify mode
+                    idSlot=this.SlotChoice.id
+                }
+                else{
+                    idSlot=null;
+                }
+
+            let newSlot = await axios.post(`${API_HOST}/api/creneaux/create_or_modify`, //Send the resquest to the api with values defined above
+            {
+                id: idSlot,
+                dateDebut: `${startDate}`,
+                dateFin: `${endDate}`,
+                jours: daysList,
+                heuresDebutFin: [
+                    {
+                        idPlage: null,
+                        idCreneaux: 1000,
+                        tempsDebut: `${startTime}`,
+                        tempsFin: `${endTime}`
+                    }
+                ]
+                },{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}})
+            this.$emit('close-popup');
+            this.$emit('reload'); //for the reload of the page to have the correct appointement
             }
             else{
-                idSlot=null;
-            }
-
-        let newSlot = await axios.post(`${API_HOST}/api/creneaux/create_or_modify`, //Send the resquest to the api with values defined above
-        {
-            id: idSlot,
-            dateDebut: `${startDate}`,
-            dateFin: `${endDate}`,
-            jours: daysList,
-            heuresDebutFin: [
-                {
-                    idPlage: null,
-                    idCreneaux: 1000,
-                    tempsDebut: `${startTime}`,
-                    tempsFin: `${endTime}`
+                if(dateSlot==null){
+                    this.isDateSelected=true;
                 }
-            ]
-            },{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}})
-        this.$emit('close-popup');
-        this.$emit('reload'); //for the reload of the page to have the correct appointement
-        }
-        else{
-            if(dateSlot==null){
-                this.isDateSelected=true;
-            }
-            if(startTime>endTime){
-                this.areTimesInTheRightOrder=false;
+                if(startTime>endTime){
+                    this.areTimesInTheRightOrder=false;
+                } 
             } 
-        } 
+            this.submitClicked=false;
+        }
     },
     closePopup(){ //for the cross
         this.$emit('close-popup');
@@ -257,14 +266,29 @@ export default {
             }  
         }
 
-        input[type=submit]{
-            margin-top: 20px;
-            background-color: $secondColor;
-            border-radius: 84px;
-            font-size: 14px;
-            color: #eee;
-            font-weight: 600;
-            padding: 15px 15px 15px 15px;
+        .submitpart{
+            display: flex;
+            flex-direction: column;
+            position: relative;
+
+            input[type=submit]{
+                font-size: 14px;
+                //color: #eee;
+                font-weight: 600;
+                margin-top: 20px;
+                background-color: $secondColor;
+                border-radius: 84px;
+                
+                padding: 15px 15px 15px 15px;
+                cursor: pointer;
+            }
+
+            .lds-ellipsis{
+                position: absolute;
+                top: 8px;
+                left: 50%;
+                transform: translate(-50%);
+            }
         }
 
         input[type=text], input[type=password]{

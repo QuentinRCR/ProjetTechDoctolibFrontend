@@ -20,6 +20,7 @@ import {API_HOST} from '../config';
 
 export default {
   name: 'MyAccount',
+  props: ['realSlotsss'],
   data: function() {
     
     return {
@@ -32,35 +33,30 @@ export default {
   },
   created: async function() {
 
-    
-    //this.loadSlots()
-    
+    if(this.realSlotsss!=null){ //to reload not at login
+    this.loadSlots(null);
+    }
+  
+    console.log(this.realSlotsss);
     //to add appointements
-    let response1 = await axios.get(`${API_HOST}/api/rendez_vous`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}}); //get slots from the API
-    let appointements = response1.data; //extract the data
-    this.appointements = appointements; //put it in a new variable
 
-    this.appointements.forEach(appointement => {
-      let startDateTime= new Date(appointement.dateDebut);
-      let endDateTime= new Date(startDateTime.getTime() + (30 -startDateTime.getTimezoneOffset())*60000);
-      startDateTime = (appointement.dateDebut.replace('T',' ').slice(0,-3)); //adjuste format
-      endDateTime = (endDateTime.toISOString().replace('T',' ').slice(0,-5)); //adjuste format
-      this.events.push({
-      start: `${startDateTime}`,
-      end: `${endDateTime}`,
-      title: '',
-      class: 'apps'
-      })
-    });
-
+    this.loadApp();
       
 
     },
   methods: {
     
     async loadSlots(realSlot){
+      console.log(realSlot);
+      if (realSlot!=null){
+        this.realSlots=realSlot;
+      }
+      else{
+        console.log("option b");
+        this.realSlots=this.realSlotsss
+      }
       this.realSlot=[];
-      realSlot.forEach(slot => {
+      this.realSlots.forEach(slot => {
         this.realSlot.push(slot.map(dateee => dateee.replace("T"," "))); //replace the original T by a space
       });
       
@@ -73,7 +69,26 @@ export default {
         background: true
         })
       }
+      console.log(this.realSlotsss);
     },
+    async loadApp(){
+      let response1 = await axios.get(`${API_HOST}/api/rendez_vous`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}}); //get slots from the API
+      let appointements = response1.data; //extract the data
+      this.appointements = appointements; //put it in a new variable
+
+      this.appointements.forEach(appointement => {
+      let startDateTime= new Date(appointement.dateDebut);
+      let endDateTime= new Date(startDateTime.getTime() + (30 -startDateTime.getTimezoneOffset())*60000);
+      startDateTime = (appointement.dateDebut.replace('T',' ').slice(0,-3)); //adjuste format
+      endDateTime = (endDateTime.toISOString().replace('T',' ').slice(0,-5)); //adjuste format
+      this.events.push({
+      start: `${startDateTime}`,
+      end: `${endDateTime}`,
+      title: '',
+      class: 'apps'
+      })
+    });
+    }
     
   }
 }

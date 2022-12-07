@@ -126,8 +126,6 @@ export default {
                         flex-direction: column;
                         position: relative;
 
-                        
-
                         input[type=submit]{
                             font-size: 14px;
                             //color: #eee;
