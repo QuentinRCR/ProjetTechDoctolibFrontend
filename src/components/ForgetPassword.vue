@@ -8,7 +8,7 @@
                 <input v-model="ClienEmail" type="text" placeholder="Email EMSE" pattern="[a-z0-9._%+-]+@[a-z0-9.-]*emse\.fr$" required><br>
                 <input class="boutonsubmit" type="submit" value="Confirmer">
             </form>
-            <p class="messageEmail" v-if="mailSent">Un mail vous a été envoyé pour que vous changiez votre mot de passe. Consultez votre boite mail étudiante</p>
+            <p class="messageEmail" v-if="mailSent">Un mail vous a été envoyé pour que vous changiez votre mot de passe. Consultez votre boite mail étudiante.</p>
             <p class="toLogin" @click="ToLogIn">Retour à la page de connection</p>
         </div>
       </div>
