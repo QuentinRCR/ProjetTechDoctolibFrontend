@@ -6,7 +6,12 @@
             <form @submit.prevent="submit" v-on:submit="SubmitForm(ClienEmail,Password)">
                 <input v-model="ClienEmail" type="text" placeholder="Email EMSE" required><br>
                 <input v-model="Password" type="password" placeholder="Mot de passe" required><br>
-                <input class="boutonsubmit" type="submit" value="Se connecter">
+                <div class="submitpart">
+                    <input class="boutonsubmit" type="submit" value="Se connecter" :style="{
+                                color: submitClicked ? '#3694c6' : 'white' //when the button is clicked, we hide the connection button
+                            }">
+                    <div v-if="submitClicked" class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                </div>
             </form>
             <p class="wrongEmail" v-if="this.incorrectPassword">L'email ou  le mot de passe saisit n'est pas correcte</p>
             <p class="ForgotPassword" @click="ForgotPassword">Mot de passe oublié</p>
@@ -19,6 +24,9 @@
         </div>
       </div>
       
+
+      
+
   </div>
 
 </template>
@@ -34,32 +42,37 @@ export default {
     return {
         ClienEmail: null,
         Password: null,
-        incorrectPassword: false
+        incorrectPassword: false,
+        submitClicked: false
     }
   },
   methods: {
     async SubmitForm(ClienEmail,password){
-        var data = new FormData(); //so that the backend understand the data correctly 
-        data.append('email', `${ClienEmail}`)
-        data.append('password', `${password}`)
-        
-        //create a request to get acces and authentification tokens
-        let response = await axios.post(`${API_HOST}/api/login`, data)
-        const token=response.data.access_token;
-        if (typeof(token) == "undefined"){ //it means that the serveur send the connexion page, which means that the password is wrong
-            this.incorrectPassword=true;
+        if(!this.submitClicked){ //to prevent spamming
+            this.submitClicked=true; //to display the loading animation
+            var data = new FormData(); //so that the backend understand the data correctly 
+            data.append('email', `${ClienEmail}`)
+            data.append('password', `${password}`)
+            
+            //create a request to get acces and authentification tokens
+            let response = await axios.post(`${API_HOST}/api/login`, data)
+            this.submitClicked=true;
+            const token=response.data.access_token;
+            if (typeof(token) == "undefined"){ //it means that the serveur send the connexion page, which means that the password is wrong
+                this.incorrectPassword=true;
+                this.submitClicked=false;
+            }
+            else{
+                let refresh_token =response.data.refresh_token;
+                this.$store.commit('set', {token: `${token}`}) //set the value of the token to a global state
+                this.$store.commit('setAuth', {auth: `${VueJwtDecode.decode(token).roles[0]}`}) //Set the role as a global variable
+                this.$store.commit('setRefTok', {refresh_token: `${refresh_token}`}) ////Set the refresh token
+                this.$router.push({ path: 'home', query: { token: `${token}`,refresh_token: `${refresh_token}` }}) //change path and add token to url
+                this.$store.commit('setRefreshFunction', {refresh_token_function: setInterval(() => this.refreshToken(), timeBetweenRefreshs)}) //Set the function to periodicaly reset the token
+            };
         }
-        else{
-            let refresh_token =response.data.refresh_token;
-            this.$store.commit('set', {token: `${token}`}) //set the value of the token to a global state
-            this.$store.commit('setAuth', {auth: `${VueJwtDecode.decode(token).roles[0]}`}) //Set the role as a global variable
-            this.$store.commit('setRefTok', {refresh_token: `${refresh_token}`}) ////Set the refresh token
-            this.$router.push({ path: 'home', query: { token: `${token}`,refresh_token: `${refresh_token}` }}) //change path and add token to url
-            this.$store.commit('setRefreshFunction', {refresh_token_function: setInterval(() => this.refreshToken(), timeBetweenRefreshs)}) //Set the function to periodicaly reset the token
-        };
 
         
-        //this.$route.query.refreshTokenFunction();
     },
     SendToSignIn(){
       this.$router.push("/signin");
@@ -107,15 +120,33 @@ export default {
                     flex-direction: column ;
                     align-items: stretch;
 
-                    input[type=submit]{
-                        margin-top: 20px;
-                        background-color: $secondColor;
-                        border-radius: 84px;
-                        font-size: 14px;
-                        color: #eee;
-                        font-weight: 600;
-                        padding: 15px 15px 15px 15px;
-                        cursor: pointer;
+
+                    .submitpart{
+                        border: solid blue;
+                        display: flex;
+                        flex-direction: column;
+                        position: relative;
+
+                        
+
+                        input[type=submit]{
+                            font-size: 14px;
+                            //color: #eee;
+                            font-weight: 600;
+                            margin-top: 20px;
+                            background-color: $secondColor;
+                            border-radius: 84px;
+                            
+                            padding: 15px 15px 15px 15px;
+                            cursor: pointer;
+                        }
+
+                        .lds-ellipsis{
+                            position: absolute;
+                            top: 8px;
+                            left: 50%;
+                            transform: translate(-50%);
+                        }
                     }
 
                     input[type=text], input[type=password]{
@@ -203,5 +234,4 @@ export default {
             margin-right:10%;
         }
     }
-
 </style>
