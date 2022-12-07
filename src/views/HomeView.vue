@@ -105,7 +105,6 @@ export default {
     },
     async reload(){ //reload the complonents that have forceReload in there v-if
       // Remove MyComponent from the DOM
-      console.log("a bien reload");
       this.createListRealSlots();
       this.forceReload = false;
 			// Wait for the change to get flushed to the DOM
@@ -169,7 +168,6 @@ export default {
       
     }
       this.$refs.StudentArea.loadSlots(this.realSlot); //generate all the slots in the calendar
-      console.log("bien passé dans la fonction");
     },
     async refreshToken(){ //function to get a new token from the refresh token and update the url
         let response = await axios.get(`${API_HOST}/api/token/refresh`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.refreshToken}`}}); //get slots from the API

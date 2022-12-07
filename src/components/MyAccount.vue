@@ -135,9 +135,7 @@ export default {
         this.modifyPasswordMod = !this.modifyPasswordMod
       },
       async deleteAccount(){
-        console.log("aa");
         await axios.post(`${API_HOST}/api/user`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}})
-        console.log("bb");
       }
     }
   }

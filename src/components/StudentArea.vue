@@ -36,8 +36,6 @@ export default {
     if(this.realSlotsss!=null){ //to reload not at login
     this.loadSlots(null);
     }
-  
-    console.log(this.realSlotsss);
     //to add appointements
 
     this.loadApp();
@@ -47,12 +45,10 @@ export default {
   methods: {
     
     async loadSlots(realSlot){
-      console.log(realSlot);
       if (realSlot!=null){
         this.realSlots=realSlot;
       }
       else{
-        console.log("option b");
         this.realSlots=this.realSlotsss
       }
       this.realSlot=[];
@@ -69,7 +65,6 @@ export default {
         background: true
         })
       }
-      console.log(this.realSlotsss);
     },
     async loadApp(){
       let response1 = await axios.get(`${API_HOST}/api/rendez_vous`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}}); //get slots from the API

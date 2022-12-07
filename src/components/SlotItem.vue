@@ -1,5 +1,5 @@
 <template> <!--See AppointementItem to simillar code commented-->
-    <div @click="test" class="slotitem" :class="{expanded: isExpanded}">
+    <div class="slotitem" :class="{expanded: isExpanded}">
       <div class="slotitemalwaysdisplay" @click="toggleExpand">
         <div class="lign">
           <div class="sentence">Entre le</div>
@@ -90,9 +90,6 @@
       },
       ModifySlot(){
         this.$emit('slot-choice',this.slot)
-      },
-      test(){
-        console.log("enlever test dans slot item");
       }
     }
   }

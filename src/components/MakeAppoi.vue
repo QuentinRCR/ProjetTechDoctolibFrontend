@@ -33,7 +33,12 @@
             <option v-bind:value="u.id" v-for="u in users">{{u.lastName}} {{u.firstName}}</option>
           </select><br>
         </div>
-        <input class="boutonsubmit" type="submit" value="Prendre rendez-vous">
+        <div class="submitpart">
+          <input class="boutonsubmit" type="submit" value="Prendre rendez-vous" :style="{
+                        color: submitClicked ? '#3694c6' : 'white' //when the button is clicked, we hide the connection button
+                    }">
+            <div v-if="submitClicked" class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+        </div>
     </form>
 </div>    
 
@@ -72,7 +77,8 @@ export default {
         student: null,
         users: [],
         isDate: false,
-        isDateNotSelected: false
+        isDateNotSelected: false,
+        submitClicked: false
     }
   },
   created: async function(){
@@ -96,56 +102,58 @@ export default {
   },
   methods: {
     async SubmitForm(CommunicationMean,date,time,student){
-      if (date==null) { //if no date was selected
-        this.isDateNotSelected=true;
-      }
-      else{
-        this.isDateNotSelected=false;
-      }
-
-      if(!this.isDateNotSelected){
-        let timeApp=("0"+time.hours).slice(-2)+":"+("0"+time.minutes).slice(-2); //get the time of the appointement
-        let realSlots2=new Array(this.realSlots)[0] //dup just in case
-        realSlots2.forEach(slot => { 
-          if(date==slot[0].slice(0,-6)){ //if the date is correct, continue
-            if (timeApp>=slot[0].slice(-5) && timeApp<=slot[1].slice(-5)){ //if the time is in the slot, that's ok
-              this.isTimeCorrect=true;
-            }
-            else{
-              this.isTimeCorrect=false;
-            }
-          }
-        });
-      }
-
-
-      //if the time of the appointement is not good it does not submit the form
-      if(this.isTimeCorrect && !this.isDateNotSelected){
-        let id;
-        if (!this.enableModifyMod){
-          id = null;
-          console.log(this.enableModifyMod);
+      if(!this.submitClicked){//to prevent spam
+        this.submitClicked=true;
+        if (date==null) { //if no date was selected
+          this.isDateNotSelected=true;
         }
         else{
-          id = this.AppointementChoice.id
-          console.log("en mode modification");
+          this.isDateNotSelected=false;
         }
 
-        let startTime= ("0"+time.hours).slice(-2)+":"+("0"+time.minutes).slice(-2)+":"+("0"+time.seconds).slice(-2); //Extract start and end time from proxy
-        let dateDebut1 = date+"T"+startTime;
-        let newAppointemen = await axios.post(`${API_HOST}/api/rendez_vous/create_or_modify`,{
-          id: id,
-          idUser: `${student}`, //automatically assigned by the backend
-          idCreneau: 3,
-          zoomLink: "link.fr",
-          dateDebut: `${dateDebut1}`,
-          moyenCommunication: CommunicationMean,
-          duree: "PT30M"
-          },{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}}
-        )
+        if(!this.isDateNotSelected){
+          let timeApp=("0"+time.hours).slice(-2)+":"+("0"+time.minutes).slice(-2); //get the time of the appointement
+          let realSlots2=new Array(this.realSlots)[0] //dup just in case
+          realSlots2.forEach(slot => { 
+            if(date==slot[0].slice(0,-6)){ //if the date is correct, continue
+              if (timeApp>=slot[0].slice(-5) && timeApp<=slot[1].slice(-5)){ //if the time is in the slot, that's ok
+                this.isTimeCorrect=true;
+              }
+              else{
+                this.isTimeCorrect=false;
+              }
+            }
+          });
+        }
 
-        this.$emit('close-popup',this.enableModifyMod); //to cancer the modify mode
-        this.$emit('reload'); //for the reload of the page to have the correct appointement
+
+        //if the time of the appointement is not good it does not submit the form
+        if(this.isTimeCorrect && !this.isDateNotSelected){
+          let id;
+          if (!this.enableModifyMod){
+            id = null;
+          }
+          else{
+            id = this.AppointementChoice.id
+          }
+
+          let startTime= ("0"+time.hours).slice(-2)+":"+("0"+time.minutes).slice(-2)+":"+("0"+time.seconds).slice(-2); //Extract start and end time from proxy
+          let dateDebut1 = date+"T"+startTime;
+          let newAppointemen = await axios.post(`${API_HOST}/api/rendez_vous/create_or_modify`,{
+            id: id,
+            idUser: `${student}`, //automatically assigned by the backend
+            idCreneau: 3,
+            zoomLink: "link.fr",
+            dateDebut: `${dateDebut1}`,
+            moyenCommunication: CommunicationMean,
+            duree: "PT30M"
+            },{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}}
+          )
+
+          this.$emit('close-popup',this.enableModifyMod); //to cancer the modify mode
+          this.$emit('reload'); //for the reload of the page to have the correct appointement
+        }
+        this.submitClicked=false;
       }
     },
     closePopup(){
@@ -232,14 +240,30 @@ export default {
           }
         }
 
-        input[type=submit]{
-            background-color: $secondColor;
-            border-radius: 84px;
-            height: 42px;
-            font-size: 14px;
-            color: #eee;
-            font-weight: 600;
-        }
+        .submitpart{
+          display: flex;
+          flex-direction: column;
+          position: relative;
+
+          input[type=submit]{
+              font-size: 14px;
+              //color: #eee;
+              font-weight: 600;
+              margin-top: 15px;
+              background-color: $secondColor;
+              border-radius: 84px;
+              
+              padding: 15px 15px 15px 15px;
+              cursor: pointer;
+          }
+
+          .lds-ellipsis{
+              position: absolute;
+              top: 2px;
+              left: 50%;
+              transform: translate(-50%);
+          }
+      }
 
         input[type=text], input[type=password], select{
 
