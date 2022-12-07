@@ -20,11 +20,11 @@ import {API_HOST} from '../config';
 
 export default {
   name: 'MyAccount',
-  props: ["realSlots"],
   data: function() {
     
     return {
-      events: []
+      events: [],
+      realSlots:null
     }
   },
   components: {
@@ -33,7 +33,7 @@ export default {
   created: async function() {
 
     
-    this.loadSlots()
+    //this.loadSlots()
     
     //to add appointements
     let response1 = await axios.get(`${API_HOST}/api/rendez_vous`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}}); //get slots from the API
@@ -58,31 +58,21 @@ export default {
     },
   methods: {
     
-    async loadSlots(){/*
-      let waitFor = async function waitFor(f){
-      while(f == null) await sleep(1000);
-      return "a";
-      };
-
-      await waitFor(() => this.realSlots)*/
-
-      setTimeout(() => {
-        this.realSlot=[];
-        this.realSlots.forEach(slot => {
-          this.realSlot.push(slot.map(dateee => dateee.replace("T"," "))); //replace the original T by a space
-        });
-        
-        for(let k=0;k<this.realSlot.length;k++){ //add the instance to the event in the calender
-          this.events.push({
-          start: `${this.realSlot[k][0]}`,
-          end: `${this.realSlot[k][1]}`,
-          title: '',
-          class: 'slots',
-          background: true
-          })
-        }
+    async loadSlots(realSlot){
+      this.realSlot=[];
+      realSlot.forEach(slot => {
+        this.realSlot.push(slot.map(dateee => dateee.replace("T"," "))); //replace the original T by a space
+      });
       
-      }, 500);
+      for(let k=0;k<this.realSlot.length;k++){ //add the instance to the event in the calender
+        this.events.push({
+        start: `${this.realSlot[k][0]}`,
+        end: `${this.realSlot[k][1]}`,
+        title: '',
+        class: 'slots',
+        background: true
+        })
+      }
     },
     
   }

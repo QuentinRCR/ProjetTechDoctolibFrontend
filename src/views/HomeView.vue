@@ -11,7 +11,7 @@
         <div class="fillInDiv"></div>
       </div>
       <div class="pannels">
-        <StudentArea class="pannel" :realSlots=this.realSlot v-if="currentPanel.name === 'panelA' && this.forceReload"></StudentArea>
+        <StudentArea ref="StudentArea" class="pannel" v-if="currentPanel.name === 'panelA' && this.forceReload"></StudentArea>
         <MyAccount @reset_studentInfos="reset_studentInfos" :studentInfos="studentInfos" classe="pannel" v-if="currentPanel.name === 'panelB'"></MyAccount>
         <MyAppointements ref="Myrdvs" @get-student-info="getStudentInfos" @appointement-choice="modifyAppMod" :AppModifyOrCreate="AppModifyOrCreate" classe="pannel" v-if="currentPanel.name === 'panelC' && this.forceReload"></MyAppointements> <!--AppModifyOrCreate is to handle modify mode-->
         <MySlots classe="pannel" @slot-choice="modifySlotMod" v-if="currentPanel.name === 'panelD' && this.forceReload"></MySlots>
@@ -165,7 +165,9 @@ export default {
         }
         startDate.setDate(startDate.getDate() +1) //add one day to the date
       }
+      
     }
+      this.$refs.StudentArea.loadSlots(this.realSlot); //generate all the slots in the calendar
     },
     async refreshToken(){ //function to get a new token from the refresh token and update the url
         let response = await axios.get(`${API_HOST}/api/token/refresh`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.refreshToken}`}}); //get slots from the API
