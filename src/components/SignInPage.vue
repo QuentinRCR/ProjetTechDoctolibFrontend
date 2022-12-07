@@ -16,7 +16,12 @@
                     <option>Saint Etienne</option>
                     <option>Gardanne</option>
                 </select><br>
-                <input class="boutonsubmit" type="submit" value="S'inscrire">
+                <div class="submitpart">
+                    <input class="boutonsubmit" type="submit" value="S'inscrire" :style="{
+                                color: submitClicked ? '#3694c6' : 'white' //when the button is clicked, we hide the connection button
+                            }">
+                    <div v-if="submitClicked" class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                </div>
             </form>
             <p v-if="this.formSubmited">Vous devez avoir reçu un mail pour activer votre compte</p>
         </div>
@@ -46,23 +51,28 @@ export default {
         SkypeAccount: null,
         Campus: null,
         ClienEmail:null ,
-        formSubmited: false   
+        formSubmited: false,
+        submitClicked: false   
     }
   },
   methods: {
     async SubmitForm(ClienEmail,ClientFirstName,ClientLastName,Password,PasswordConfirmation,PhoneNumber,SkypeAccount,Campus){
-      console.log("faire l'authentification"); 
-      let response = await axios.post(`${API_HOST}/api/registration`,
-            {
-        campus: `${Campus}`,
-        email: `${ClienEmail}`,
-        nom: `${ClientLastName}`,
-        password: `${Password}`,
-        phonenumber: `${PhoneNumber}`,
-        prenom: `${ClientFirstName}`,
-        skypeAccount: `${SkypeAccount}`
-        })
-      this.formSubmited=true; //To display the message saying that the person received a mail to confirm its account
+      if(!this.submitClicked){ //to prevent spamming
+        this.submitClicked=true; //to display the loading animation
+        console.log("faire l'authentification"); 
+        let response = await axios.post(`${API_HOST}/api/registration`,
+                {
+            campus: `${Campus}`,
+            email: `${ClienEmail}`,
+            nom: `${ClientLastName}`,
+            password: `${Password}`,
+            phonenumber: `${PhoneNumber}`,
+            prenom: `${ClientFirstName}`,
+            skypeAccount: `${SkypeAccount}`
+            })
+        this.formSubmited=true; //To display the message saying that the person received a mail to confirm its account
+        this.submitClicked=false; //to cencel the loading animation
+      }
     },
     SendToLogIn(){
       this.$router.push("/"); //go to the login page
@@ -102,15 +112,29 @@ export default {
                     flex-direction: column ;
                     align-items: stretch;
 
-                    input[type=submit]{
-                        margin-top: 20px;
-                        background-color: $secondColor;
-                        border-radius: 84px;
-                        font-size: 14px;
-                        color: #eee;
-                        font-weight: 600;
-                        padding: 15px 15px 15px 15px;
-                        cursor: pointer;
+                    .submitpart{
+                        display: flex;
+                        flex-direction: column;
+                        position: relative;
+
+                        input[type=submit]{
+                            font-size: 14px;
+                            //color: #eee;
+                            font-weight: 600;
+                            margin-top: 20px;
+                            background-color: $secondColor;
+                            border-radius: 84px;
+                            
+                            padding: 15px 15px 15px 15px;
+                            cursor: pointer;
+                        }
+
+                        .lds-ellipsis{
+                            position: absolute;
+                            top: 8px;
+                            left: 50%;
+                            transform: translate(-50%);
+                        }
                     }
 
                     input[type=text], input[type=password], select{

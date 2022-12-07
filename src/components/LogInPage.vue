@@ -122,7 +122,6 @@ export default {
 
 
                     .submitpart{
-                        border: solid blue;
                         display: flex;
                         flex-direction: column;
                         position: relative;
