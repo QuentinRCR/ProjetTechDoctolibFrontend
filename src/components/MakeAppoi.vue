@@ -16,6 +16,7 @@
               <p class="">Heure:</p>
               <div class="timepicker"><Datepicker inline :startTime="startTimeee" minutesIncrement="30" minutesGridIncrement="30" hoursGridIncrement="2" v-model="time" timePicker autoApply modeHeight="276" ></Datepicker></div>
               <p class="errorMessage" v-show="!this.isTimeCorrect">L'heure selectionné n'est pas<br>disponible</p>
+              <p class="errorMessage" v-show="this.isAppAlreadyTaken">Il y déjà un rendez-vous à cette<br>heure</p>
             </div>
         </div>
         <div class="CommuMean">
@@ -78,7 +79,8 @@ export default {
         users: [],
         isDate: false,
         isDateNotSelected: false,
-        submitClicked: false
+        submitClicked: false,
+        isAppAlreadyTaken: false
     }
   },
   created: async function(){
@@ -103,6 +105,8 @@ export default {
   methods: {
     async SubmitForm(CommunicationMean,date,time,student){
       if(!this.submitClicked){//to prevent spam
+        this.isTimeCorrect=true; //to reset from a previous failed attempte
+        this.isAppAlreadyTaken=false;
         this.submitClicked=true;
         if (date==null) { //if no date was selected
           this.isDateNotSelected=true;
@@ -112,7 +116,7 @@ export default {
         }
 
         if(!this.isDateNotSelected){
-          let timeApp=("0"+time.hours).slice(-2)+":"+("0"+time.minutes).slice(-2); //get the time of the appointement
+          /*let timeApp=("0"+time.hours).slice(-2)+":"+("0"+time.minutes).slice(-2); //get the time of the appointement
           let realSlots2=new Array(this.realSlots)[0] //dup just in case
           realSlots2.forEach(slot => { 
             if(date==slot[0].slice(0,-6)){ //if the date is correct, continue
@@ -123,35 +127,47 @@ export default {
                 this.isTimeCorrect=false;
               }
             }
-          });
+          });*/
         }
 
 
-        //if the time of the appointement is not good it does not submit the form
-        if(this.isTimeCorrect && !this.isDateNotSelected){
+        //if no date is selected, we do not submit the form
+        if(!this.isDateNotSelected){
           let id;
           if (!this.enableModifyMod){
             id = null;
           }
           else{
-            id = this.AppointementChoice.id
+            id = this.AppointementChoice.id //it sets an id only in modify mode
           }
 
           let startTime= ("0"+time.hours).slice(-2)+":"+("0"+time.minutes).slice(-2)+":"+("0"+time.seconds).slice(-2); //Extract start and end time from proxy
           let dateDebut1 = date+"T"+startTime;
-          let newAppointemen = await axios.post(`${API_HOST}/api/rendez_vous/create_or_modify`,{
-            id: id,
-            idUser: `${student}`, //automatically assigned by the backend
-            idCreneau: 3,
-            zoomLink: "link.fr",
-            dateDebut: `${dateDebut1}`,
-            moyenCommunication: CommunicationMean,
-            duree: "PT30M"
-            },{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}}
-          )
+          try{ //try to make a request
+            let newAppointemen = await axios.post(`${API_HOST}/api/rendez_vous/create_or_modify`,{
+              id: id,
+              idUser: `${student}`, //automatically assigned by the backend
+              idCreneau: 3,
+              zoomLink: "link.fr",
+              dateDebut: `${dateDebut1}`,
+              moyenCommunication: CommunicationMean,
+              duree: "PT30M"
+              },{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}}
+            )
+          }
+          catch(error){
+            if (error.response.data.status == 404){ //when the appointement in not in the slot it returns a 409 error somehow interpreted as a 404
+              this.isTimeCorrect=false;
+            }
+            else if(error.response.data.status == 409){ //if error code is conflict (already an appointement at this time)
+              this.isAppAlreadyTaken=true;
+            }
+          }
 
-          this.$emit('close-popup',this.enableModifyMod); //to cancer the modify mode
-          this.$emit('reload'); //for the reload of the page to have the correct appointement
+          if(this.isTimeCorrect && !this.isAppAlreadyTaken){
+            this.$emit('close-popup',this.enableModifyMod); //to cancer the modify mode
+            this.$emit('reload'); //for the reload of the page to have the correct appointement
+          }
         }
         this.submitClicked=false;
       }
