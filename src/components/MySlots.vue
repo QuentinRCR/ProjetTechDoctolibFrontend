@@ -52,7 +52,7 @@
       }
     },
     created: async function() {
-      let response = await axios.get(`${API_HOST}/api/creneaux`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}});
+      let response = await axios.get(`${API_HOST}/api/creneaux/user`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}});
       let slots = response.data;
       this.slots = slots;
     },
@@ -68,7 +68,7 @@
         this.idAppointementToDelete=identifient;
       },
       async deleteAppointementForReal(){
-        await axios.delete(`${API_HOST}/api/creneaux/${this.idAppointementToDelete}`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}});
+        await axios.delete(`${API_HOST}/api/creneaux/admin/${this.idAppointementToDelete}`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}});
         let index = this.slots.findIndex(appointement => appointement.id === this.idAppointementToDelete) //search for the correct id corresponding to the appointement id in order to delete it
         this.slots.splice(index,1)
         this.toggleConfirmationBox();

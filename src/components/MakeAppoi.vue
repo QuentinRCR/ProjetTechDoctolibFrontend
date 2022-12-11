@@ -93,10 +93,11 @@ export default {
     let correctDates=[]; //stores the dates that you can select
     let realSlots1= new Array(this.realSlots)[0] //create a copy of the effective times slots day by day to make sur to not accidentally modify something that should not be modified
     for (let i = 0; i < realSlots1.length; i++) {
-      if (!correctDates.includes(realSlots1[i][0].slice(0,-6))) { //if the date is not allready in the correct dates, we add it (while removing the hours)
+      if (!correctDates.includes(realSlots1[i][0].slice(0,-6))) { //if the date is not already in the correct dates, we add it (while removing the hours)
         correctDates.push(new Date(realSlots1[i][0].slice(0,-6)))
       }
     }
+    console.log(correctDates);
     this.allowedDates=correctDates;
   },
   components: {

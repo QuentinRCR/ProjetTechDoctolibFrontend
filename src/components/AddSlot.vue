@@ -151,7 +151,7 @@ export default {
                     idSlot=null;
                 }
 
-            let newSlot = await axios.post(`${API_HOST}/api/creneaux/create_or_modify`, //Send the resquest to the api with values defined above
+            let newSlot = await axios.post(`${API_HOST}/api/creneaux/admin/create_or_modify`, //Send the resquest to the api with values defined above
             {
                 id: idSlot,
                 dateDebut: `${startDate}`,

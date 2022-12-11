@@ -20,6 +20,11 @@ const router = createRouter({
       component: () => import('../components/ForgetPassword.vue')
     },
     {
+      path: '/formChangedPassword',
+      name: 'formChangedPassword',
+      component: () => import('../components/formChangedPassword.vue')
+    },
+    {
       path: '/home',
       name: 'home',
       component: () => import('../views/HomeView.vue')
