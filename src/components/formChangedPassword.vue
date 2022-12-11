@@ -3,13 +3,14 @@
       <div class="boiteblanche">
         <h1>Mot de passe oublié</h1>
         <div class="menu">
-            <form @submit.prevent="submit" v-on:submit="SubmitForm(ClienEmail)">
-                <p>Entrez l’email auquel vous voulez recevoir un lien pour réinitialiser votre mot de passe :</p>
-                <input v-model="ClienEmail" type="text" placeholder="Email EMSE" pattern="[a-z0-9._%+-]+@[a-z0-9.-]*emse\.fr$" required><br>
+            <form @submit.prevent="submit" v-on:submit="SubmitForm(Password)">
+                <p>Renseigner votre nouveau mot de passe ça dessous:</p>
+                <input v-model="Password" type="password" placeholder="Mot de passe" required><br>
+                <input :pattern="Password" v-model="PasswordConfirmation" type="password" placeholder="Confirmation de mot de passe" required><br> <!--The patern is to verify that the confiramtion is equal to the original password-->
                 <input class="boutonsubmit" type="submit" value="Confirmer">
             </form>
-            <p class="messageEmail" v-if="mailSent">Un mail vous a été envoyé pour que vous changiez votre mot de passe. Consultez votre boite mail étudiante.</p>
-            <p class="toLogin" @click="SendToSignIn">Retour à la page de connection</p>
+            <p class="messageEmail" v-if="passwordChanged">Votre mot de passe a bien été changé</p>
+            <p class="toLogin" @click="ToLogIn">Retour à la page de connection</p>
         </div>
       </div>
       
@@ -22,24 +23,37 @@
 import axios from 'axios'; 
 import {API_HOST} from "../config" //to get the API path
 export default {
-  name: 'LogInPage',
+  name: 'formChangedPassword',
   data: function() {
     return {
         ClienEmail: null,
         Password: null,
-        mailSent: false
+        PasswordConfirmation:null,
+        passwordChanged: false,
+        token:null
     }
   },
-  methods: {
-    SendToSignIn(){
-      this.$router.push("/");
+  created: async function(){
+    this.token= this.$route.query.token; //we get the token back from the url
+    console.log(this.token);
+    let response = await axios.get(`${API_HOST}/api/forgotten_password/confirm?token=${this.token}`) //give feedback to the programme that the link was clicked
     },
-    async SubmitForm(email){
-        console.log(email);
-        let newSlot = await axios.post(`${API_HOST}/api/forgotten_password`, //Send the resquest to the api with values defined above
-        `${email}`);
+  methods: {
+    async SubmitForm(password){
+        console.log(password);
+        let response = await axios.post(`${API_HOST}/api/forgotten_password/passwordReinitialisation`,
+        {
+            password: `${password}`,
+            token: `${this.token}`
+        }) //git feedback to the programme that the link was clicked
         console.log("faire la récupération de mot de passes");
-        this.mailSent=true
+        this.passwordChanged=true
+        setTimeout(() => {
+            this.$router.push("/");
+        }, 2000);
+    },
+    ToLogIn(){
+        this.$router.push("/");
     }
   }
 }
@@ -87,7 +101,7 @@ export default {
                     }
 
                     input[type=text], input[type=password]{
-
+                        margin-top:20px;
                         font-size: 16px;
                         padding: 15px 15px 15px 15px;
                         border-radius: 10px;
