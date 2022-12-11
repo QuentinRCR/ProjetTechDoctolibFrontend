@@ -53,22 +53,22 @@ export default {
             var data = new FormData(); //so that the backend understand the data correctly 
             data.append('email', `${ClienEmail}`)
             data.append('password', `${password}`)
+            this.submitClicked=true; //add the loading annimation
+            try{
+                //create a request to get acces and authentification tokens
+                let response = await axios.post(`${API_HOST}/api/login`, data)
+                const token=response.data.access_token;
             
-            //create a request to get acces and authentification tokens
-            let response = await axios.post(`${API_HOST}/api/login`, data)
-            this.submitClicked=true;
-            const token=response.data.access_token;
-            if (typeof(token) == "undefined"){ //it means that the serveur send the connexion page, which means that the password is wrong
-                this.incorrectPassword=true;
-                this.submitClicked=false;
-            }
-            else{
                 let refresh_token =response.data.refresh_token;
                 this.$store.commit('set', {token: `${token}`}) //set the value of the token to a global state
                 this.$store.commit('setAuth', {auth: `${VueJwtDecode.decode(token).roles[0]}`}) //Set the role as a global variable
                 this.$store.commit('setRefTok', {refresh_token: `${refresh_token}`}) ////Set the refresh token
                 this.$router.push({ path: 'home', query: { token: `${token}`,refresh_token: `${refresh_token}` }}) //change path and add token to url
                 this.$store.commit('setRefreshFunction', {refresh_token_function: setInterval(() => this.refreshToken(), timeBetweenRefreshs)}) //Set the function to periodicaly reset the token
+            }
+            catch(error){
+                this.incorrectPassword=true;
+                this.submitClicked=false;
             };
         }
 
