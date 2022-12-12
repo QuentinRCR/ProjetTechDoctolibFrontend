@@ -23,7 +23,6 @@
         <MySlots classe="pannel" @slot-choice="modifySlotMod" v-if="currentPanel.name === 'panelD' && this.forceReload">
         </MySlots>
       </div>
-      <div>zzz</div>
       <div class="MakeAppoi">
         <MakeAppoi @reload="reload" :realSlots=this.realSlot @close-popup="ToggleAppoi"
           :enableModifyMod="enableModifyMod" :AppointementChoice="AppointementChoice" v-if="isAddAppointement">
@@ -217,7 +216,7 @@ export default {
 
 <style lang="scss" scoped>
 .home {
-  position: relative;
+  position: absolute;
 
   .SideMenu {
     //border: solid red;
