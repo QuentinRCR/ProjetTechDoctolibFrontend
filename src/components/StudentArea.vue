@@ -1,15 +1,20 @@
 <template>
   <div>
-    <VueCal class="VueCal"
-    hide-view-selector 
-    :time-from="8 * 60"
-    :time-to="22 * 60"
-    :events="events"
-    locale="fr"
-    events-on-month-view="short"
-    ><template v-slot:no-event> <!--remove the no event label when nothing is in the day-->
+    <div class="explanation">
+      <div>Bienvenue sur cette application de prise de rendez-vous auprès de la psychologue de l'EMSE. Pour prendre un
+        rendez-vous, rien de plus simple, il suffit de cliquer sur le bouton "Prendre un rendez-vous".</div>
+      <p>
+        Les plages disponibles sont représentées sur le calendrier en
+        <strong class="lightBlue">bleu clair</strong>
+        et les rendez-vous en
+        <strong class="darkBlue">bleu foncé.</strong>
+      </p>
+    </div>
+    <VueCal class="VueCal" hide-view-selector :time-from="8 * 60" :time-to="22 * 60" :events="events" locale="fr"
+      events-on-month-view="short"><template v-slot:no-event>
+        <!--remove the no event label when nothing is in the day-->
         <div></div>
-    </template>
+      </template>
     </VueCal> <!--hide-view-selector disable the posibility to choose something else than the week view-->
   </div>
 </template>
@@ -17,101 +22,124 @@
 <script>
 import VueCal from 'vue-cal' //to display the calendar
 import axios from 'axios'; //for api request
-import {API_HOST} from '../config';
+import { API_HOST } from '../config';
 
 export default {
   name: 'MyAccount',
   props: ['realSlotsss'],
-  data: function() {
-    
+  data: function () {
+
     return {
       events: [],
-      realSlots:null
+      realSlots: null
     }
   },
   components: {
     VueCal
   },
-  created: async function() {
+  created: async function () {
 
-    if(this.realSlotsss!=null){ //to reload not at login
-    this.loadSlots(null);
+    if (this.realSlotsss != null) { //to reload not at login
+      this.loadSlots(null);
     }
     //to add appointements
 
     this.loadApp();
-      
 
-    },
+
+  },
   methods: {
-    
-    async loadSlots(realSlot){
-      if (realSlot!=null){
-        this.realSlots=realSlot;
+
+    async loadSlots(realSlot) {
+      if (realSlot != null) {
+        this.realSlots = realSlot;
       }
-      else{
-        this.realSlots=this.realSlotsss
+      else {
+        this.realSlots = this.realSlotsss
       }
-      this.realSlot=[];
+      this.realSlot = [];
       this.realSlots.forEach(slot => {
-        this.realSlot.push(slot.map(dateee => dateee.replace("T"," "))); //replace the original T by a space
+        this.realSlot.push(slot.map(dateee => dateee.replace("T", " "))); //replace the original T by a space
       });
-      
-      for(let k=0;k<this.realSlot.length;k++){ //add the instance to the event in the calender
+
+      for (let k = 0; k < this.realSlot.length; k++) { //add the instance to the event in the calender
         this.events.push({
-        start: `${this.realSlot[k][0]}`,
-        end: `${this.realSlot[k][1]}`,
-        title: '',
-        class: 'slots',
-        background: true
+          start: `${this.realSlot[k][0]}`,
+          end: `${this.realSlot[k][1]}`,
+          title: '',
+          class: 'slots',
+          background: true
         })
       }
     },
-    async loadApp(){
-      let response1 = await axios.get(`${API_HOST}/api/rendez_vous/user`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}}); //get slots from the API
+    async loadApp() {
+      let response1 = await axios.get(`${API_HOST}/api/rendez_vous/user`, { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}` } }); //get slots from the API
       let appointements = response1.data; //extract the data
       this.appointements = appointements; //put it in a new variable
 
       for (const appointement of this.appointements) { //loop over all the appoitements
-        let startDateTime= new Date(appointement.dateDebut);
-        let endDateTime= new Date(startDateTime.getTime() + (30 -startDateTime.getTimezoneOffset())*60000);
-        startDateTime = (appointement.dateDebut.replace('T',' ').slice(0,-3)); //adjuste format
-        endDateTime = (endDateTime.toISOString().replace('T',' ').slice(0,-5)); //adjuste format
+        let startDateTime = new Date(appointement.dateDebut);
+        let endDateTime = new Date(startDateTime.getTime() + (30 - startDateTime.getTimezoneOffset()) * 60000);
+        startDateTime = (appointement.dateDebut.replace('T', ' ').slice(0, -3)); //adjuste format
+        endDateTime = (endDateTime.toISOString().replace('T', ' ').slice(0, -5)); //adjuste format
 
-        let infoUser="";
-        if(appointement.idUser != null){ //if the id info is provided it means that it is either an admin or the if of the person watching
+        let infoUser = "";
+        if (appointement.idUser != null) { //if the id info is provided it means that it is either an admin or the if of the person watching
           let response;
-          try{ //try the request if it is an admin
-           response = await axios.get(`${API_HOST}/api/users/admin/${appointement.idUser}`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}});
+          try { //try the request if it is an admin
+            response = await axios.get(`${API_HOST}/api/users/admin/${appointement.idUser}`, { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}` } });
           }
-          catch(error){
-            if(error.response.data.status==403){ //if forbiden, it means that a user is trying to do the request so he can get its own infos
-              response = await axios.get(`${API_HOST}/api/users/user/getbyId`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}});
+          catch (error) {
+            if (error.response.data.status == 403) { //if forbiden, it means that a user is trying to do the request so he can get its own infos
+              response = await axios.get(`${API_HOST}/api/users/user/getbyId`, { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}` } });
             }
-            else{
+            else {
               console.log(error);
             }
           }
           this.users = response.data;
-          infoUser= this.users.lastName+" "+this.users.firstName;
+          infoUser = this.users.lastName + " " + this.users.firstName;
         }
 
         this.events.push({
-        start: `${startDateTime}`,
-        end: `${endDateTime}`,
-        title: `${infoUser}`,
-        class: 'apps'
-      })
-    };
+          start: `${startDateTime}`,
+          end: `${endDateTime}`,
+          title: `${infoUser}`,
+          class: 'apps'
+        })
+      };
     }
-    
+
   }
 }
 </script>
 
 <style type="scss">
 
-.VueCal{
+.explanation{
+  font-size:18px;
+  margin-left:20px;
+  margin-right: 20px;
+  margin-top:20px;
+  margin-bottom: 10px;
+}
+
+p{
+  margin-top: 5px;
+}
+
+.lightBlue{
+  color: rgb(149, 187, 224);
+  font-weight: bold;
+}
+
+.darkBlue{
+  color: #3694c6;
+  font-weight: bold;
+}
+
+
+.VueCal {
   /*height: 500px;
   /*width: 1100px;*/
   margin: 0px 20px 20px 20px;
@@ -120,7 +148,7 @@ export default {
 .vuecal__event.slots {
   /*background: repeating-linear-gradient(45deg, transparent, transparent 10px, red 10px, #f2f2f2 20px);/* IE 10+ */
   background-color: rgb(149, 187, 224);
-  color: rgba(0,0,0,0);
+  color: rgba(0, 0, 0, 0);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -128,7 +156,7 @@ export default {
   border-radius: 10px;
 }
 
-.vuecal__event.apps{
+.vuecal__event.apps {
   background-color: #3694c6;
   color: black;
   display: flex;
@@ -138,8 +166,13 @@ export default {
   border: solid 1px black;
 }
 
-.vuecal__title-bar{background-color: rgb(149, 187, 224)}
+.vuecal__title-bar {
+  background-color: rgb(149, 187, 224)
+}
 
-.vuecal__event-time {display: none;} /*to remove the time inside the slots*/
+.vuecal__event-time {
+  display: none;
+}
 
+/*to remove the time inside the slots*/
 </style>

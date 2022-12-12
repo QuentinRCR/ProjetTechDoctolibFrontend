@@ -23,6 +23,7 @@
         <MySlots classe="pannel" @slot-choice="modifySlotMod" v-if="currentPanel.name === 'panelD' && this.forceReload">
         </MySlots>
       </div>
+      <div>zzz</div>
       <div class="MakeAppoi">
         <MakeAppoi @reload="reload" :realSlots=this.realSlot @close-popup="ToggleAppoi"
           :enableModifyMod="enableModifyMod" :AppointementChoice="AppointementChoice" v-if="isAddAppointement">
@@ -34,7 +35,8 @@
       </div>
     </div>
 
-    <div class="notConnect" v-if="this.notConnected">Vous avez été déconnecté. Veuillez vous reconnecter pour poursuivre la navigaton</div>
+    <div class="notConnect" v-if="this.notConnected">Vous avez été déconnecté. Veuillez vous reconnecter pour poursuivre
+      la navigaton</div>
   </div>
 </template>
 
@@ -76,7 +78,7 @@ export default {
       realSlot: null,
       forceReload: true, //to reload the components that have this varaible in their v-if
       studentInfos: null,
-      notConnected:false
+      notConnected: false
     }
   },
   created: function () {
@@ -128,7 +130,7 @@ export default {
       this.forceReload = true;
     },
     async createListRealSlots() {
-      try{
+      try {
         //to add slots
         let response = await axios.get(`${API_HOST}/api/creneaux/user`, { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}` } }); //get slots from the API
         let slots = response.data; //extract the data
@@ -185,11 +187,11 @@ export default {
         }
         this.$refs.StudentArea.loadSlots(this.realSlot); //generate all the slots in the calendar
       }
-      catch(error){
+      catch (error) {
         console.log();
-        if(error.response.status == 403){
+        if (error.response.status == 403) {
           console.log("pas connn");
-          this.notConnected=true;
+          this.notConnected = true;
         }
       }
     }
@@ -267,16 +269,16 @@ export default {
     }
   }
 
-  .notConnect{
-    position: fixed ;
+  .notConnect {
+    position: fixed;
     top: 25%;
     left: 50%;
-    transform: translate(-50%,50%);
+    transform: translate(-50%, 50%);
     background-color: white;
     border: 8px solid rgb(215, 61, 61);
     border-radius: 20px;
     font-size: 20px;
-    padding: 25px 25px 25px 25px; 
+    padding: 25px 25px 25px 25px;
     font-weight: bold;
     width: 250px;
     text-align: center;
