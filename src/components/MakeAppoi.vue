@@ -17,6 +17,7 @@
               <div class="timepicker"><Datepicker inline :startTime="startTimeee" minutesIncrement="30" minutesGridIncrement="30" hoursGridIncrement="2" v-model="time" timePicker autoApply modeHeight="276" ></Datepicker></div>
               <p class="errorMessage" v-show="!this.isTimeCorrect">L'heure selectionné n'est pas<br>disponible</p>
               <p class="errorMessage" v-show="this.isAppAlreadyTaken">Il y déjà un rendez-vous à cette<br>heure</p>
+              <p class="errorMessage" v-show="this.isInThePast">Vous ne pouvez pas prendre<br>de rendez-vous dans le passé</p>
             </div>
         </div>
         <div class="CommuMean">
@@ -80,7 +81,8 @@ export default {
         isDate: false,
         isDateNotSelected: false,
         submitClicked: false,
-        isAppAlreadyTaken: false
+        isAppAlreadyTaken: false,
+        isInThePast: false
     }
   },
   created: async function(){
@@ -107,6 +109,7 @@ export default {
       if(!this.submitClicked){//to prevent spam
         this.isTimeCorrect=true; //to reset from a previous failed attempte
         this.isAppAlreadyTaken=false;
+        this.isInThePast=false;
         this.submitClicked=true;
         if (date==null) { //if no date was selected
           this.isDateNotSelected=true;
@@ -162,9 +165,15 @@ export default {
             else if(error.response.data.status == 409){ //if error code is conflict (already an appointement at this time)
               this.isAppAlreadyTaken=true;
             }
+            else if(error.response.data.status == 403){ //if error code is conflict (already an appointement at this time)
+              this.isInThePast=true;
+            }
+            else{
+              console.log(error);
+            }
           }
 
-          if(this.isTimeCorrect && !this.isAppAlreadyTaken){
+          if(this.isTimeCorrect && !this.isAppAlreadyTaken && !this.isInThePast){
             this.$emit('close-popup',this.enableModifyMod); //to cancer the modify mode
             this.$emit('reload'); //for the reload of the page to have the correct appointement
           }
