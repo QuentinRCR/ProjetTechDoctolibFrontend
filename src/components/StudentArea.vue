@@ -6,6 +6,7 @@
     :time-to="22 * 60"
     :events="events"
     locale="fr"
+    events-on-month-view="short"
     ><template v-slot:no-event> <!--remove the no event label when nothing is in the day-->
         <div></div>
     </template>
@@ -71,18 +72,37 @@ export default {
       let appointements = response1.data; //extract the data
       this.appointements = appointements; //put it in a new variable
 
-      this.appointements.forEach(appointement => {
-      let startDateTime= new Date(appointement.dateDebut);
-      let endDateTime= new Date(startDateTime.getTime() + (30 -startDateTime.getTimezoneOffset())*60000);
-      startDateTime = (appointement.dateDebut.replace('T',' ').slice(0,-3)); //adjuste format
-      endDateTime = (endDateTime.toISOString().replace('T',' ').slice(0,-5)); //adjuste format
-      this.events.push({
-      start: `${startDateTime}`,
-      end: `${endDateTime}`,
-      title: '',
-      class: 'apps'
+      for (const appointement of this.appointements) { //loop over all the appoitements
+        let startDateTime= new Date(appointement.dateDebut);
+        let endDateTime= new Date(startDateTime.getTime() + (30 -startDateTime.getTimezoneOffset())*60000);
+        startDateTime = (appointement.dateDebut.replace('T',' ').slice(0,-3)); //adjuste format
+        endDateTime = (endDateTime.toISOString().replace('T',' ').slice(0,-5)); //adjuste format
+
+        let infoUser="";
+        if(appointement.idUser != null){ //if the id info is provided it means that it is either an admin or the if of the person watching
+          let response;
+          try{ //try the request if it is an admin
+           response = await axios.get(`${API_HOST}/api/users/admin/${appointement.idUser}`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}});
+          }
+          catch(error){
+            if(error.response.data.status==403){ //if forbiden, it means that a user is trying to do the request so he can get its own infos
+              response = await axios.get(`${API_HOST}/api/users/user/getbyId`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}});
+            }
+            else{
+              console.log(error);
+            }
+          }
+          this.users = response.data;
+          infoUser= this.users.lastName+" "+this.users.firstName;
+        }
+
+        this.events.push({
+        start: `${startDateTime}`,
+        end: `${endDateTime}`,
+        title: `${infoUser}`,
+        class: 'apps'
       })
-    });
+    };
     }
     
   }
@@ -114,9 +134,12 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 15px;
+  border-radius: 7px;
+  border: solid 1px black;
 }
 
 .vuecal__title-bar{background-color: rgb(149, 187, 224)}
+
+.vuecal__event-time {display: none;} /*to remove the time inside the slots*/
 
 </style>

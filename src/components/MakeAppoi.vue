@@ -97,7 +97,6 @@ export default {
         correctDates.push(new Date(realSlots1[i][0].slice(0,-6)))
       }
     }
-    console.log(correctDates);
     this.allowedDates=correctDates;
   },
   components: {
