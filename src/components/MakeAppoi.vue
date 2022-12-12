@@ -86,7 +86,7 @@ export default {
   created: async function(){
 
     if(this.$store.state.auth == 'ADMIN'){
-      let response = await axios.get(`${API_HOST}/api/user`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}});
+      let response = await axios.get(`${API_HOST}/api/users/admin`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}});
       this.users = response.data;
     }
 
@@ -145,7 +145,7 @@ export default {
           let startTime= ("0"+time.hours).slice(-2)+":"+("0"+time.minutes).slice(-2)+":"+("0"+time.seconds).slice(-2); //Extract start and end time from proxy
           let dateDebut1 = date+"T"+startTime;
           try{ //try to make a request
-            let newAppointemen = await axios.post(`${API_HOST}/api/rendez_vous/create_or_modify`,{
+            let newAppointemen = await axios.post(`${API_HOST}/api/rendez_vous/user/create_or_modify`,{
               id: id,
               idUser: `${student}`, //automatically assigned by the backend
               idCreneau: 3,

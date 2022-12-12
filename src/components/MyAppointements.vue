@@ -53,7 +53,7 @@
       }
     },
     created: async function() {
-      let response = await axios.get(`${API_HOST}/api/rendez_vous/auth`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}});
+      let response = await axios.get(`${API_HOST}/api/rendez_vous/user/auth`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}});
       let appointements = response.data;
       this.appointements = appointements;
     },
@@ -63,7 +63,7 @@
         this.idAppointementToDelete=identifient;
       },
       async deleteAppointementForReal(){
-        await axios.delete(`${API_HOST}/api/rendez_vous/${this.idAppointementToDelete}`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}});
+        await axios.delete(`${API_HOST}/api/rendez_vous/user/${this.idAppointementToDelete}`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}});
         let index = this.appointements.findIndex(appointement => appointement.id === this.idAppointementToDelete) //search for the correct id corresponding to the appointement id in order to delete it
         this.appointements.splice(index,1)
         this.toggleConfirmationBox();
