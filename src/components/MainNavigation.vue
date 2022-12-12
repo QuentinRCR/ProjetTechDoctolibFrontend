@@ -26,7 +26,7 @@ export default {
       panels: [{
         id: 0,
         name: 'panelA',
-        tabDisplay: 'Espace élève'
+        tabDisplay: 'Calendrier'
       }, {
         id: 1,
         name: 'panelB',
@@ -74,6 +74,13 @@ export default {
     font-size: 16px;
     //border: solid pink;
     .nav{
+      .active{ //when the element is active
+        padding: 5px 7px 5px 7px;
+        background-color: rgba(61, 28, 168, 0.162);
+        border-radius: 20px;
+        font-size:20px;
+      }
+
       display: flex;
       justify-content: space-around;
       flex-flow: row wrap;
@@ -81,12 +88,10 @@ export default {
 
       .LogOutButton{
         cursor: pointer;
-        padding: 5px 7px 5px 7px;
+        
 
         &:hover{
             text-decoration: underline;
-            background-color: rgb(132, 164, 196);
-            border-radius: 10px;
           }
       }
       .nav-item{
