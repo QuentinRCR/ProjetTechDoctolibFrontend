@@ -4,12 +4,12 @@
         <h1>S'inscrire</h1>
         <div class="menu">
             <form @submit.prevent="submit" v-on:submit="SubmitForm(ClienEmail,ClientFirstName,ClientLastName,Password,PasswordConfirmation,PhoneNumber,SkypeAccount,Campus)">
-                <input v-model="ClienEmail" type="text" placeholder="Email EMSE" required><br> <!--pattern="[a-z0-9._%+-]+@[a-z0-9.-]*emse\.fr$" ><br>--> <!--match a emse adress-->
-                <input v-model="ClientFirstName" type="text" placeholder="Prénom" required><br>
-                <input v-model="ClientLastName" type="text" placeholder="Nom" required><br>
-                <input v-model="Password" type="password" placeholder="Mot de passe" required><br>
-                <input :pattern="Password" v-model="PasswordConfirmation" type="password" placeholder="Confirmation de mot de passe" required><br> <!--The patern is to verify that the confiramtion is equal to the original password-->
-                <input v-model="PhoneNumber" type="text" placeholder="Numéro de téléphone" required><br>
+                <input v-model="ClienEmail" type="text" placeholder="Email EMSE*" required><br> <!--pattern="[a-z0-9._%+-]+@[a-z0-9.-]*emse\.fr$" ><br>--> <!--match a emse adress-->
+                <input v-model="ClientFirstName" type="text" placeholder="Prénom*" required><br>
+                <input v-model="ClientLastName" type="text" placeholder="Nom*" required><br>
+                <input v-model="Password" type="password" placeholder="Mot de passe*" required><br>
+                <input :pattern="Password" v-model="PasswordConfirmation" type="password" placeholder="Confirmation de mot de passe*" required><br> <!--The patern is to verify that the confiramtion is equal to the original password-->
+                <input v-model="PhoneNumber" type="text" placeholder="Numéro de téléphone*" required pattern="^(?:(?:\+|00)[1-9]|0)\s*[1-9](?:[\s.-]*\d{2}){4}$"><br> <!--to match a européen phone format-->
                 <input v-model="SkypeAccount" type="text" placeholder="Pseudo Skype         ex: live:.cd.4d256a842e696f6" pattern="live:[a-z0-9._%+-]+"><br>
                 <select v-model="Campus" >
                     <option :value="null" disabled>Campus</option>
@@ -23,7 +23,8 @@
                     <div v-if="submitClicked" class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
                 </div>
             </form>
-            <p v-if="this.formSubmited">Vous devez avoir reçu un mail pour activer votre compte</p>
+            <p class="info">Les champs avec un * sont obligatoires</p>
+            <p class="mailSent" v-if="this.formSubmited">Vous devez avoir reçu un mail pour activer votre compte</p>
         </div>
       </div>
       <div class="SignInButtonPart">
@@ -155,10 +156,15 @@ export default {
                     }
                 }
 
-                p{
+                .mailSent{
                     text-align: center;
                     font-size: 18px;
                     color: green;
+                    font-weight: bold;
+                }
+
+                p{
+                    font-size: 18px;
                     font-weight: bold;
                 }
             }
