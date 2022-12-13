@@ -18,7 +18,7 @@
                         </div>
                     </div>
                 </form>
-                <p class="wrongEmail" v-if="this.incorrectPassword">L'email ou le mot de passe saisit n'est pas correcte
+                <p class="wrongEmail" v-if="this.incorrectPassword">L'email ou le mot de passe saisi n'est pas correct
                 </p>
                 <p class="ForgotPassword" @click="ForgotPassword">Mot de passe oublié</p>
             </div>
