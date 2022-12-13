@@ -1,56 +1,67 @@
 <template>
-  <div class="StudentArea">
-    <h1 v-if="!this.viewInfoOthers">Mes informations</h1>
-    <h1 v-if="this.viewInfoOthers">Informations {{StudentData.firstName}} {{StudentData.lastName}} </h1>
-    <div class="mainContent">
-      <form  class="personalInfos" @submit.prevent="submit" v-on:submit="SubmitForm(lastName,firstName,campus,phoneNumber,skypeAccount,Password)"> <!--form used in modify mode-->
-        <div class="infoItem">
-          <p  class="descrition">Nom</p>
-          <p class="info" v-if=!isInModifyMod>{{StudentData.lastName}}</p> <!--When not in modify mode, the name is simply displayed-->
-          <input v-model="lastName" v-if=isInModifyMod type="text" required> <!--When in modify mode, use inputs prefilled-->
-        </div>
-        <div class="infoItem">
-          <p class="descrition">Prénom</p>
-          <p class="info" v-if=!isInModifyMod>{{StudentData.firstName}}</p>
-          <input v-model="firstName" v-if=isInModifyMod type="text" required>
-        </div>
-        <div class="infoItem">
-          <p class="descrition">Email</p> <!--Email can't be changed so no input form-->
-          <p class="info" >{{StudentData.email}}</p>
-        </div>
-        <div class="infoItem">
-          <p class="descrition">Campus</p>
-          <p class="info" v-if=!isInModifyMod>{{StudentData.campus}}</p>
-          <select selected={{StudentData.campus}} id="updateCampus" v-model="campus" v-if=isInModifyMod>
-            <option>Saint Etienne</option>
-            <option>Gardanne</option>
-          </select>
-        </div>
-        <div class="infoItem">
-          <p class="descrition">Numéro de téléphone</p>
-          <p class="info" v-if=!isInModifyMod>{{StudentData.phoneNumber}}</p>
-          <input v-model="phoneNumber" v-if=isInModifyMod type="text" required>
-        </div>
-        <div class="infoItem">
-          <p class="descrition">Compte Skype</p>
-          <p class="info" v-if=!isInModifyMod>{{StudentData.skypeAccount}}</p>
-          <input v-model="skypeAccount" v-if=isInModifyMod type="text" pattern="live:[a-z0-9._%+-]+">
-        </div>
-        <div class="infoItem" v-if="this.modifyPasswordMod">
-          <p class="descrition">Nouveau mot de passe</p>
-          <input v-model="Password" type="password" required>
-        </div>
-        <div class="infoItem" v-if="this.modifyPasswordMod">
-          <p class="descrition">Confirmation de mot de passe</p>
-          <input :pattern="Password" v-model="PasswordConfirmation" type="password" required>
-        </div>
-        <input v-if=isInModifyMod class="boutonsubmit" type="submit" value="Enregistrer"> <!--to submit the form in modify mode-->
-      </form>
-      <button class="modifyInfos" v-if="(!isInModifyMod && !this.viewInfoOthers)" @click="toggleModifyMod">Modifier mes informations</button>
-      <button class="modifyPw" @click="toogleModifyPwMode" v-if=isInModifyMod >{{ modifyPasswordMod ? 'Ne pas modifier mon mot de passe' : 'Modifier mon mot de passe' }}</button>
-      <!--<button @click="deleteAccount">Supprimer mon compte</button>-->
+  <div>
+    <div class="StudentArea">
+      <h1 v-if="!this.viewInfoOthers">Mes informations</h1>
+      <h1 v-if="this.viewInfoOthers">Informations {{StudentData.firstName}} {{StudentData.lastName}} </h1>
+      <div class="mainContent">
+        <form  class="personalInfos" @submit.prevent="submit" v-on:submit="SubmitForm(lastName,firstName,campus,phoneNumber,skypeAccount,Password)"> <!--form used in modify mode-->
+          <div class="infoItem">
+            <p  class="descrition">Nom</p>
+            <p class="info" v-if=!isInModifyMod>{{StudentData.lastName}}</p> <!--When not in modify mode, the name is simply displayed-->
+            <input v-model="lastName" v-if=isInModifyMod type="text" required> <!--When in modify mode, use inputs prefilled-->
+          </div>
+          <div class="infoItem">
+            <p class="descrition">Prénom</p>
+            <p class="info" v-if=!isInModifyMod>{{StudentData.firstName}}</p>
+            <input v-model="firstName" v-if=isInModifyMod type="text" required>
+          </div>
+          <div class="infoItem">
+            <p class="descrition">Email</p> <!--Email can't be changed so no input form-->
+            <p class="info" >{{StudentData.email}}</p>
+          </div>
+          <div class="infoItem">
+            <p class="descrition">Campus</p>
+            <p class="info" v-if=!isInModifyMod>{{StudentData.campus}}</p>
+            <select selected={{StudentData.campus}} id="updateCampus" v-model="campus" v-if=isInModifyMod>
+              <option>Saint Etienne</option>
+              <option>Gardanne</option>
+            </select>
+          </div>
+          <div class="infoItem">
+            <p class="descrition">Numéro de téléphone</p>
+            <p class="info" v-if=!isInModifyMod>{{StudentData.phoneNumber}}</p>
+            <input v-model="phoneNumber" v-if=isInModifyMod type="text" required>
+          </div>
+          <div class="infoItem">
+            <p class="descrition">Compte Skype</p>
+            <p class="info" v-if=!isInModifyMod>{{StudentData.skypeAccount}}</p>
+            <input v-model="skypeAccount" v-if=isInModifyMod type="text" pattern="live:[a-z0-9._%+-]+">
+          </div>
+          <div class="infoItem" v-if="this.modifyPasswordMod">
+            <p class="descrition">Nouveau mot de passe</p>
+            <input v-model="Password" type="password" required>
+          </div>
+          <div class="infoItem" v-if="this.modifyPasswordMod">
+            <p class="descrition">Confirmation de mot de passe</p>
+            <input :pattern="Password" v-model="PasswordConfirmation" type="password" required>
+          </div>
+          <input v-if=isInModifyMod class="boutonsubmit" type="submit" value="Enregistrer"> <!--to submit the form in modify mode-->
+        </form>
+        <button class="modifyInfos" v-if="(!isInModifyMod && !this.viewInfoOthers)" @click="toggleModifyMod">Modifier mes informations</button>
+        <button class="modifyPw" @click="toogleModifyPwMode" v-if=isInModifyMod >{{ modifyPasswordMod ? 'Ne pas modifier mon mot de passe' : 'Modifier mon mot de passe' }}</button>
+      </div>
+      <button class="deleteAcount" v-if="((!isInModifyMod) && (!this.viewInfoOthers) && !(this.$store.state.auth == 'ADMIN'))" @click="toggleAccountPopup">Supprimer mon compte</button>
+    </div>
+
+    <div v-if="enableDeleteAccountPopup" class="ConfirmationDelete"> <!--popup to delete the account-->
+      <div>&#0202tes-vous sûr de vouloir supprimer votre compte. Cette action est irréversible. Vos informations personnelles et tous vous rendez-vous seront supprimés</div>
+      <div class="buttons">
+        <div @click="deleteAccount" class="deletebutton">Supprimer</div>
+        <div @click="toggleAccountPopup" class="cancelbutton">Annuler</div>
+      </div>
     </div>
   </div>
+  
       
 </template>
 
@@ -102,7 +113,8 @@ export default {
         PasswordConfirmation: null,
         Password: null,
         modifyPasswordMod: false,
-        viewInfoOthers: false //when admin view the infos of a user
+        viewInfoOthers: false, //when admin view the infos of a user
+        enableDeleteAccountPopup: false
       }
     },
     methods: {
@@ -135,7 +147,14 @@ export default {
         this.modifyPasswordMod = !this.modifyPasswordMod
       },
       async deleteAccount(){
-        await axios.post(`${API_HOST}/api/users/user`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}})
+        await axios.delete(`${API_HOST}/api/users/user`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}})
+        this.toggleAccountPopup();
+        setTimeout(() => { //after 1 second, send to login page
+          this.$router.push("/");
+        }, 1000);
+      },
+      toggleAccountPopup(){
+        this.enableDeleteAccountPopup=!this.enableDeleteAccountPopup;
       }
     }
   }
@@ -255,7 +274,59 @@ export default {
       }
     }
   }
+
+  .deleteAcount{
+    margin-top: 70px;
+    background-color: rgb(153, 10, 10);
+    font-size: 18px;
+    border-radius: 20px;
+    padding: 15px 15px 15px 15px;
+    color: white;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba(153, 10, 10, 0.808);
+    }
+  }
   
+}
+
+.ConfirmationDelete {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  border: 8px solid rgb(215, 61, 61);
+  border-radius: 20px;
+  font-size: 20px;
+  padding: 25px 25px 25px 25px;
+  font-weight: bold;
+  width: 250px;
+  text-align: center;
+
+  .buttons {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-around;
+
+    .deletebutton {
+      color: white;
+      border-radius: 10px;
+      background-color: rgb(215, 61, 61);
+      padding: 8px 8px 8px 8px;
+      cursor: pointer;
+    }
+
+    .cancelbutton {
+      color: white;
+      border-radius: 10px;
+      background-color: $secondColor;
+      padding: 8px 8px 8px 8px;
+      cursor: pointer;
+
+    }
+  }
 }
 
 
