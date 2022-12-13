@@ -107,7 +107,6 @@ export default {
 
           &:hover{
             text-decoration: underline;
-            background-color: rgb(132, 164, 196);
             border-radius: 10px;
           }
         }

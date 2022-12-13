@@ -226,8 +226,6 @@ export default {
 
   .content {
 
-    border-color: solid blue;
-
     .MakeAppoi {
       position: absolute;
       top: 10%;
@@ -257,6 +255,10 @@ export default {
         //height: 50px;
         padding: 15px 8px 15px 8px;
         cursor: pointer;
+
+        &:hover {
+          background-color: $secondColorLighter
+        }
       }
 
       .fillInDiv {}

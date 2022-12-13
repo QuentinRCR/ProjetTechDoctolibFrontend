@@ -1,148 +1,151 @@
 <template> <!--See AppointementItem to simillar code commented-->
-    <div class="slotitem" :class="{expanded: isExpanded}">
-      <div class="slotitemalwaysdisplay" @click="toggleExpand">
-        <div class="lign">
-          <div class="sentence">Entre le</div>
-          <div class="info">{{this.dateTimeFormat.format(new Date(this.slot.dateDebut))}}</div> <!--To print the date in a human readable manner-->
-        </div>
-        <div class="lign">
-          <div class="sentence">Et le</div>
-          <div class="info">{{this.dateTimeFormat.format(new Date(this.slot.dateFin))}}</div> <!--To print the date in a human readable manner-->
-        </div>
-        <div class="lign">
-          <div class="sentence">Jours: </div>
-          <div class="info">{{this.daysList.slice(0,-2)}}</div> <!--To print the date in a human readable manner-->
-        </div>
-        <div class="lign"> <!--Ecrit les heures de début et de fin-->
-          <div class="sentence">Plage de temps: De</div>
-          <div class="info spaceright">{{slot.heuresDebutFin[0].tempsDebut.slice(0,-3).replace(":","h")}}</div> <!--To print the date in a human readable manner-->
-          <div class="sentence">à</div>
-          <div class="info">{{slot.heuresDebutFin[0].tempsFin.slice(0,-3).replace(":","h")}}</div>
-        </div>
-  
-        <div class="expand-arrow"> <!--add the arrow to deploy the menu-->
-          {{ isExpanded ? '&#9660;' : '&#9658;' }}
-        </div>
+  <div class="slotitem" :class="{ expanded: isExpanded }">
+    <div class="slotitemalwaysdisplay" @click="toggleExpand">
+      <div class="lign">
+        <div class="sentence">Entre le</div>
+        <div class="info">{{ this.dateTimeFormat.format(new Date(this.slot.dateDebut)) }}</div>
+        <!--To print the date in a human readable manner-->
       </div>
-      <template v-if="isExpanded"> <!--Expanded menu-->
-        <hr/>
-        <div class="details d-flex">
-          <button class="cancelButton" @click="deleteSlot">Supprimer le créneau</button>
-          <button class="moveButton" @click="ModifySlot">Modifier le créneau</button>
-        </div>
-      </template>
+      <div class="lign">
+        <div class="sentence">Et le</div>
+        <div class="info">{{ this.dateTimeFormat.format(new Date(this.slot.dateFin)) }}</div>
+        <!--To print the date in a human readable manner-->
+      </div>
+      <div class="lign">
+        <div class="sentence">Jours: </div>
+        <div class="info">{{ this.daysList.slice(0, -2) }}</div> <!--To print the date in a human readable manner-->
+      </div>
+      <div class="lign"> <!--Ecrit les heures de début et de fin-->
+        <div class="sentence">Plage de temps: De</div>
+        <div class="info spaceright">{{ slot.heuresDebutFin[0].tempsDebut.slice(0, -3).replace(":", "h") }}</div>
+        <!--To print the date in a human readable manner-->
+        <div class="sentence">à</div>
+        <div class="info">{{ slot.heuresDebutFin[0].tempsFin.slice(0, -3).replace(":", "h") }}</div>
+      </div>
+
+      <div class="expand-arrow"> <!--add the arrow to deploy the menu-->
+        {{ isExpanded ? '&#9660;' : '&#9658;' }}
+      </div>
     </div>
-  </template>
+    <template v-if="isExpanded"> <!--Expanded menu-->
+      <hr />
+      <div class="details d-flex">
+        <button class="cancelButton" @click="deleteSlot">Supprimer le créneau</button>
+        <button class="moveButton" @click="ModifySlot">Modifier le créneau</button>
+      </div>
+    </template>
+  </div>
+</template>
   
-  <script>
-  import axios from 'axios';
-  import {API_HOST} from '../config';
-  
-  export default {
-    name: 'SlotItem',
-    props: ['slot'],
-    data: function() {
-      return {
-        isExpanded: false,
-        dateTimeFormat : new Intl.DateTimeFormat('fr', { //to converte the date to human readable
+<script>
+import axios from 'axios';
+import { API_HOST } from '../config';
+
+export default {
+  name: 'SlotItem',
+  props: ['slot'],
+  data: function () {
+    return {
+      isExpanded: false,
+      dateTimeFormat: new Intl.DateTimeFormat('fr', { //to converte the date to human readable
         year: 'numeric',
         month: 'long',
         day: 'numeric',
-        }),
-        daysList: ""
-      }
-    },
-    created: function(){
-      for(let i=0;i<this.slot.jours.length;i++){
-        switch (this.slot.jours[i]) {
+      }),
+      daysList: ""
+    }
+  },
+  created: function () {
+    for (let i = 0; i < this.slot.jours.length; i++) {
+      switch (this.slot.jours[i]) {
         case "MONDAY":
-          this.daysList +="Lundi, ";
+          this.daysList += "Lundi, ";
           break;
         case "TUESDAY":
-          this.daysList +="Mardi, ";
+          this.daysList += "Mardi, ";
           break;
         case "WEDNESDAY":
-          this.daysList +="Mercredi, ";
+          this.daysList += "Mercredi, ";
           break;
         case "THURSDAY":
-          this.daysList +="Jeudi, ";
+          this.daysList += "Jeudi, ";
           break;
         case "FRIDAY":
-          this.daysList +="Vendredi, ";
-          break;  
+          this.daysList += "Vendredi, ";
+          break;
         case "SATURDAY":
-          this.daysList +="Samedi, ";
+          this.daysList += "Samedi, ";
           break;
         case "SUNDAY":
-          this.daysList +="Dimanche, ";
+          this.daysList += "Dimanche, ";
           break;
         default:
-            console.log("the switch to translate days has a problem");
-        }
-      }
-    },
-    methods: {
-      toggleExpand() {
-        this.isExpanded = !this.isExpanded;
-      },
-      async deleteSlot(){
-        this.$emit('slot-delete', this.slot.id);
-      },
-      ModifySlot(){
-        this.$emit('slot-choice',this.slot)
+          console.log("the switch to translate days has a problem");
       }
     }
+  },
+  methods: {
+    toggleExpand() {
+      this.isExpanded = !this.isExpanded;
+    },
+    async deleteSlot() {
+      this.$emit('slot-delete', this.slot.id);
+    },
+    ModifySlot() {
+      this.$emit('slot-choice', this.slot)
+    }
   }
-  </script>
+}
+</script>
   
-  <style lang="scss" scoped>
-  .slotitem{
-    margin: auto;
-    font-size: 18px;
-    cursor: pointer;
-    border: solid $secondColor;
-    border-width: 5px;
-    border-radius: 20px;
-    padding: 5px 5px 5px 5px;
-    width: 90%;
+<style lang="scss" scoped>
+.slotitem {
+  margin: auto;
+  font-size: 18px;
+  cursor: pointer;
+  border: solid $secondColor;
+  border-width: 5px;
+  border-radius: 20px;
+  padding: 5px 5px 5px 5px;
+  width: 90%;
 
-    .slotitemalwaysdisplay{
-      position: relative;
+  .slotitemalwaysdisplay {
+    position: relative;
 
-      .lign{
-        display: flex;
-        align-items: center;
-        margin-bottom: 2.5px;
-        margin-top: 2.5px;
+    .lign {
+      display: flex;
+      align-items: center;
+      margin-bottom: 2.5px;
+      margin-top: 2.5px;
 
-        .sentence{
-          margin-right: 5px;
-        }
-
-        .info{
-          font-weight: 600;
-          color: $secondColor;
-          font-size: 20px;
-        }
-
-        .spaceright{
-          margin-right: 5px;  
-        }
-
+      .sentence {
+        margin-right: 5px;
       }
 
-      .expand-arrow{
+      .info {
+        font-weight: 600;
+        color: $secondColor;
+        font-size: 20px;
+      }
+
+      .spaceright {
+        margin-right: 5px;
+      }
+
+    }
+
+    .expand-arrow {
       position: absolute;
       top: 3px;
       right: 10px;
     }
-    }
+  }
 
-    .details{
+  .details {
     display: flex;
     justify-content: space-around;
 
-    .cancelButton{
+    .cancelButton {
       font-size: 18px;
       background-color: rgb(215, 61, 61);
       border-radius: 10px;
@@ -150,9 +153,13 @@
       color: white;
       font-weight: bold;
       cursor: pointer;
+
+      &:hover {
+        background-color: rgba(215, 61, 61, 0.771);
+      }
     }
 
-    .moveButton{
+    .moveButton {
       font-size: 18px;
       background-color: $secondColor;
       border-radius: 10px;
@@ -160,19 +167,21 @@
       color: white;
       font-weight: bold;
       cursor: pointer;
+
+      &:hover {
+        background-color: $secondColorLighter;
+      }
     }
 
   }
 
-  }
+}
 
-  @media (min-width: 600px){
-    .slotitem{
-      width: 550px;
-      padding: 17.5px 20px 17.5px 20px;
-    }
+@media (min-width: 600px) {
+  .slotitem {
+    width: 550px;
+    padding: 17.5px 20px 17.5px 20px;
   }
-
-  
-  </style>
+}
+</style>
   

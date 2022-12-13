@@ -179,6 +179,11 @@ export default {
         border-radius: 20px;
         padding: 15px 15px 15px 15px;
         margin-left: 5%;
+        cursor: pointer;
+
+        &:hover {
+          background-color: $secondColorLighter;
+        }
       }
 
       .modifyPw{
@@ -189,6 +194,11 @@ export default {
         padding: 15px 15px 15px 15px;
         color: white;
         margin-left: 5%;
+        cursor: pointer;
+
+        &:hover {
+          background-color: rgba(153, 10, 10, 0.808);
+        }
       }
 
     .personalInfos{
@@ -201,6 +211,11 @@ export default {
           background-color: $secondColor;
           padding: 15px 15px 15px 15px;
           margin-top: 10px;
+          cursor: pointer;
+
+          &:hover {
+            background-color: $secondColorLighter;
+          }
       }
 
       .infoItem{
