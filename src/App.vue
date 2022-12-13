@@ -14,6 +14,26 @@ import LogInPage from './components/LogInPage.vue'
 </template>
 
 <script>
+export default {
+
+  components: {
+  },
+  data: function () {
+    return {
+      
+    }
+  },
+  created: function () { //change the fav icon depending on the mode
+    const favicon = document.getElementById("favicon");
+
+    if(window.matchMedia('(prefers-color-scheme: dark)').matches){
+      favicon.href = "faviconDarkMode.png";
+    }
+    else{
+      favicon.href = "favicon.png";
+    }
+  }
+}
 </script>
 
 <style >
