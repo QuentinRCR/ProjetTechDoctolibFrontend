@@ -15,8 +15,8 @@
             <div class="itemtime">
               <p class="">Heure:</p>
               <div class="timepicker"><Datepicker inline :startTime="startTimeee" minutesIncrement="30" minutesGridIncrement="30" hoursGridIncrement="2" v-model="time" timePicker autoApply modeHeight="276" ></Datepicker></div>
-              <p class="errorMessage" v-show="!this.isTimeCorrect">L'heure selectionné n'est pas<br>disponible</p>
-              <p class="errorMessage" v-show="this.isAppAlreadyTaken">Il y déjà un rendez-vous à cette<br>heure</p>
+              <p class="errorMessage" v-show="!this.isTimeCorrect">L'heure selectionnée n'est pas<br>disponible</p>
+              <p class="errorMessage" v-show="this.isAppAlreadyTaken">Il y a déjà un rendez-vous à cette<br>heure</p>
               <p class="errorMessage" v-show="this.isInThePast">Vous ne pouvez pas prendre<br>de rendez-vous dans le passé</p>
             </div>
         </div>
@@ -24,9 +24,7 @@
           <p>Moyen de communication</p>
           <select v-model="CommunicationMean" required>
               <!--<option :value="null" disabled>Moyen de communication:</option>-->
-              <option>Skype</option>
-              <option>Whatsapp</option>
-              <option>Téléphone</option>
+              <option v-for="com in CommunicationMeans">{{com.communicationMean}}</option> <!--Get the communication mean from the db-->
           </select><br>
         </div>
         <div v-if="this.$store.state.auth == 'ADMIN'" class="chooseStudent">
@@ -82,7 +80,8 @@ export default {
         isDateNotSelected: false,
         submitClicked: false,
         isAppAlreadyTaken: false,
-        isInThePast: false
+        isInThePast: false,
+        CommunicationMeans: []
     }
   },
   created: async function(){
@@ -100,6 +99,10 @@ export default {
       }
     }
     this.allowedDates=correctDates;
+
+    //fetch communication means
+    let response = await axios.get(`${API_HOST}/api/communicationMean/user`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}});
+    this.CommunicationMeans=response.data;
   },
   components: {
     Datepicker
@@ -116,21 +119,6 @@ export default {
         }
         else{
           this.isDateNotSelected=false;
-        }
-
-        if(!this.isDateNotSelected){
-          /*let timeApp=("0"+time.hours).slice(-2)+":"+("0"+time.minutes).slice(-2); //get the time of the appointement
-          let realSlots2=new Array(this.realSlots)[0] //dup just in case
-          realSlots2.forEach(slot => { 
-            if(date==slot[0].slice(0,-6)){ //if the date is correct, continue
-              if (timeApp>=slot[0].slice(-5) && timeApp<=slot[1].slice(-5)){ //if the time is in the slot, that's ok
-                this.isTimeCorrect=true;
-              }
-              else{
-                this.isTimeCorrect=false;
-              }
-            }
-          });*/
         }
 
 

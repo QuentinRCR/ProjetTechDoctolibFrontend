@@ -54,7 +54,7 @@
     </div>
 
     <div v-if="enableDeleteAccountPopup" class="ConfirmationDelete"> <!--popup to delete the account-->
-      <div>&#0202tes-vous sûr de vouloir supprimer votre compte. Cette action est irréversible. Vos informations personnelles et tous vous rendez-vous seront supprimés</div>
+      <div>&#0202tes-vous sûr de vouloir supprimer votre compte. Cette action est irréversible. Vos informations personnelles et tous vos rendez-vous seront supprimés</div>
       <div class="buttons">
         <div @click="deleteAccount" class="deletebutton">Supprimer</div>
         <div @click="toggleAccountPopup" class="cancelbutton">Annuler</div>
