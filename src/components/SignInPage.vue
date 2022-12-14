@@ -1,54 +1,56 @@
 <template>
     <div>
-    <div class="content">
-        <div class="boiteblanche">
-            <h1>S'inscrire</h1>
-            <div class="menu">
-                <form @submit.prevent="submit"
-                    v-on:submit="SubmitForm(ClienEmail, ClientFirstName, ClientLastName, Password, PasswordConfirmation, PhoneNumber, SkypeAccount, Campus)">
-                    <input v-model="ClienEmail" type="text" placeholder="Email EMSE*" required><br>
-                    <!--pattern="[a-z0-9._%+-]+@[a-z0-9.-]*emse\.fr$" ><br>--> <!--match a emse adress-->
-                    <input v-model="ClientFirstName" type="text" placeholder="Prénom*" required><br>
-                    <input v-model="ClientLastName" type="text" placeholder="Nom*" required><br>
-                    <input v-model="Password" type="password" placeholder="Mot de passe*" required><br>
-                    <input :pattern="Password" v-model="PasswordConfirmation" type="password"
-                        placeholder="Confirmation de mot de passe*" required><br>
-                    <!--The patern is to verify that the confiramtion is equal to the original password-->
-                    <input v-model="PhoneNumber" type="text" placeholder="Numéro de téléphone*" required
-                        pattern="^(?:(?:\+|00)[1-9][1-9]|0)\s*[1-9](?:[\s.-]*\d{2}){4}$"><br>
-                    <!--to match a européen phone format-->
-                    <input v-model="SkypeAccount" type="text"
-                        placeholder="Pseudo Skype         ex: live:.cd.4d256a842e696f6 ou bob36"><br>
-                    <select v-model="Campus">
-                        <option :value="null" disabled>Campus</option>
-                        <option>Saint Etienne</option>
-                        <option>Gardanne</option>
-                    </select><br>
-                    <div class="submitpart">
-                        <input class="boutonsubmit" type="submit" value="S'inscrire" :style="{
-                            color: submitClicked ? '#3694c6' : 'white' //when the button is clicked, we hide the connection button
-                        }">
-                        <div v-if="submitClicked" class="lds-ellipsis">
-                            <div></div>
-                            <div></div>
-                            <div></div>
-                            <div></div>
+        <div class="content">
+            <div class="boiteblanche">
+                <h1>S'inscrire</h1>
+                <div class="menu">
+                    <form @submit.prevent="submit"
+                        v-on:submit="SubmitForm(ClienEmail, ClientFirstName, ClientLastName, Password, PasswordConfirmation, PhoneNumber, SkypeAccount, Campus)">
+                        <input v-model="ClienEmail" type="text" placeholder="Email EMSE*" required><br>
+                        <!--pattern="[a-z0-9._%+-]+@[a-z0-9.-]*emse\.fr$" ><br>--> <!--match a emse adress-->
+                        <input v-model="ClientFirstName" type="text" placeholder="Prénom*" required><br>
+                        <input v-model="ClientLastName" type="text" placeholder="Nom*" required><br>
+                        <input v-model="Password" type="password" placeholder="Mot de passe*" required><br>
+                        <input :pattern="Password" v-model="PasswordConfirmation" type="password"
+                            placeholder="Confirmation de mot de passe*" required><br>
+                        <!--The patern is to verify that the confiramtion is equal to the original password-->
+                        <input v-model="PhoneNumber" type="text" placeholder="Numéro de téléphone*" required
+                            pattern="^(?:(?:\+|00)[1-9][1-9]|0)\s*[1-9](?:[\s.-]*\d{2}){4}$"><br>
+                        <!--to match a européen phone format-->
+                        <input v-model="SkypeAccount" type="text"
+                            placeholder="Pseudo Skype         ex: live:.cd.4d256a842e696f6 ou bob36"><br>
+                        <select v-model="Campus">
+                            <option :value="null" disabled>Campus</option>
+                            <option>Saint Etienne</option>
+                            <option>Gardanne</option>
+                        </select><br>
+                        <div class="submitpart">
+                            <input class="boutonsubmit" type="submit" value="S'inscrire" :style="{
+                                color: submitClicked ? '#3694c6' : 'white' //when the button is clicked, we hide the connection button
+                            }">
+                            <div v-if="submitClicked" class="lds-ellipsis">
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                                <div></div>
+                            </div>
                         </div>
-                    </div>
-                </form>
-                <p class="info">Les champs avec un * sont obligatoires</p>
-                <p class="mailSent" v-if="this.formSubmited">Vous devez avoir reçu un mail pour activer votre compte</p>
+                    </form>
+                    <p v-if="emailAlreadyTaken" class="emailAlreadyTaken">Email déjà utilisé</p>
+                    <p class="info">Les champs avec un * sont obligatoires</p>
+                    <p class="mailSent" v-if="this.formSubmited">Vous devez avoir reçu un mail pour activer votre compte
+                    </p>
+                </div>
+            </div>
+            <div class="SignInButtonPart">
+                <div class="bordure">
+                    <p>J'ai déjà un compte</p>
+                    <button @click="SendToLogIn">Se connecter</button>
+                </div>
             </div>
         </div>
-        <div class="SignInButtonPart">
-            <div class="bordure">
-                <p>J'ai déjà un compte</p>
-                <button @click="SendToLogIn">Se connecter</button>
-            </div>
-        </div>
+        <p class="legalNotice" @click="legalNotice">Mension légales</p>
     </div>
-    <p class="legalNotice" @click="legalNotice">Mension légales</p>
-</div>
 
 </template>
 
@@ -68,7 +70,8 @@ export default {
             Campus: null,
             ClienEmail: null,
             formSubmited: false,
-            submitClicked: false
+            submitClicked: false,
+            emailAlreadyTaken: false
         }
     },
     methods: {
@@ -76,27 +79,38 @@ export default {
             if (!this.submitClicked) { //to prevent spamming
                 this.submitClicked = true; //to display the loading animation
                 console.log("faire l'authentification");
-                let response = await axios.post(`${API_HOST}/api/registration`,
-                    {
-                        campus: `${Campus}`,
-                        email: `${ClienEmail}`,
-                        nom: `${ClientLastName}`,
-                        password: `${Password}`,
-                        phonenumber: `${PhoneNumber}`,
-                        prenom: `${ClientFirstName}`,
-                        skypeAccount: `${SkypeAccount}`
-                    })
-                this.formSubmited = true; //To display the message saying that the person received a mail to confirm its account
+                try {
+                    let response = await axios.post(`${API_HOST}/api/registration`,
+                        {
+                            campus: `${Campus}`,
+                            email: `${ClienEmail}`,
+                            nom: `${ClientLastName}`,
+                            password: `${Password}`,
+                            phonenumber: `${PhoneNumber}`,
+                            prenom: `${ClientFirstName}`,
+                            skypeAccount: `${SkypeAccount}`
+                        })
+                    this.formSubmited = true; //To display the message saying that the person received a mail to confirm its account
+                    this.emailAlreadyTaken = false;
+                }
+                catch (error) {
+                    if (error.response.data.status == 500) {
+                        this.emailAlreadyTaken = true;
+                    }
+                    else {
+                        console.log(error);
+                    }
+                }
                 this.submitClicked = false; //to cencel the loading animation
             }
         },
         SendToLogIn() {
             this.$router.push("/"); //go to the login page
         },
-        legalNotice(){
-        this.$router.push("/legalNotice");
+        legalNotice() {
+            this.$router.push("/legalNotice");
         }
-        
+
     }
 }
 </script>
@@ -235,16 +249,24 @@ export default {
 
 }
 
-.legalNotice{
-            margin-top: 70px;
-            text-align: center;
-            color:#444;
-            cursor: pointer;
+.emailAlreadyTaken {
+    font-size: 20px;
+    text-align: center;
+    font-weight: bold;
+    color: red;
+    cursor: pointer;
+}
 
-            &:hover{
-            text-decoration:underline;
-            }
-        }
+.legalNotice {
+    margin-top: 70px;
+    text-align: center;
+    color: #444;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
 
 @media (min-width: 600px) {
     .content {

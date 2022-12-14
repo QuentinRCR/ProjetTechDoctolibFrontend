@@ -178,6 +178,7 @@ export default {
                         idSlot = null;
                     }
 
+                    
                     let newSlot = await axios.post(`${API_HOST}/api/creneaux/admin/create_or_modify`, //Send the resquest to the api with values defined above
                         {
                             id: idSlot,
@@ -195,6 +196,7 @@ export default {
                         }, { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}` } })
                     this.$emit('close-popup');
                     this.$emit('reload'); //for the reload of the page to have the correct appointement
+                    
                 }
                 else {
                     if (dateSlot == null) {
