@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="explanation">
+    <div v-if="this.$store.state.auth != 'ADMIN'" class="explanation">
       <div>Bienvenue sur cette application de prise de rendez-vous auprès de la psychologue de l'EMSE. Pour prendre un
         rendez-vous, rien de plus simple, il suffit de cliquer sur le bouton "Prendre un rendez-vous".</div>
       <p>

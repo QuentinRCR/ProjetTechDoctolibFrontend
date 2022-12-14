@@ -10,7 +10,7 @@
             <div class="itemdate">
               <p class="">Date:</p>
               <div class="datepicker"><Datepicker :month-change-on-scroll="false" inline v-model="date" :enableTimePicker="false" autoApply modelType="yyyy-MM-dd" :allowedDates="allowedDates"></Datepicker></div>
-              <div class="errorMessage" v-show="this.isDateNotSelected">Aucun date n'est selectionné</div>
+              <div class="errorMessage" v-show="this.isDateNotSelected">Aucune date n'est selectionnée</div>
             </div>
             <div class="itemtime">
               <p class="">Heure:</p>

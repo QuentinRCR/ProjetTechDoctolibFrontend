@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="wrappingDiv">
     <div class="content">
         <div class="boiteblanche">
             <h1>Se connecter</h1>
@@ -248,6 +248,10 @@ export default {
     &:hover {
         text-decoration: underline;
     }
+}
+
+.wrappingDiv{
+    height: 100% 
 }
 
 @media (min-width: 600px) {

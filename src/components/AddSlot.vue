@@ -33,7 +33,7 @@
                                 hoursGridIncrement="4" timePicker></Datepicker>
                         </div>
                     </div>
-                    <p v-if="!this.areTimesInTheRightOrder">L'heure de début ne peux pas être<br> après celle de fin</p>
+                    <p v-if="!this.areTimesInTheRightOrder">L'heure de début ne peut pas être<br> après celle de fin</p>
                 </div>
             </div>
             <div class="dayArea"> <!--Checkboxs with all the days-->
@@ -200,7 +200,7 @@ export default {
                     if (dateSlot == null) {
                         this.isDateSelected = true;
                     }
-                    if (startTime > endTime) {
+                    if (startTime >= endTime) {
                         this.areTimesInTheRightOrder = false;
                     }
                 }

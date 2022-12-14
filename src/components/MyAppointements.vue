@@ -10,7 +10,7 @@
       </div>
     </div>
     <div v-if="showConfirmationBox" class="ConfirmationDelete">
-      <div>Voulez vous supprimer ce rendez-vous</div>
+      <div>Voulez vous supprimer ce rendez-vous ?</div>
       <div class="buttons">
         <div @click="deleteAppointementForReal" class="deletebutton">Supprimer</div>
         <div @click="toggleConfirmationBox" class="cancelbutton">Annuler</div>
