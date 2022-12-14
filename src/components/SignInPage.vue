@@ -17,8 +17,7 @@
                         pattern="^(?:(?:\+|00)[1-9][1-9]|0)\s*[1-9](?:[\s.-]*\d{2}){4}$"><br>
                     <!--to match a européen phone format-->
                     <input v-model="SkypeAccount" type="text"
-                        placeholder="Pseudo Skype         ex: live:.cd.4d256a842e696f6"
-                        pattern="live:[a-z0-9._%+-]+"><br>
+                        placeholder="Pseudo Skype         ex: live:.cd.4d256a842e696f6 ou bob36"><br>
                     <select v-model="Campus">
                         <option :value="null" disabled>Campus</option>
                         <option>Saint Etienne</option>

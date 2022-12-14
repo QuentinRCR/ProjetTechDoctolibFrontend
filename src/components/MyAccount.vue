@@ -35,7 +35,7 @@
           <div class="infoItem">
             <p class="descrition">Compte Skype</p>
             <p class="info" v-if=!isInModifyMod>{{StudentData.skypeAccount}}</p>
-            <input v-model="skypeAccount" v-if=isInModifyMod type="text" pattern="live:[a-z0-9._%+-]+">
+            <input v-model="skypeAccount" v-if=isInModifyMod type="text" placeholder="Pseudo Skype         ex: live:.cd.4d256a842e696f6 ou bob36">
           </div>
           <div class="infoItem" v-if="this.modifyPasswordMod">
             <p class="descrition">Nouveau mot de passe</p>
