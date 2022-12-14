@@ -103,12 +103,20 @@ export default {
     //fetch communication means
     let response = await axios.get(`${API_HOST}/api/communicationMean/user`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}});
     this.CommunicationMeans=response.data;
+
+    if (this.enableModifyMod){ //to pre set the time from the last appointement
+      this.time.hours=this.AppointementChoice.dateDebut.slice(11,13);
+      this.time.minutes=this.AppointementChoice.dateDebut.slice(14,16);
+      this.date=this.AppointementChoice.dateDebut.slice(0,10);
+    }
+    
   },
   components: {
     Datepicker
   },
   methods: {
     async SubmitForm(CommunicationMean,date,time,student){
+      console.log(date);
       if(!this.submitClicked){//to prevent spam
         this.isTimeCorrect=true; //to reset from a previous failed attempte
         this.isAppAlreadyTaken=false;
