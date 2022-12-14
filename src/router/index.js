@@ -25,6 +25,11 @@ const router = createRouter({
       component: () => import('../components/formChangedPassword.vue')
     },
     {
+      path: '/legalNotice',
+      name: 'legalNotice',
+      component: () => import('../components/LegalNotice.vue')
+    },
+    {
       path: '/home',
       name: 'home',
       component: () => import('../views/HomeView.vue')

@@ -1,4 +1,5 @@
 <template>
+    <div>
     <div class="content">
         <div class="boiteblanche">
             <h1>S'inscrire</h1>
@@ -46,6 +47,8 @@
             </div>
         </div>
     </div>
+    <p class="legalNotice" @click="legalNotice">Mension légales</p>
+</div>
 
 </template>
 
@@ -89,7 +92,11 @@ export default {
         },
         SendToLogIn() {
             this.$router.push("/"); //go to the login page
+        },
+        legalNotice(){
+        this.$router.push("/legalNotice");
         }
+        
     }
 }
 </script>
@@ -224,11 +231,20 @@ export default {
             }
 
         }
-
-
     }
 
 }
+
+.legalNotice{
+            margin-top: 70px;
+            text-align: center;
+            color:#444;
+            cursor: pointer;
+
+            &:hover{
+            text-decoration:underline;
+            }
+        }
 
 @media (min-width: 600px) {
     .content {

@@ -1,4 +1,5 @@
 <template>
+    <div>
     <div class="content">
         <div class="boiteblanche">
             <h1>Se connecter</h1>
@@ -34,7 +35,8 @@
 
 
     </div>
-
+    <p class="legalNotice" @click="legalNotice">Mension légales</p>
+</div>
 </template>
 
 <script>
@@ -92,6 +94,9 @@ export default {
             this.$store.commit('setRefTok', { refresh_token: `${response.data.refresh_token}` }) ////Set the refresh token
             this.$router.push({ path: 'home', query: { token: `${response.data.access_token}`, refresh_token: `${response.data.refresh_token}` } }) //change path and add token to url
             console.log("token mis à jour");
+        },
+        legalNotice() {
+            this.$router.push("/legalNotice");
         }
     }
 }
@@ -234,6 +239,17 @@ export default {
 
 }
 
+.legalNotice {
+    margin-top: 50px;
+    text-align: center;
+    color: #444;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
 @media (min-width: 600px) {
     .content {
         width: 45%;
@@ -244,6 +260,13 @@ export default {
 
     .boiteblanche {
         margin-right: 10%;
+    }
+
+    .legalNotice {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translate(-50%,0);
     }
 }
 </style>

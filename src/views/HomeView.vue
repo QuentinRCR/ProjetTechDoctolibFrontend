@@ -36,6 +36,7 @@
 
     <div class="notConnect" v-if="this.notConnected">Vous avez été déconnecté. Veuillez vous reconnecter pour poursuivre
       la navigaton</div>
+      <p class="legalNotice" @click="legalNotice">Mension légales</p>
   </div>
 </template>
 
@@ -209,6 +210,9 @@ export default {
     },
     reset_studentInfos() {
       this.studentInfos = null;
+    },
+    legalNotice(){
+      this.$router.push("/legalNotice");
     }
   }
 }
@@ -285,6 +289,16 @@ export default {
     text-align: center;
   }
 
+  .legalNotice{
+    margin-top: 70px;
+    text-align: center;
+    color:#444;
+    cursor: pointer;
+
+    &:hover{
+      text-decoration:underline;
+    }
+  }
 }
 </style>
 
