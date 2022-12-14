@@ -14,7 +14,7 @@
                         placeholder="Confirmation de mot de passe*" required><br>
                     <!--The patern is to verify that the confiramtion is equal to the original password-->
                     <input v-model="PhoneNumber" type="text" placeholder="Numéro de téléphone*" required
-                        pattern="^(?:(?:\+|00)[1-9]|0)\s*[1-9](?:[\s.-]*\d{2}){4}$"><br>
+                        pattern="^(?:(?:\+|00)[1-9][1-9]|0)\s*[1-9](?:[\s.-]*\d{2}){4}$"><br>
                     <!--to match a européen phone format-->
                     <input v-model="SkypeAccount" type="text"
                         placeholder="Pseudo Skype         ex: live:.cd.4d256a842e696f6"

@@ -30,7 +30,7 @@
           <div class="infoItem">
             <p class="descrition">Numéro de téléphone</p>
             <p class="info" v-if=!isInModifyMod>{{StudentData.phoneNumber}}</p>
-            <input v-model="phoneNumber" v-if=isInModifyMod type="text" required>
+            <input v-model="phoneNumber" pattern="^(?:(?:\+|00)[1-9][1-9]|0)\s*[1-9](?:[\s.-]*\d{2}){4}$" v-if=isInModifyMod type="text" required>
           </div>
           <div class="infoItem">
             <p class="descrition">Compte Skype</p>
