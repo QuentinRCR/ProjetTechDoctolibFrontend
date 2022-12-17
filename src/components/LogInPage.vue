@@ -166,6 +166,7 @@ export default {
 //phone format
 .wrappingDiv{
     position: absolute;
+    height: 100% 
 }
 
 .content {
@@ -305,10 +306,6 @@ export default {
     &:hover {
         text-decoration: underline;
     }
-}
-
-.wrappingDiv{
-    height: 100% 
 }
 
 

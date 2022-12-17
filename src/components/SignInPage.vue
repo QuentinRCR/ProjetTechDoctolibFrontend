@@ -1,6 +1,7 @@
 <template>
-    <div>
+    <div class="wrappingDiv">
         <div class="content">
+            <div class="fillInDiv"></div>
             <div class="boiteblanche">
                 <h1>S'inscrire</h1>
                 <div class="menu">
@@ -116,20 +117,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.wrappingDiv{
+    position: absolute;
+    height: 100% 
+}
+
 .content {
-    //border: solid pink;
-    margin-left: auto;
-    margin-right: auto;
     align-items: center;
-    width: 95%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 
     .boiteblanche {
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 100%;
-        margin-bottom: 40px;
-        //border: solid purple;
+        width: 95%;
 
         h1 {
             font-size: 35px;
@@ -217,7 +220,7 @@ export default {
         justify-content: center;
         align-items: center;
         text-align: center;
-        width: 200px;
+        width: 180px;
 
         .bordure {
 
@@ -258,7 +261,7 @@ export default {
 }
 
 .legalNotice {
-    margin-top: 70px;
+    margin-top: 40px;
     text-align: center;
     color: #444;
     cursor: pointer;
@@ -268,15 +271,53 @@ export default {
     }
 }
 
-@media (min-width: 600px) {
+@media (min-width: 600px) { //for desktop format
     .content {
-        width: 45%;
+        
         display: flex;
-        //border: solid blue;
+        flex-direction: row !important;
+        justify-content: center;
+
+        .SignInButtonPart{
+            margin-left: 70px;
+            margin-right:10px;
+        }
     }
 
     .boiteblanche {
-        margin-right: 10%;
+        width: 500px !important;
     }
+
+    .fillInDiv{
+        width:180px;
+        margin-right: 80px; // to compensate the margin left and right on the sign in button part
+    }
+
+    .legalNotice {
+        //position: absolute;
+        //bottom: 20px;
+        //left: 50%;
+        //transform: translate(-50%,0);
+    }
+
+    
+}
+
+
+
+
+@media (min-width:600px) and (max-width:920px) { //intermediary format
+    .content{
+        flex-direction: column !important;
+    }
+
+    .fillInDiv{
+        display: none;
+    }
+
+    .SignInButtonPart{
+            margin-left: 0px !important;
+            margin-right:0px !important;
+        }
 }
 </style>
