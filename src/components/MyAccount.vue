@@ -4,6 +4,7 @@
       <h1 v-if="!this.viewInfoOthers">Mes informations</h1>
       <h1 v-if="this.viewInfoOthers">Informations {{StudentData.firstName}} {{StudentData.lastName}} </h1>
       <div class="mainContent">
+        <div class="fillInDiv"></div>
         <form  class="personalInfos" @submit.prevent="submit" v-on:submit="SubmitForm(lastName,firstName,campus,phoneNumber,skypeAccount,Password)"> <!--form used in modify mode-->
           <div class="infoItem">
             <p  class="descrition">Nom</p>
@@ -166,17 +167,41 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    .modifyInfos{
+      margin-left: 100px;
+      margin-right: 10px;
+    }
+
+    .modifyPw{
+      margin-left: 100px;
+      margin-right: 10px;
+    }
     
+    .fillInDiv{
+      width:260px;
+    }
 
     .infoItem{  
     }
 
     input[type="text"],input[type="password"],select{
-      width: 500px;
+      width: 480px !important;
       margin: 0;
     }
   }
   
+}
+
+@media (min-width:600px) and (max-width:920px) { //intermediary format
+    .mainContent{
+      flex-direction:column;
+    }
+
+    .modifyPw, .modifyInfos{
+      margin-left:0 !important;
+      margin-right: 0 !important;
+    }
 }
 
 .StudentArea{
@@ -197,8 +222,8 @@ export default {
         font-size: 18px;
         border-radius: 20px;
         padding: 15px 15px 15px 15px;
-        margin-left: 5%;
         cursor: pointer;
+        width: 150px;
 
         &:hover {
           background-color: $secondColorLighter;
@@ -212,7 +237,7 @@ export default {
         border-radius: 20px;
         padding: 15px 15px 15px 15px;
         color: white;
-        margin-left: 5%;
+        width: 150px;
         cursor: pointer;
 
         &:hover {
@@ -240,12 +265,14 @@ export default {
       .infoItem{
         font-size: 18px;
         //border: solid rebeccapurple;
+        margin-bottom: 30px;
 
         .descrition{
           //border: solid pink;
           color: #333;
           font-weight: bold;
           margin: 0;
+          margin-bottom:7px;
           font-size: 20px;
         }
 
@@ -261,7 +288,7 @@ export default {
           border-radius: 10px;
           padding:10px 10px 10px 10px;
           margin-bottom: 20px;
-          width: 80%;
+          width: 90%;
 
           &:focus{
             outline:solid #72ac51;
