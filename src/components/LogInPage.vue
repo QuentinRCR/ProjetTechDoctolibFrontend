@@ -1,6 +1,8 @@
 <template>
     <div class="wrappingDiv">
+        
     <div class="content">
+        <div class="fillInDiv"></div>
         <div class="boiteblanche">
             <h1>Se connecter</h1>
             <div class="menu">
@@ -103,18 +105,80 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@media (min-width: 600px) { //for desktop format
+    .content {
+        
+        display: flex;
+        flex-direction: row !important;
+        justify-content: center;
+        margin-top: 10%;
+
+        .SignInButtonPart{
+            margin-left: 70px;
+            margin-right:10px;
+        }
+    }
+
+    .boiteblanche {
+        width: 500px !important;
+    }
+
+    .fillInDiv{
+        width:180px;
+        margin-right: 80px; // to compensate the margin left and right on the sign in button part
+    }
+
+    .legalNotice {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translate(-50%,0);
+    }
+
+    
+}
+
+
+
+
+@media (min-width:600px) and (max-width:920px) { //intermediary format
+    .content{
+        flex-direction: column !important;
+    }
+
+    .legalNotice{
+        position: relative !important;
+    }
+
+    .fillInDiv{
+        display: none;
+    }
+
+    .SignInButtonPart{
+            margin-left: 0px !important;
+            margin-right:0px !important;
+        }
+}
+
+
+
+
+//phone format
+.wrappingDiv{
+    position: absolute;
+}
+
 .content {
-    //border: solid pink;
-    margin: auto;
     align-items: center;
-    width: 95%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 
     .boiteblanche {
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 100%;
-        //border: solid purple;
+        width: 95%;
 
         h1 {
             font-size: 35px;
@@ -123,7 +187,6 @@ export default {
 
 
         .menu {
-            //border: solid green;
             width: 100%;
 
             form {
@@ -139,7 +202,6 @@ export default {
 
                     input[type=submit] {
                         font-size: 14px;
-                        //color: #eee;
                         font-weight: 600;
                         margin-top: 20px;
                         background-color: $secondColor;
@@ -196,14 +258,9 @@ export default {
     }
 
     .SignInButtonPart {
-        //border: solid rebeccapurple;
-        margin: auto;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
         text-align: center;
-        width: 200px;
+        width: 180px;
+        margin-top: 40px;;
 
         .bordure {
 
@@ -254,23 +311,5 @@ export default {
     height: 100% 
 }
 
-@media (min-width: 600px) {
-    .content {
-        width: 45%;
-        display: flex;
-        margin-top: 10%;
-        //border: solid blue;
-    }
 
-    .boiteblanche {
-        margin-right: 10%;
-    }
-
-    .legalNotice {
-        position: absolute;
-        bottom: 20px;
-        left: 50%;
-        transform: translate(-50%,0);
-    }
-}
 </style>
