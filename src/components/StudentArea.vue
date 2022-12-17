@@ -73,7 +73,7 @@ export default {
       }
     },
     async loadApp() {
-      let response1 = await axios.get(`${API_HOST}/api/rendez_vous/user`, { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}` } }); //get slots from the API
+      let response1 = await axios.get(`${import.meta.env.VITE_APP_API_HOST}/api/rendez_vous/user`, { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}` } }); //get slots from the API
       let appointements = response1.data; //extract the data
       this.appointements = appointements; //put it in a new variable
 
@@ -87,11 +87,11 @@ export default {
         if (appointement.idUser != null) { //if the id info is provided it means that it is either an admin or the if of the person watching
           let response;
           try { //try the request if it is an admin
-            response = await axios.get(`${API_HOST}/api/users/admin/${appointement.idUser}`, { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}` } });
+            response = await axios.get(`${import.meta.env.VITE_APP_API_HOST}/api/users/admin/${appointement.idUser}`, { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}` } });
           }
           catch (error) {
             if (error.response.data.status == 403) { //if forbiden, it means that a user is trying to do the request so he can get its own infos
-              response = await axios.get(`${API_HOST}/api/users/user/getbyId`, { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}` } });
+              response = await axios.get(`${import.meta.env.VITE_APP_API_HOST}/api/users/user/getbyId`, { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}` } });
             }
             else {
               console.log(error);

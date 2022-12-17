@@ -66,7 +66,7 @@ export default {
                 this.submitClicked = true; //add the loading annimation
                 try {
                     //create a request to get acces and authentification tokens
-                    let response = await axios.post(`${API_HOST}/api/login`, data)
+                    let response = await axios.post(`${import.meta.env.VITE_APP_API_HOST}/api/login`, data)
                     const token = response.data.access_token;
 
                     let refresh_token = response.data.refresh_token;
@@ -91,7 +91,7 @@ export default {
             this.$router.push("/forgetpw");
         },
         async refreshToken() { //get a new tokens, update the url and global variables
-            let response = await axios.get(`${API_HOST}/api/token/refresh`, { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.refreshToken}` } }); //get slots from the API
+            let response = await axios.get(`${import.meta.env.VITE_APP_API_HOST}/api/token/refresh`, { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.refreshToken}` } }); //get slots from the API
             this.$store.commit('set', { token: `${response.data.access_token}` }) //set the value of the token to a global state
             this.$store.commit('setRefTok', { refresh_token: `${response.data.refresh_token}` }) ////Set the refresh token
             this.$router.push({ path: 'home', query: { token: `${response.data.access_token}`, refresh_token: `${response.data.refresh_token}` } }) //change path and add token to url

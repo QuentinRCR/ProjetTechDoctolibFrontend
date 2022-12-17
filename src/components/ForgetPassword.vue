@@ -36,7 +36,7 @@ export default {
     },
     async SubmitForm(email){
         console.log(email);
-        let newSlot = await axios.post(`${API_HOST}/api/forgotten_password`, //Send the resquest to the api with values defined above
+        let newSlot = await axios.post(`${import.meta.env.VITE_APP_API_HOST}/api/forgotten_password`, //Send the resquest to the api with values defined above
         `${email}`);
         console.log("faire la récupération de mot de passes");
         this.mailSent=true

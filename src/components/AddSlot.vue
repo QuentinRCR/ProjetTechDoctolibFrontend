@@ -179,7 +179,7 @@ export default {
                     }
 
                     
-                    let newSlot = await axios.post(`${API_HOST}/api/creneaux/admin/create_or_modify`, //Send the resquest to the api with values defined above
+                    let newSlot = await axios.post(`${import.meta.env.VITE_APP_API_HOST}/api/creneaux/admin/create_or_modify`, //Send the resquest to the api with values defined above
                         {
                             id: idSlot,
                             dateDebut: `${startDate}`,
@@ -213,7 +213,7 @@ export default {
             this.$emit('close-popup');
         },
         async AddCommunicationMean(comm) { //post a new communication mean
-            let newSlot = await axios.post(`${API_HOST}/api/communicationMean/admin/create_or_modify`,
+            let newSlot = await axios.post(`${import.meta.env.VITE_APP_API_HOST}/api/communicationMean/admin/create_or_modify`,
                 {
                     communicationMean: `${comm}`
                 },
@@ -222,7 +222,7 @@ export default {
         },
         async delectAllCommunicationMean() {
             console.log("aa");
-            await axios.delete(`${API_HOST}/api/communicationMean/admin/`,
+            await axios.delete(`${import.meta.env.VITE_APP_API_HOST}/api/communicationMean/admin/`,
                 { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}` } });
             this.closePopup();
         },

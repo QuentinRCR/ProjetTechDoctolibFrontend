@@ -81,7 +81,7 @@ export default {
                 this.submitClicked = true; //to display the loading animation
                 console.log("faire l'authentification");
                 try {
-                    let response = await axios.post(`${API_HOST}/api/registration`,
+                    let response = await axios.post(`${import.meta.env.VITE_APP_API_HOST}/api/registration`,
                         {
                             campus: `${Campus}`,
                             email: `${ClienEmail}`,

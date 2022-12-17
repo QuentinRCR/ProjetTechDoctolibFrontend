@@ -36,12 +36,12 @@ export default {
   created: async function(){
     this.token= this.$route.query.token; //we get the token back from the url
     console.log(this.token);
-    let response = await axios.get(`${API_HOST}/api/forgotten_password/confirm?token=${this.token}`) //give feedback to the programme that the link was clicked
+    let response = await axios.get(`${import.meta.env.VITE_APP_API_HOST}/api/forgotten_password/confirm?token=${this.token}`) //give feedback to the programme that the link was clicked
     },
   methods: {
     async SubmitForm(password){
         console.log(password);
-        let response = await axios.post(`${API_HOST}/api/forgotten_password/passwordReinitialisation`,
+        let response = await axios.post(`${import.meta.env.VITE_APP_API_HOST}/api/forgotten_password/passwordReinitialisation`,
         {
             password: `${password}`,
             token: `${this.token}`

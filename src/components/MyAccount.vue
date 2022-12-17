@@ -80,11 +80,11 @@ export default {
 
       let response;
       if(this.viewInfoOthers){  //if is used to view datas of others
-        response = await axios.get(`${API_HOST}/api/users/user/submit/${this.studentInfos}`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}}); //get front the API
+        response = await axios.get(`${import.meta.env.VITE_APP_API_HOST}/api/users/user/submit/${this.studentInfos}`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}}); //get front the API
         this.$emit('reset_studentInfos') //to put studentInfos to 0 again
       }
       else{ //if in normal mod
-        response = await axios.get(`${API_HOST}/api/users/user/getbyId`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}}); //get front the API
+        response = await axios.get(`${import.meta.env.VITE_APP_API_HOST}/api/users/user/getbyId`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}}); //get front the API
       }
       this.StudentData = response.data; //assign the data
       this.lastName=this.StudentData.lastName //update values for the form mod
@@ -123,7 +123,7 @@ export default {
         this.isInModifyMod = !this.isInModifyMod
       },
       async SubmitForm(lastName,firstName,campus,phoneNumber,skypeAccount,Password){
-        let newUser = await axios.post(`${API_HOST}/api/users/user/modify`, //Send the resquest to the api with values defined above
+        let newUser = await axios.post(`${import.meta.env.VITE_APP_API_HOST}/api/users/user/modify`, //Send the resquest to the api with values defined above
         {
           lastName: `${lastName}`,
           firstName: `${firstName}`,
@@ -148,7 +148,7 @@ export default {
         this.modifyPasswordMod = !this.modifyPasswordMod
       },
       async deleteAccount(){
-        await axios.delete(`${API_HOST}/api/users/user`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}})
+        await axios.delete(`${import.meta.env.VITE_APP_API_HOST}/api/users/user`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}})
         this.toggleAccountPopup();
         setTimeout(() => { //after 1 second, send to login page
           this.$router.push("/");
@@ -265,7 +265,7 @@ export default {
       .infoItem{
         font-size: 18px;
         //border: solid rebeccapurple;
-        margin-bottom: 30px;
+        margin-bottom: 5px;
 
         .descrition{
           //border: solid pink;

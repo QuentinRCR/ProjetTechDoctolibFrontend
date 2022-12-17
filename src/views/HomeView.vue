@@ -132,7 +132,7 @@ export default {
     async createListRealSlots() {
       try {
         //to add slots
-        let response = await axios.get(`${API_HOST}/api/creneaux/user`, { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}` } }); //get slots from the API
+        let response = await axios.get(`${import.meta.env.VITE_APP_API_HOST}/api/creneaux/user`, { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}` } }); //get slots from the API
         let slots = response.data; //extract the data
         this.slots = slots; //put it in a new variable
         this.realSlot = []
@@ -197,7 +197,7 @@ export default {
     }
     ,
     async refreshToken() { //function to get a new token from the refresh token and update the url
-      let response = await axios.get(`${API_HOST}/api/token/refresh`, { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.refreshToken}` } }); //get slots from the API
+      let response = await axios.get(`${import.meta.env.VITE_APP_API_HOST}/api/token/refresh`, { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.refreshToken}` } }); //get slots from the API
       this.$store.commit('set', { token: `${response.data.access_token}` }) //set the value of the token to a global state
       this.$store.commit('setAuth', { auth: `${VueJwtDecode.decode(response.data.access_token).roles[0]}` }) //Set the role as a global variable
       this.$store.commit('setRefTok', { refresh_token: `${response.data.refresh_token}` }) ////Set the refresh token
