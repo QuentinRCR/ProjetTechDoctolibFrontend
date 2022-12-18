@@ -4,7 +4,7 @@
         <h1>Mot de passe oublié</h1>
         <div class="menu">
             <form @submit.prevent="submit" v-on:submit="SubmitForm(Password)">
-                <p>Renseigner votre nouveau mot de passec ci dessous:</p>
+                <p>Renseigner votre nouveau mot de passe ci dessous:</p>
                 <input v-model="Password" type="password" placeholder="Mot de passe" required><br>
                 <input :pattern="Password" v-model="PasswordConfirmation" type="password" placeholder="Confirmation de mot de passe" required><br> <!--The patern is to verify that the confiramtion is equal to the original password-->
                 <input class="boutonsubmit" type="submit" value="Confirmer">
