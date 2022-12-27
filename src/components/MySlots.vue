@@ -1,144 +1,235 @@
 <template>
-  <div>
+  <div class="wrapingDiv">
+    <div class="fillInDiv"></div>
     <div class="myAppoints">
       <h1>Créneaux</h1>
       <div class="slots-list">
-        <SlotItem
-        class="slotItem"
-        v-for="slot in slots"
-        :slot="slot"
-        :key="slot.id"  
-        @slot-delete="deleteSlot"
-        @slot-choice="modifySlot"
-      >
-      </SlotItem>
+        <SlotItem class="slotItem" v-for="slot in slots" :slot="slot" :key="slot.id" @slot-delete="deleteSlot"
+          @slot-choice="modifySlot">
+        </SlotItem>
       </div>
     </div>
-    <div v-if="showConfirmationBox" class="ConfirmationDelete">
-        <div>Voulez vous supprimer ce créneau</div>
-        <div class="buttons">
-          <div @click="deleteAppointementForReal" class="deletebutton">Supprimer</div>
-          <div @click="toggleConfirmationBox" class="cancelbutton">Annuler</div>
+    <div class="exportToExcel">
+      <h3>Exporter les rendez-vous sous forme de document excel</h3>
+      <form @submit.prevent="submit" v-on:submit="SubmitForm(dateSlot)">
+        <div class="dateselectorslot">
+          <p>Choix de la plage de temps:</p>
+          <div class="datepicker">
+            <Datepicker :month-change-on-scroll="false" v-model="dateSlot" inline required autoApply closeOnScroll
+              utc="preserve" range :enableTimePicker="false"></Datepicker>
+          </div>
         </div>
+
+        <div class="submitpart">
+          <input class="boutonsubmit" type="submit" value="Exporter">
+        </div>
+      </form>
+    </div>
+
+    <div v-if="showConfirmationBox" class="ConfirmationDelete">
+      <div>Voulez vous supprimer ce créneau</div>
+      <div class="buttons">
+        <div @click="deleteAppointementForReal" class="deletebutton">Supprimer</div>
+        <div @click="toggleConfirmationBox" class="cancelbutton">Annuler</div>
+      </div>
     </div>
   </div>
 </template>
   
   
-  <script>
-  import axios from 'axios';
-  import {API_HOST} from '../config';
-  import SlotItem from './SlotItem.vue';
-  
-  
-  
-  export default {
-    data: function() {
-      return {
-      }
+<script>
+import axios from 'axios';
+import SlotItem from './SlotItem.vue';
+import Datepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css' //to make datepicker work
+import FileSaver from 'file-saver';
+
+
+
+export default {
+  data: function () {
+    return {
+      submitClicked: false,
+      dateSlot: null
+    }
+  },
+  components: {
+    SlotItem,
+    Datepicker
+  },
+  name: 'MyAppointments',
+  props: ["SlotModifyOrCreate"], //to use the AddSlot from for modify mod too
+  data: function () {
+    return {
+      /* Initialize slots with an empty array, while waiting for actual data to be retrieved from the API */
+      slots: [],
+      isInFormMod: false,
+      idAppointementToDelete: null,
+      showConfirmationBox: false
+    }
+  },
+  created: async function () {
+    let response = await axios.get(`${import.meta.env.VITE_APP_API_HOST}/api/creneaux/user `, { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}` } });
+    let slots = response.data;
+    this.slots = slots;
+  },
+  methods: {
+    deleteSlot(identifient) {
+      this.showConfirmationBox = true;
+      this.idAppointementToDelete = identifient;
     },
-    components: {
-      SlotItem
+    async deleteAppointementForReal() {
+      await axios.delete(`${import.meta.env.VITE_APP_API_HOST}/api/creneaux/admin/${this.idAppointementToDelete}`, { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}` } });
+      let index = this.slots.findIndex(appointement => appointement.id === this.idAppointementToDelete) //search for the correct id corresponding to the appointement id in order to delete it
+      this.slots.splice(index, 1)
+      this.toggleConfirmationBox();
     },
-    name: 'MyAppointments',
-    props: ["SlotModifyOrCreate"], //to use the AddSlot from for modify mod too
-    data: function() {
-      return {
-        /* Initialize slots with an empty array, while waiting for actual data to be retrieved from the API */
-        slots: [],
-        isInFormMod: false,
-        idAppointementToDelete: null,
-        showConfirmationBox: false
-      }
+    toggleConfirmationBox() {
+      this.showConfirmationBox = !this.showConfirmationBox;
     },
-    created: async function() {
-      let response = await axios.get(`${import.meta.env.VITE_APP_API_HOST}/api/creneaux/user `,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}});
-      let slots = response.data;
-      this.slots = slots;
+    modifySlot(slot) {
+      this.$emit('slot-choice', slot)
     },
-    methods: {
-      /*
-      updateSlot(newSlot) { //might be usefull latter
-        let index = this.slots.findIndex(slot => slot.id === newSlot.id);
-        this.slots.splice(index, 1, newSlot);
-      },
-      */
-      deleteSlot(identifient){
-        this.showConfirmationBox=true;
-        this.idAppointementToDelete=identifient;
-      },
-      async deleteAppointementForReal(){
-        await axios.delete(`${import.meta.env.VITE_APP_API_HOST}/api/creneaux/admin/${this.idAppointementToDelete}`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}});
-        let index = this.slots.findIndex(appointement => appointement.id === this.idAppointementToDelete) //search for the correct id corresponding to the appointement id in order to delete it
-        this.slots.splice(index,1)
-        this.toggleConfirmationBox();
-      },
-      toggleConfirmationBox(){
-        this.showConfirmationBox=!this.showConfirmationBox;
-      },
-      modifySlot(slot){
-        this.$emit('slot-choice',slot)
-      }
+    async SubmitForm(dateSlot1) {
+      let frenshStartDate = dateSlot1[0].slice(8, 10) + "-" + dateSlot1[0].slice(5, 7) + "-" + dateSlot1[0].slice(0, 4);
+      let frenshEndDate = dateSlot1[1].slice(8, 10) + "-" + dateSlot1[1].slice(5, 7) + "-" + dateSlot1[1].slice(0, 4);
+      let response = await axios.get(`${import.meta.env.VITE_APP_API_HOST}/api/rendez_vous/downloadFile/${dateSlot1[0].slice(0, 10)}/${dateSlot1[1].slice(0, 10)}`,
+        { responseType: 'blob' },
+        { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}` } });
+      const href = window.URL.createObjectURL(response.data);
+
+
+      FileSaver.saveAs(response.data, `RecapRDVDu${frenshStartDate}Au${frenshEndDate}.xlsx`) //name the file with date names
+
+      /*console.log(href);
+
+      console.log(response);
+
+      // create "a" HTML element with href to file & click
+      const link = document.createElement('a');
+      link.href = href;
+      //link.setAttribute('download', 'file.xlsx'); //or any other extension
+      document.body.appendChild(link);
+      link.click();
+
+      // clean up "a" element & remove ObjectURL
+      document.body.removeChild(link);
+      URL.revokeObjectURL(href);*/
     }
   }
-  </script>
+}
+</script>
   
   
-  <style lang="scss" scoped>
-  .myAppoints{
+<style lang="scss" scoped>
+.wrapingDiv {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start; // to avoid right panel stretching 
+
+  .myAppoints {
     display: flex;
     flex-direction: column;
     text-align: center;
     align-items: stretch;
 
-    h1{
-      
-    }
+    .slots-list {
 
-    .slots-list{
-
-      .slotItem{
+      .slotItem {
         margin-bottom: 20px;
       }
     }
 
   }
 
-.ConfirmationDelete{
-  position: fixed;
-  top: 25%;
-  left: 50%;
-  transform: translate(-50%,50%);
-  background-color: white;
-  border: 8px solid rgb(215, 61, 61);
-  border-radius: 20px;
-  font-size: 20px;
-  padding: 25px 25px 25px 25px; 
-  font-weight: bold;
-  width: 250px;
-  text-align: center;
+  .ConfirmationDelete {
+    position: fixed;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, 50%);
+    background-color: white;
+    border: 8px solid rgb(215, 61, 61);
+    border-radius: 20px;
+    font-size: 20px;
+    padding: 25px 25px 25px 25px;
+    font-weight: bold;
+    width: 250px;
+    text-align: center;
 
-  .buttons{
-    margin-top:30px;
-    display: flex;
-    justify-content: space-around;
+    .buttons {
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-around;
 
-    .deletebutton{
-      color: white;
-      border-radius: 10px;
-      background-color: rgb(215, 61, 61);
-      padding: 8px 8px 8px 8px; 
-      cursor:pointer;
-    }
+      .deletebutton {
+        color: white;
+        border-radius: 10px;
+        background-color: rgb(215, 61, 61);
+        padding: 8px 8px 8px 8px;
+        cursor: pointer;
+      }
 
-    .cancelbutton{
-      color: white;
-      border-radius: 10px;
-      background-color: $secondColor;
-      padding: 8px 8px 8px 8px;
-      cursor:pointer; 
+      .cancelbutton {
+        color: white;
+        border-radius: 10px;
+        background-color: $secondColor;
+        padding: 8px 8px 8px 8px;
+        cursor: pointer;
+      }
     }
   }
+
+  .exportToExcel {
+    margin-top: 80px;
+    border: solid $secondColor;
+    padding: 5px 5px 5px 5px;
+    border-radius: 10px;
+    margin-right: 10px;
+    width: 265px;
+    display:flex ;
+    flex-direction: column;
+    align-items: center;
+
+    h3 {
+      text-align: center;
+      margin-top: 0;
+    }
+
+    p {
+      font-size: 18px;
+      font-weight: bold;
+      margin: 0;
+      margin-bottom: 5px;
+      color: $secondColor;
+    }
+
+    .submitpart{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      input[type=submit] {
+      font-size: 14px;
+      font-weight: 600;
+      margin-top: 20px;
+      background-color: $secondColor;
+      border-radius: 84px;
+      color: white;
+
+      padding: 15px 15px 15px 15px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $secondColorLighter
+      }
+    }
+  }
+    
+  }
+
+  .fillInDiv {
+    width: 285px;
+  }
 }
-  </style>
+</style>
   
