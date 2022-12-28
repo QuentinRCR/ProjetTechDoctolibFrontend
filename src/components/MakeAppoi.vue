@@ -116,7 +116,6 @@ export default {
   },
   methods: {
     async SubmitForm(CommunicationMean,date,time,student){
-      console.log(date);
       if(!this.submitClicked){//to prevent spam
         this.isTimeCorrect=true; //to reset from a previous failed attempte
         this.isAppAlreadyTaken=false;

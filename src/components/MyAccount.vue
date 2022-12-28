@@ -80,7 +80,7 @@ export default {
 
       let response;
       if(this.viewInfoOthers){  //if is used to view datas of others
-        response = await axios.get(`${import.meta.env.VITE_APP_API_HOST}/api/users/user/submit/${this.studentInfos}`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}}); //get front the API
+        response = await axios.get(`${import.meta.env.VITE_APP_API_HOST}/api/users/admin/submit/${this.studentInfos}`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}}); //get front the API
         this.$emit('reset_studentInfos') //to put studentInfos to 0 again
       }
       else{ //if in normal mod

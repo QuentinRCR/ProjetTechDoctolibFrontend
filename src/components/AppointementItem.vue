@@ -59,7 +59,7 @@ export default {
   },
   created: async function () {
     if ("this.$store.state.auth == 'ADMIN'") {
-      let response = await axios.get(`${import.meta.env.VITE_APP_API_HOST}/api/users/user/submit/${this.appointement.idUser}`, { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}` } });
+      let response = await axios.get(`${import.meta.env.VITE_APP_API_HOST}/api/users/admin/submit/${this.appointement.idUser}`, { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}` } });
       let user = response.data;
       this.studentDescription = `${user.lastName} ${user.firstName}`;
     }
