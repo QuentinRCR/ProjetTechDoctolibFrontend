@@ -213,7 +213,7 @@ export default {
             this.$emit('close-popup');
         },
         async AddCommunicationMean(comm) { //post a new communication mean
-            let newSlot = await axios.post(`${import.meta.env.VITE_APP_API_HOST}/api/communicationMean/admin/create_or_modify`,
+            let newSlot = await axios.post(`${import.meta.env.VITE_APP_API_HOST}/api/communicationMean/admin/create`,
                 {
                     communicationMean: `${comm}`
                 },
@@ -398,6 +398,7 @@ export default {
     .ModifyComMean {
         color: #444;
         cursor: pointer;
+        margin-top: 20px;
     }
 
     .addCommunicationMeans {

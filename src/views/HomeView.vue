@@ -6,37 +6,37 @@
     <div class="content">
       <div class="TopMenu">
         <div class="fillInDiv"></div>
-        <button @click="ToggleAppoi" v-if="currentPanel.name != 'panelB'">Prendre un rendez-vous</button>
-        <button v-if="this.$store.state.auth == 'ADMIN' && currentPanel.name != 'panelB'" @click="ToggleSlot">Ajouter un
-          créneau</button>
+        <Transition name="buttonTransition"><button @click="ToggleAppoi" v-if="currentPanel.name != 'panelB'">Prendre un rendez-vous</button></Transition>
+        <Transition name="buttonTransition"><button v-if="this.$store.state.auth == 'ADMIN' && currentPanel.name != 'panelB'" @click="ToggleSlot">Ajouter un
+          créneau</button></Transition>
         <div class="fillInDiv"></div>
       </div>
       <div class="pannels">
-        <StudentArea ref="StudentArea" :realSlotsss=this.realSlot class="pannel"
-          v-if="currentPanel.name === 'panelA' && this.forceReload"></StudentArea>
-        <MyAccount @reset_studentInfos="reset_studentInfos" :studentInfos="studentInfos" classe="pannel"
-          v-if="currentPanel.name === 'panelB'"></MyAccount>
-        <MyAppointements ref="Myrdvs" @get-student-info="getStudentInfos" @appointement-choice="modifyAppMod"
+        <Transition name="mainFrameTransition"><StudentArea ref="StudentArea" :realSlotsss=this.realSlot class="pannel"
+          v-if="currentPanel.name === 'panelA' && this.forceReload"></StudentArea></Transition>
+          <Transition name="myAccountTransition"><MyAccount @reset_studentInfos="reset_studentInfos" :studentInfos="studentInfos"
+            classe="pannel" v-if="currentPanel.name === 'panelB'"></MyAccount></Transition>
+            <Transition name="mainFrameTransition"><MyAppointements ref="Myrdvs" @get-student-info="getStudentInfos" @appointement-choice="modifyAppMod"
           :AppModifyOrCreate="AppModifyOrCreate" classe="pannel"
-          v-if="currentPanel.name === 'panelC' && this.forceReload"></MyAppointements>
+          v-if="currentPanel.name === 'panelC' && this.forceReload"></MyAppointements></Transition>
         <!--AppModifyOrCreate is to handle modify mode-->
-        <MySlots classe="pannel" @slot-choice="modifySlotMod" v-if="currentPanel.name === 'panelD' && this.forceReload">
-        </MySlots>
+        <Transition name="mainFrameTransition"><MySlots classe="pannel" @slot-choice="modifySlotMod" v-if="currentPanel.name === 'panelD' && this.forceReload">
+        </MySlots></Transition>
       </div>
       <div class="MakeAppoi">
-        <MakeAppoi @reload="reload" :realSlots=this.realSlot @close-popup="ToggleAppoi"
+        <Transition name="pupupTransition"><MakeAppoi @reload="reload" :realSlots=this.realSlot @close-popup="ToggleAppoi"
           :enableModifyMod="enableModifyMod" :AppointementChoice="AppointementChoice" v-if="isAddAppointement">
-        </MakeAppoi>
+        </MakeAppoi></Transition>
       </div>
       <div class="MakeAppoi">
-        <AddSlot @reload="reload" @close-popup="ToggleSlot" :enableModifyModSlot="enableModifyModSlot"
-          :SlotChoice="SlotChoice" v-if="isAddSlot"></AddSlot>
+        <Transition name="pupupTransition"><AddSlot @reload="reload" @close-popup="ToggleSlot" :enableModifyModSlot="enableModifyModSlot"
+          :SlotChoice="SlotChoice" v-show="isAddSlot"></AddSlot></Transition>
       </div>
     </div>
 
     <div class="notConnect" v-if="this.notConnected">Vous avez été déconnecté. Veuillez vous reconnecter pour poursuivre
       la navigaton</div>
-      <p class="legalNotice" @click="legalNotice">Mension légales</p>
+      <Transition name="smoothAppear"><p class="legalNotice" @click="legalNotice">Mension légales</p></Transition>
   </div>
 </template>
 
@@ -300,6 +300,87 @@ export default {
     }
   }
 }
+
+
+//animations
+.pupupTransition-enter-active {
+  transition: all 0.3s ease-in-out;
+}
+
+.pupupTransition-enter-from{
+  transform: translateY(20px);
+  opacity: 0;
+}
+
+
+
+
+
+.myAccountTransition-enter-active {
+  transition: all 0.4s ease-out;
+  transition-delay: 0.3s;
+}
+
+.myAccountTransition-enter-from {
+  transform: translateY(10px);
+  opacity: 0;
+}
+
+
+
+.mainFrameTransition-enter-active {
+  transition: all 0.4s ease-out;
+}
+
+.mainFrameTransition-enter-from {
+  transform: translateY(-10px);
+  opacity: 0;
+}
+
+
+.buttonTransition-leave-active {
+  
+  transition: all 0.2s ease-in-out;
+}
+
+.buttonTransition-enter-active {
+  transition: all 0.4s ease-out;
+}
+
+.buttonTransition-leave-to{
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+
+.buttonTransition-enter-from {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+
+
+
+.smoothAppear-leave-active {
+  
+  transition: all 0.2s ease-in-out;
+}
+
+.smoothAppear-enter-active {
+  transition: all 0.4s ease-out;
+}
+
+.smoothAppear-leave-to{
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+
+.smoothAppear-enter-from {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
 </style>
 
 

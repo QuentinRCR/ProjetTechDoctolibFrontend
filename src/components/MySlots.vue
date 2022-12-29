@@ -38,8 +38,8 @@ export default {
   props: ["SlotModifyOrCreate"], //to use the AddSlot from for modify mod too
   data: function () {
     return {
-      /* Initialize slots with an empty array, while waiting for actual data to be retrieved from the API */
-      slots: [],
+      /* Initialize slots dummy info to avoid blinking, while waiting for actual data to be retrieved from the API */
+      slots: [{ id: 1,dateDebut:"2022-12-01",dateFin:"2022-12-31",jours: [ "SATURDAY"   ],heuresDebutFin: [{"idPlage": 2,"idCreneaux": 1,"tempsDebut": "09:00:00","tempsFin": "12:00:00"}]},{ id: 1,dateDebut:"2022-12-01",dateFin:"2022-12-31",jours: [ "SATURDAY"   ],heuresDebutFin: [{"idPlage": 2,"idCreneaux": 1,"tempsDebut": "09:00:00","tempsFin": "12:00:00"}]},{ id: 1,dateDebut:"2022-12-01",dateFin:"2022-12-31",jours: [ "SATURDAY"   ],heuresDebutFin: [{"idPlage": 2,"idCreneaux": 1,"tempsDebut": "09:00:00","tempsFin": "12:00:00"}]}],
       isInFormMod: false,
       idAppointementToDelete: null,
       showConfirmationBox: false
@@ -49,6 +49,7 @@ export default {
     let response = await axios.get(`${import.meta.env.VITE_APP_API_HOST}/api/creneaux/user `, { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}` } });
     let slots = response.data;
     this.slots = slots;
+    console.log(this.slots);
   },
   methods: {
     deleteSlot(identifient) {

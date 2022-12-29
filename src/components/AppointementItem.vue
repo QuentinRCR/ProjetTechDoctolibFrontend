@@ -58,7 +58,7 @@ export default {
     }
   },
   created: async function () {
-    if ("this.$store.state.auth == 'ADMIN'") {
+    if (this.$store.state.auth == 'ADMIN' && this.appointement.idUser!=-15) { //to avoid error with prefilled info
       let response = await axios.get(`${import.meta.env.VITE_APP_API_HOST}/api/users/admin/submit/${this.appointement.idUser}`, { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}` } });
       let user = response.data;
       this.studentDescription = `${user.lastName} ${user.firstName}`;

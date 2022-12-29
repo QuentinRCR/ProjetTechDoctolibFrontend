@@ -62,8 +62,8 @@ export default {
   props: ["AppModifyOrCreate"], //to use the MakeApp from for modify mod too
   data: function () {
     return {
-      /* Initialize appointements with an empty array, while waiting for actual data to be retrieved from the API */
-      appointements: [],
+      /* Initialize appointements with an dummy info to avoid blinking at render, while waiting for actual data to be retrieved from the API */
+      appointements: [{dateDebut: "2022-12-13T20:30:00",duree: "PT30M",id: -1,idCreneau: 1,idUser: -15,moyenCommunication: "zoom",zoomLink: "link.fr"},{dateDebut: "2022-12-13T20:30:00",duree: "PT30M",id: -1,idCreneau: 1,idUser: -15,moyenCommunication: "zoom",zoomLink: "link.fr"}],
       isInFormMod: false,
       idAppointementToDelete: null,
       showConfirmationBox: false,
@@ -105,20 +105,6 @@ export default {
 
       FileSaver.saveAs(response.data, `RecapRDVDu${frenshStartDate}Au${frenshEndDate}.xlsx`) //name the file with date names
 
-      /*console.log(href);
-
-      console.log(response);
-
-      // create "a" HTML element with href to file & click
-      const link = document.createElement('a');
-      link.href = href;
-      //link.setAttribute('download', 'file.xlsx'); //or any other extension
-      document.body.appendChild(link);
-      link.click();
-
-      // clean up "a" element & remove ObjectURL
-      document.body.removeChild(link);
-      URL.revokeObjectURL(href);*/
     }
   }
 }

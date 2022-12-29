@@ -10,7 +10,7 @@
         <strong class="darkBlue">bleu foncé.</strong>
       </p>
     </div>
-    <VueCal class="VueCal" hide-view-selector :time-from="8 * 60" :time-to="22 * 60" :events="events" locale="fr"
+    <VueCal :transitions="false" class="VueCal" hide-view-selector :time-from="8 * 60" :time-to="22 * 60" :events="events" locale="fr"
       events-on-month-view="short"><template v-slot:no-event>
         <!--remove the no event label when nothing is in the day-->
         <div></div>

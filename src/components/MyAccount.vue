@@ -4,7 +4,7 @@
       <h1 v-if="!this.viewInfoOthers">Mes informations</h1>
       <h1 v-if="this.viewInfoOthers">Informations {{StudentData.firstName}} {{StudentData.lastName}} </h1>
       <div class="mainContent">
-        <div class="fillInDiv"></div>
+        <div v-if="!viewInfoOthers" class="fillInDiv"></div>
         <form  class="personalInfos" @submit.prevent="submit" v-on:submit="SubmitForm(lastName,firstName,campus,phoneNumber,skypeAccount,Password)"> <!--form used in modify mode-->
           <div class="infoItem">
             <p  class="descrition">Nom</p>
@@ -97,11 +97,11 @@ export default {
       return {
         StudentData: { 
           id: 1, //json containing student datas before real data is loaded
-          firstName: "",
-          lastName: "",
-          email: "",
-          phoneNumber: "",
-          campus: "",
+          firstName: "firstName",
+          lastName: "lastName",
+          email: "email@etu.emse.fr",
+          phoneNumber: "0659862879",
+          campus: "Saint Etienne",
           skypeAccount: ""
         },
         isInModifyMod: false, //true when in modify mode -> paragraphes are replaced by inputs
