@@ -98,7 +98,7 @@ export default {
     async SubmitForm(dateSlot1) {
       let frenshStartDate = dateSlot1[0].slice(8, 10) + "-" + dateSlot1[0].slice(5, 7) + "-" + dateSlot1[0].slice(0, 4);
       let frenshEndDate = dateSlot1[1].slice(8, 10) + "-" + dateSlot1[1].slice(5, 7) + "-" + dateSlot1[1].slice(0, 4);
-      let response = await axios.get(`${import.meta.env.VITE_APP_API_HOST}/api/rendez_vous/downloadFile/${dateSlot1[0].slice(0, 10)}/${dateSlot1[1].slice(0, 10)}`,
+      let response = await axios.get(`${import.meta.env.VITE_APP_API_HOST}/api/rendez_vous/admin/downloadFile/${dateSlot1[0].slice(0, 10)}/${dateSlot1[1].slice(0, 10)}`,
         { responseType: 'blob' },
         { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}` } });
 
