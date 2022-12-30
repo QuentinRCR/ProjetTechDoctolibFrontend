@@ -104,10 +104,12 @@ export default {
     let response = await axios.get(`${import.meta.env.VITE_APP_API_HOST}/api/communicationMean/user`,{headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}});
     this.CommunicationMeans=response.data;
 
-    if (this.enableModifyMod){ //to pre set the time from the last appointement
+    if (this.enableModifyMod){ //to pre set infos from the last appointement
       this.time.hours=this.AppointementChoice.dateDebut.slice(11,13);
       this.time.minutes=this.AppointementChoice.dateDebut.slice(14,16);
       this.date=this.AppointementChoice.dateDebut.slice(0,10);
+      this.CommunicationMean=this.AppointementChoice.moyenCommunication;
+      this.student= this.AppointementChoice.idUser;
     }
     
   },
