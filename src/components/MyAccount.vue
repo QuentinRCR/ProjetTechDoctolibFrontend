@@ -110,7 +110,7 @@ export default {
         email: null,
         campus: null,
         phoneNumber: null,
-        skypeAccount: null,
+        skypeAccount: "",
         PasswordConfirmation: null,
         Password: null,
         modifyPasswordMod: false,
@@ -256,6 +256,7 @@ export default {
           padding: 15px 15px 15px 15px;
           margin-top: 10px;
           cursor: pointer;
+          color: white;
 
           &:hover {
             background-color: $secondColorLighter;

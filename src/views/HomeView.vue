@@ -312,7 +312,15 @@ export default {
   opacity: 0;
 }
 
+.pupupTransition-leave-active {
+  
+  transition: all 0.2s ease-in;
+}
 
+.pupupTransition-leave-to{
+  opacity: 0;
+  transform: translateY(20px);
+}
 
 
 
