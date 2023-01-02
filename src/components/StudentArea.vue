@@ -84,6 +84,7 @@ export default {
         endDateTime = (endDateTime.toISOString().replace('T', ' ').slice(0, -5)); //adjuste format
 
         let infoUser = "";
+        let classee="apps";
         if (appointement.idUser != null) { //if the id info is provided it means that it is either an admin or the if of the person watching
           let response;
           try { //try the request if it is an admin
@@ -98,14 +99,19 @@ export default {
             }
           }
           this.users = response.data;
-          infoUser = this.users.lastName + " " + this.users.firstName;
+
+          if(window.screen.width>600){ //don't display the name of the personne on phone mode
+            infoUser = this.users.lastName + " " + this.users.firstName;
+          }
+          
+          classee="myapps"
         }
 
         this.events.push({
           start: `${startDateTime}`,
           end: `${endDateTime}`,
           title: `${infoUser}`,
-          class: 'apps'
+          class: `${classee}`
         })
       };
     }
@@ -159,6 +165,16 @@ p{
 .vuecal__event.apps {
   background-color: #3694c6;
   color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 7px;
+  border: solid 1px black;
+}
+
+.vuecal__event.myapps {
+  background-color: #364ec6;
+  color: white;
   display: flex;
   justify-content: center;
   align-items: center;
