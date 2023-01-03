@@ -90,7 +90,7 @@ export default {
   border-width: 5px;
   border-radius: 20px;
   padding: 5px 5px 5px 5px;
-  width: 90%;
+  width: 95%;
 
 
   .appointementitemalwaysdisplay {
@@ -137,6 +137,7 @@ export default {
       color: white;
       font-weight: bold;
       cursor: pointer;
+      width: 100px;
 
       &:hover{
         background-color: rgba(215, 61, 61, 0.818);
@@ -151,6 +152,7 @@ export default {
       color: white;
       font-weight: bold;
       cursor: pointer;
+      width: 100px;
 
       &:hover {
         background-color: $secondColorLighter;
@@ -165,6 +167,22 @@ export default {
   .appointementitem {
     width: 550px;
     padding: 17.5px 20px 17.5px 20px;
+
+    .details {
+    
+
+      .cancelButton {
+        width: auto;
+    }
+
+      .moveButton {
+        width: auto;
+
+    }
+
+  }
+
+
   }
 }
 </style>
