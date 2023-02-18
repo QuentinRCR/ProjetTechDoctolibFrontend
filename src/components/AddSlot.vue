@@ -96,10 +96,8 @@
 </template>
 
 <script>
-import { API_HOST } from "../config" //to get the API path
 import axios from 'axios';
 import Datepicker from '@vuepic/vue-datepicker';
-//import {fr} from 'vuejs-datepicker/dist/locale'
 import '@vuepic/vue-datepicker/dist/main.css' //to make datepicker work
 import { ref } from 'vue'; //used in setup
 
@@ -179,7 +177,7 @@ export default {
                     }
 
                     
-                    let newSlot = await axios.post(`${import.meta.env.VITE_APP_API_HOST}/api/creneaux/admin/create_or_modify`, //Send the resquest to the api with values defined above
+                    await axios.post(`${import.meta.env.VITE_APP_API_HOST}/api/creneaux/admin/create_or_modify`, //Send the resquest to the api with values defined above
                         {
                             id: idSlot,
                             dateDebut: `${startDate}`,
@@ -213,7 +211,7 @@ export default {
             this.$emit('close-popup');
         },
         async AddCommunicationMean(comm) { //post a new communication mean
-            let newSlot = await axios.post(`${import.meta.env.VITE_APP_API_HOST}/api/communicationMean/admin/create`,
+            await axios.post(`${import.meta.env.VITE_APP_API_HOST}/api/communicationMean/admin/create`,
                 {
                     communicationMean: `${comm}`
                 },
