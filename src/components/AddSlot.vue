@@ -7,8 +7,8 @@
 
         <!--<v-date-picker v-model="date" :valid-hours="[0,3,4,5,8,16,20]" is24hr />-->
         <form @submit.prevent="submit" v-on:submit="SubmitForm(day, dateSlot, timeSlotStart, timeSlotEnd)">
-            <div class="timesection">
-                <div class="dateselectorslot">
+            <div class="timeSection">
+                <div class="dateSelectorSlot">
                     <p>Plage de jours</p>
                     <div class="datepicker">
                         <Datepicker :month-change-on-scroll="false" v-model="dateSlot" inline required autoApply
@@ -40,31 +40,31 @@
                 <p>Jours</p>
                 <div class="dayList">
                     <div class="listItem">
-                        <input type="checkbox" class="checkbox" value="Lundi" v-model="day">
+                        <input id="Lundi" type="checkbox" class="checkbox" value="Lundi" v-model="day">
                         <label for="Lundi">Lundi</label>
                     </div>
                     <div class="listItem">
-                        <input type="checkbox" class="checkbox" value="Mardi" v-model="day">
+                        <input id="Mardi" type="checkbox" class="checkbox" value="Mardi" v-model="day">
                         <label for="Mardi">Mardi</label>
                     </div>
                     <div class="listItem">
-                        <input type="checkbox" class="checkbox" value="Mercredi" v-model="day">
+                        <input id="Mercredi" type="checkbox" class="checkbox" value="Mercredi" v-model="day">
                         <label for="Mercredi">Mercredi</label>
                     </div>
                     <div class="listItem">
-                        <input type="checkbox" class="checkbox" value="Jeudi" v-model="day">
+                        <input id="Jeudi" type="checkbox" class="checkbox" value="Jeudi" v-model="day">
                         <label for="Jeudi">Jeudi</label>
                     </div>
                     <div class="listItem">
-                        <input type="checkbox" class="checkbox" value="Vendredi" v-model="day">
+                        <input id="Vendredi" type="checkbox" class="checkbox" value="Vendredi" v-model="day">
                         <label for="Vendredi">Vendredi</label>
                     </div>
                     <div class="listItem">
-                        <input type="checkbox" class="checkbox" value="Samedi" v-model="day">
+                        <input id="Samedi" type="checkbox" class="checkbox" value="Samedi" v-model="day">
                         <label for="Samedi">Samedi</label>
                     </div>
                     <div class="listItem">
-                        <input type="checkbox" class="checkbox" value="Dimanche" v-model="day">
+                        <input id="Dimanche" type="checkbox" class="checkbox" value="Dimanche" v-model="day">
                         <label for="Dimanche">Dimanche</label>
                     </div>
                 </div>
@@ -235,6 +235,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "./../scss/globalVariables.scss";
+
 .makeApp {
     background-color: white;
     border: solid $secondColor;
@@ -261,10 +263,10 @@ export default {
         flex-direction: column;
         align-items: center;
 
-        .timesection {
+        .timeSection {
             display: flex;
 
-            .dateselectorslot {
+            .dateSelectorSlot {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -384,6 +386,10 @@ export default {
                     padding-bottom: 5px;
                     /*to have items spaced but centered*/
                     padding-top: 5px;
+
+                    input[type="checkbox"]{
+                      accent-color: $secondColor;
+                    }
 
 
                     label {

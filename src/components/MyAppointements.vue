@@ -14,7 +14,7 @@
     <div v-if="this.$store.state.auth == 'ADMIN'" class="exportToExcel">
       <h3>Exporter les rendez-vous sous forme de document excel</h3>
       <form @submit.prevent="submit" v-on:submit="SubmitForm(dateSlot)">
-        <div class="dateselectorslot">
+        <div class="dateSelectorSlot">
           <p>Choix de la plage de temps:</p>
           <div class="datepicker">
             <Datepicker :month-change-on-scroll="false" v-model="dateSlot" inline required autoApply closeOnScroll
@@ -50,10 +50,6 @@ import FileSaver from 'file-saver';
 
 
 export default {
-  data: function () {
-    return {
-    }
-  },
   components: {
     AppointementItem,
     Datepicker

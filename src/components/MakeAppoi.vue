@@ -6,7 +6,7 @@
     
     <!--<v-date-picker v-model="date" :valid-hours="[0,3,4,5,8,16,20]" is24hr />-->
     <form @submit.prevent="submit" v-on:submit="SubmitForm(CommunicationMean,date,time,student)">
-        <div class="dateselectorslot">
+        <div class="dateSelectorSlot">
             <div class="itemdate">
               <p class="">Date:</p>
               <div class="datepicker"><Datepicker :month-change-on-scroll="false" inline v-model="date" :enableTimePicker="false" autoApply modelType="yyyy-MM-dd" :allowedDates="allowedDates"></Datepicker></div>
@@ -215,7 +215,7 @@ export default {
         flex-direction: column;
         align-items: center;
 
-        .dateselectorslot{
+        .dateSelectorSlot{
           margin-bottom: 20px;
           
           p{
@@ -306,7 +306,7 @@ export default {
 
 @media (min-width: 600px)
 {
-  .dateselectorslot{
+  .dateSelectorSlot{
     display: flex;
     flex-direction: row;
     //border: solid red;
