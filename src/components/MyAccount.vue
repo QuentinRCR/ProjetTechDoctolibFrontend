@@ -46,10 +46,10 @@
             <p class="descrition">Confirmation de mot de passe</p>
             <input :pattern="Password" v-model="PasswordConfirmation" type="password" required>
           </div>
-          <input v-if=isInModifyMod class="boutonsubmit" type="submit" value="Enregistrer"> <!--to submit the form in modify mode-->
+          <input v-if=isInModifyMod class="boutonsubmit squareButton" type="submit" value="Enregistrer"> <!--to submit the form in modify mode-->
         </form>
-        <button class="modifyInfos" v-if="(!isInModifyMod && !this.viewInfoOthers)" @click="toggleModifyMod">Modifier mes informations</button>
-        <button class="modifyPw" @click="toogleModifyPwMode" v-if=isInModifyMod >{{ modifyPasswordMod ? 'Ne pas modifier mon mot de passe' : 'Modifier mon mot de passe' }}</button>
+        <button class="modifyInfos squareButton" v-if="(!isInModifyMod && !this.viewInfoOthers)" @click="toggleModifyMod">Modifier mes informations</button>
+        <button class="modifyPw deleteButton" @click="toogleModifyPwMode" v-if=isInModifyMod >{{ modifyPasswordMod ? 'Ne pas modifier mon mot de passe' : 'Modifier mon mot de passe' }}</button>
       </div>
       <button class="deleteAcount" v-if="((!isInModifyMod) && (!this.viewInfoOthers) && !(this.$store.state.auth == 'ADMIN'))" @click="toggleAccountPopup">Supprimer mon compte</button>
     </div>
@@ -217,32 +217,12 @@ export default {
       text-align: center;
 
       .modifyInfos{
-        background-color: $secondColor;
-        color: white;
-        font-size: 18px;
-        border-radius: 20px;
-        padding: 15px 15px 15px 15px;
-        cursor: pointer;
         width: 150px;
-
-        &:hover {
-          background-color: $secondColorLighter;
-        }
       }
 
       .modifyPw{
         margin-top:30px;
-        background-color: rgb(153, 10, 10);
-        font-size: 18px;
-        border-radius: 20px;
-        padding: 15px 15px 15px 15px;
-        color: white;
         width: 150px;
-        cursor: pointer;
-
-        &:hover {
-          background-color: rgba(153, 10, 10, 0.808);
-        }
       }
 
     .personalInfos{
@@ -250,17 +230,7 @@ export default {
       text-align: center;
 
       input[type="submit"] {
-          font-size: 18px;
-          border-radius: 10px;
-          background-color: $secondColor;
-          padding: 15px 15px 15px 15px;
           margin-top: 10px;
-          cursor: pointer;
-          color: white;
-
-          &:hover {
-            background-color: $secondColorLighter;
-          }
       }
 
       .infoItem{

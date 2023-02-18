@@ -6,8 +6,8 @@
     <div class="content">
       <div class="TopMenu">
         <div class="fillInDiv"></div>
-        <Transition name="buttonTransition"><button @click="ToggleAppoi" v-if="currentPanel.name != 'panelB'">Prendre un rendez-vous</button></Transition>
-        <Transition name="buttonTransition"><button v-if="this.$store.state.auth == 'ADMIN' && currentPanel.name != 'panelB'" @click="ToggleSlot">Ajouter un
+        <Transition name="buttonTransition"><button class="roundButton" @click="ToggleAppoi" v-if="currentPanel.name != 'panelB'">Prendre un rendez-vous</button></Transition>
+        <Transition name="buttonTransition"><button class="roundButton" v-if="this.$store.state.auth == 'ADMIN' && currentPanel.name != 'panelB'" @click="ToggleSlot">Ajouter un
           créneau</button></Transition>
         <div class="fillInDiv"></div>
       </div>
@@ -219,6 +219,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "./../scss/globalVariables.scss";
+
 .home {
   position: absolute;
 
@@ -251,18 +253,6 @@ export default {
       margin-bottom: 10px;
 
       button {
-        background-color: $secondColor;
-        color: white;
-        font-weight: 600;
-        border-radius: 30px;
-        font-size: 17px;
-        //height: 50px;
-        padding: 15px 8px 15px 8px;
-        cursor: pointer;
-
-        &:hover {
-          background-color: $secondColorLighter
-        }
       }
 
       .fillInDiv {}

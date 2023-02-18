@@ -32,8 +32,8 @@
     <template v-if="isExpanded"> <!--Expanded menu-->
       <hr />
       <div class="details">
-        <div class="cancelButton" @click="deleteAppointement">Annuler le rendez-vous</div>
-        <div class="moveButton" @click="modifyApp">Déplacer le rendez-vous</div>
+        <div class="cancelButton deleteButton" @click="deleteAppointement">Annuler le rendez-vous</div>
+        <div class="moveButton squareButton" @click="modifyApp">Déplacer le rendez-vous</div>
       </div>
     </template>
   </div>
@@ -128,37 +128,6 @@ export default {
   .details {
     display: flex;
     justify-content: space-around;
-
-    .cancelButton {
-      font-size: 18px;
-      background-color: rgb(215, 61, 61);
-      border-radius: 10px;
-      padding: 7px 7px 7px 7px;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      width: 100px;
-
-      &:hover{
-        background-color: rgba(215, 61, 61, 0.818);
-      }
-    }
-
-    .moveButton {
-      font-size: 18px;
-      background-color: $secondColor;
-      border-radius: 10px;
-      padding: 7px 7px 7px 7px;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      width: 100px;
-
-      &:hover {
-        background-color: $secondColorLighter;
-      }
-    }
-
   }
 
 }

@@ -7,7 +7,7 @@
                 <p>Renseigner votre nouveau mot de passe ci dessous:</p>
                 <input v-model="Password" type="password" placeholder="Mot de passe" required><br>
                 <input :pattern="Password" v-model="PasswordConfirmation" type="password" placeholder="Confirmation de mot de passe" required><br> <!--The patern is to verify that the confiramtion is equal to the original password-->
-                <input class="boutonsubmit" type="submit" value="Confirmer">
+                <input class="boutonsubmit roundButton" type="submit" value="Confirmer">
             </form>
             <p class="messageEmail" v-if="passwordChanged">Votre mot de passe a bien été changé</p>
             <p class="toLogin" @click="ToLogIn">Retour à la page de connection</p>
@@ -91,13 +91,6 @@ export default {
 
                     input[type=submit]{
                         margin-top: 20px;
-                        background-color: $secondColor;
-                        border-radius: 84px;
-                        font-size: 14px;
-                        color: #eee;
-                        font-weight: 600;
-                        padding: 15px 15px 15px 15px;
-                        cursor: pointer;
                     }
 
                     input[type=text], input[type=password]{

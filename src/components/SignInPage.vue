@@ -25,7 +25,7 @@
                             <option>Gardanne</option>
                         </select><br>
                         <div class="submitpart">
-                            <input class="boutonsubmit" type="submit" value="S'inscrire" :style="{
+                            <input class="boutonsubmit roundButton" type="submit" value="S'inscrire" :style="{
                                 color: submitClicked ? '#3694c6' : 'white' //when the button is clicked, we hide the connection button
                             }">
                             <div v-if="submitClicked" class="lds-ellipsis">
@@ -45,7 +45,7 @@
             <div class="SignInButtonPart">
                 <div class="bordure">
                     <p>J'ai déjà un compte</p>
-                    <button @click="SendToLogIn">Se connecter</button>
+                    <button class="roundButton" @click="SendToLogIn">Se connecter</button>
                 </div>
             </div>
         </div>
@@ -154,19 +154,7 @@ export default {
                     position: relative;
 
                     input[type=submit] {
-                        font-size: 14px;
-                        //color: #eee;
-                        font-weight: 600;
                         margin-top: 20px;
-                        background-color: $secondColor;
-                        border-radius: 84px;
-
-                        padding: 15px 15px 15px 15px;
-                        cursor: pointer;
-
-                        &:hover {
-                            background-color: $secondColorLighter
-                        }
                     }
 
                     .lds-ellipsis {
@@ -231,19 +219,6 @@ export default {
 
             p {
                 font-size: 20px;
-            }
-
-            button {
-                background-color: $secondColor;
-                border-radius: 90px;
-                color: white;
-                font-weight: 600;
-                padding: 10px 10px 10px 10px;
-                cursor: pointer;
-
-                &:hover {
-                    background-color: $secondColorLighter
-                }
             }
 
         }

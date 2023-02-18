@@ -6,7 +6,7 @@
             <form @submit.prevent="submit" v-on:submit="SubmitForm(ClienEmail)">
                 <p>Entrez l’email auquel vous voulez recevoir un lien pour réinitialiser votre mot de passe :</p>
                 <input v-model="ClienEmail" type="text" placeholder="Email EMSE" pattern="[a-z0-9._%+-]+@[a-z0-9.-]*emse\.fr$" required><br>
-                <input class="boutonsubmit" type="submit" value="Confirmer">
+                <input class="boutonsubmit roundButton" type="submit" value="Confirmer">
             </form>
             <p class="messageEmail" v-if="mailSent">Un mail vous a été envoyé pour que vous changiez votre mot de passe. Consultez votre boite mail étudiante.</p>
             <p class="toLogin" @click="SendToSignIn">Retour à la page de connection</p>
@@ -77,13 +77,6 @@ export default {
 
                     input[type=submit]{
                         margin-top: 20px;
-                        background-color: $secondColor;
-                        border-radius: 84px;
-                        font-size: 14px;
-                        color: #eee;
-                        font-weight: 600;
-                        padding: 15px 15px 15px 15px;
-                        cursor: pointer;
                     }
 
                     input[type=text], input[type=password]{

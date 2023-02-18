@@ -34,7 +34,7 @@
           </select><br>
         </div>
         <div class="submitpart">
-          <input class="boutonsubmit" type="submit" value="Prendre rendez-vous" :style="{
+          <input class="boutonsubmit roundButton" type="submit" value="Prendre rendez-vous" :style="{
                         color: submitClicked ? '#3694c6' : 'white' //when the button is clicked, we hide the connection button
                     }">
             <div v-if="submitClicked" class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
@@ -268,15 +268,7 @@ export default {
           position: relative;
 
           input[type=submit]{
-              font-size: 14px;
-              //color: #eee;
-              font-weight: 600;
               margin-top: 15px;
-              background-color: $secondColor;
-              border-radius: 84px;
-              
-              padding: 15px 15px 15px 15px;
-              cursor: pointer;
           }
 
           .lds-ellipsis{

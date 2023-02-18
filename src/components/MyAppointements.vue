@@ -23,7 +23,7 @@
         </div>
 
         <div class="submitpart">
-          <input class="boutonsubmit" type="submit" value="Exporter">
+          <input class="boutonsubmit roundButton" type="submit" value="Exporter">
         </div>
       </form>
     </div>
@@ -198,19 +198,7 @@ export default {
       align-items: center;
 
       input[type=submit] {
-      font-size: 14px;
-      font-weight: 600;
       margin-top: 20px;
-      background-color: $secondColor;
-      border-radius: 84px;
-      color: white;
-
-      padding: 15px 15px 15px 15px;
-      cursor: pointer;
-
-      &:hover {
-        background-color: $secondColorLighter
-      }
     }
   }
     

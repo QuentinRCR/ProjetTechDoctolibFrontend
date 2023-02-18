@@ -30,8 +30,8 @@
     <template v-if="isExpanded"> <!--Expanded menu-->
       <hr />
       <div class="details d-flex">
-        <button class="cancelButton" @click="deleteSlot">Supprimer le créneau</button>
-        <button class="moveButton" @click="ModifySlot">Modifier le créneau</button>
+        <button class="cancelButton deleteButton" @click="deleteSlot">Supprimer le créneau</button>
+        <button class="moveButton squareButton" @click="ModifySlot">Modifier le créneau</button>
       </div>
     </template>
   </div>
@@ -146,31 +146,9 @@ export default {
     justify-content: space-around;
 
     .cancelButton {
-      font-size: 18px;
-      background-color: rgb(215, 61, 61);
-      border-radius: 10px;
-      padding: 7px 7px 7px 7px;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-
-      &:hover {
-        background-color: rgba(215, 61, 61, 0.771);
-      }
     }
 
     .moveButton {
-      font-size: 18px;
-      background-color: $secondColor;
-      border-radius: 10px;
-      padding: 7px 7px 7px 7px;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-
-      &:hover {
-        background-color: $secondColorLighter;
-      }
     }
 
   }

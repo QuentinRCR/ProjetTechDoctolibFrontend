@@ -71,7 +71,7 @@
             </div>
 
             <div class="submitpart">
-                <input class="boutonsubmit" type="submit" value="Ajouter le créneau" :style="{
+                <input class="boutonsubmit roundButton" type="submit" value="Ajouter le créneau" :style="{
                     color: submitClicked ? '#3694c6' : 'white' //when the button is clicked, we hide the connection button
                 }">
                 <div v-if="submitClicked" class="lds-ellipsis">
@@ -84,10 +84,10 @@
         </form>
         <p @click="displayCommMeanForm" class="ModifyComMean">Modifier les moyens de communications</p>
         <div v-if="changeCommunicationMean" class="addCommunicationMeans">
-            <button @click="delectAllCommunicationMean">Supprimer tous les<br> moyens de communication</button>
+            <button class="deleteButton deleteCommunicationMeans" @click="delectAllCommunicationMean">Supprimer tous les<br> moyens de communication</button>
             <form @submit.prevent="submit" v-on:submit="AddCommunicationMean(comMean)">
                 <input type="text" v-model="comMean" required>
-                <input class="boutonsubmit" type="submit" value="Ajouter le moyen de communication">
+                <input class="boutonsubmit squareButton" type="submit" value="Ajouter le moyen de communication">
             </form>
         </div>
     </div>
@@ -320,15 +320,7 @@ export default {
             position: relative;
 
             input[type=submit] {
-                font-size: 14px;
-                //color: #eee;
-                font-weight: 600;
                 margin-top: 20px;
-                background-color: $secondColor;
-                border-radius: 84px;
-
-                padding: 15px 15px 15px 15px;
-                cursor: pointer;
             }
 
             .lds-ellipsis {
@@ -403,6 +395,10 @@ export default {
         color: #444;
         cursor: pointer;
         margin-top: 20px;
+
+        &:hover{
+          text-decoration: underline;
+        }
     }
 
     .addCommunicationMeans {
@@ -410,46 +406,33 @@ export default {
         align-items: center;
         justify-content: space-around;
 
-        button {
-            font-size: 18px;
-            background-color: rgb(215, 61, 61);
-            border-radius: 10px;
-            padding: 7px 7px 7px 7px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-
-            &:hover {
-                background-color: rgba(215, 61, 61, 0.818);
-            }
+        .deleteCommunicationMeans{
+          max-width: 45%;
         }
 
-        input[type=text] {
+        form {
+
+          max-width: 45%;
+
+          input[type=text] {
             font-size: 18px;
             border-radius: 10px;
             border-color: black;
 
             &:focus {
-                outline: solid #72ac51;
+              outline: solid #72ac51;
             }
 
             &:focus:invalid {
-                outline: solid red;
+              outline: solid red;
             }
+          }
+
+          input[type=submit] {
+            margin-top: 5px;
+            white-space: normal;
+          }
         }
-
-        input[type=submit] {
-                font-size: 14px;
-                color: white;
-                font-weight: 600;
-                margin-top: 5px;
-                background-color: $secondColor;
-                border-radius: 84px;
-
-                padding: 15px 15px 15px 15px;
-                cursor: pointer;
-        }
-
     }
 }
 </style>

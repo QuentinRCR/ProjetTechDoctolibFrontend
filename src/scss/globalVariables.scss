@@ -2,6 +2,48 @@ $secondColor: #3694c6;
 $secondColorLighter: #3694c6e2;
 $lightBlue: rgb(149, 187, 224);
 
+.roundButton{
+  font-size: 16px;
+  font-weight: bold;
+  background-color: $secondColor;
+  border-radius: 84px;
+  padding: 15px 15px 15px 15px;
+  cursor: pointer;
+  color: white;
+
+  &:hover{
+    filter: brightness(94%);
+  }
+}
+
+.squareButton{
+  font-size: 17px;
+  font-weight: bold;
+  background-color: $secondColor;
+  border-radius: 15px;
+  padding: 15px 15px 15px 15px;
+  cursor: pointer;
+  color: white;
+
+  &:hover{
+    filter: brightness(94%);
+  }
+}
+
+.deleteButton{
+  font-size: 17px;
+  font-weight: bold;
+  background-color: rgb(215, 61, 61);
+  border-radius: 15px;
+  padding: 15px 15px 15px 15px;
+  cursor: pointer;
+  color: white;
+
+  &:hover{
+    filter: brightness(94%);
+  }
+}
+
   .lds-ellipsis { //to style the annimation
     display: inline-block;
     position: relative;

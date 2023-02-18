@@ -99,11 +99,8 @@ export default {
         cursor: pointer;
 
         .nav-link{
-          //text-decoration: none;
           color: black;
-          //margin: 3px 5px 3px 5px;
           padding: 5px 7px 5px 7px;
-          //border: solid pink;
 
           &:hover{
             text-decoration: underline;
