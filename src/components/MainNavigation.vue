@@ -2,14 +2,14 @@
   <div class="SlideMenu">
     <div class="nav nav-tabs">
       <div class="nav-item" v-for="panel in panels" :key="panel.id">
-        <div 
-          class="nav-link" 
+        <div
+          class="nav-link navbarItem"
           :class="{active: panel.id === currentPanel.id}"
           aria-current="page" href="#"
           @click="changePanel(panel)"
         >{{panel.tabDisplay}}</div>
       </div>
-      <div class="LogOutButton" @click="LogOut">Se déconnecter</div>
+      <div class="LogOutButton navbarItem" @click="LogOut">Se déconnecter</div>
     </div>
   </div>
 </template>
@@ -66,48 +66,53 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .SlideMenu{
+  .SlideMenu {
     width: 100%;
     padding-top: 10px;
     padding-bottom: 10px;
     font-weight: 600;
     font-size: 16px;
     //border: solid pink;
-    .nav{
-      .active{ //when the element is active
-        padding: 5px 7px 5px 7px;
-        background-color: rgba(61, 28, 168, 0.162);
-        border-radius: 20px;
-        font-size:20px;
-      }
-
+    .nav {
       display: flex;
       justify-content: space-around;
       flex-flow: row wrap;
       align-items: center;
 
-      .LogOutButton{
-        cursor: pointer;
-        
-
-        &:hover{
-            text-decoration: underline;
-          }
-      }
-      .nav-item{
-        //border: solid green;
-        cursor: pointer;
-
-        .nav-link{
-          color: black;
-          padding: 5px 7px 5px 7px;
-
-          &:hover{
-            text-decoration: underline;
-            border-radius: 10px;
-          }
-        }
+      .active { //when the element is active
+        background-color: rgba(61, 28, 168, 0.162);
+        border-radius: 20px;
+        transform: scale(1.15);
       }
     }
   }
+
+
+  .navbarItem{
+      cursor: pointer;
+      color: black;
+      padding: 5px 7px 5px 7px;
+      position: relative;
+      transition: 0.1s;
+
+      &:after{ //create the effect of underline coming from the side
+        content: '';
+        position: absolute;
+        width: calc(100% - 14px); //to adjust the padding and not have an underline that is too long
+        transform: scaleX(0);
+        height: 2px;
+        bottom: 3px;
+        left: 7px;
+        background-color: black;
+        transform-origin: bottom right;
+        transition: transform 0.25s ease-out;
+      }
+
+      &:hover{
+        &:after{
+          transform: scaleX(1);
+          transform-origin: bottom left;
+        }
+      }
+    }
 </style>
