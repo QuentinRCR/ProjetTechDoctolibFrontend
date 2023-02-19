@@ -46,7 +46,7 @@
             <p class="descrition">Confirmation de mot de passe</p>
             <input :pattern="Password" v-model="PasswordConfirmation" type="password" required>
           </div>
-          <input v-if=isInModifyMod class="boutonsubmit squareButton" type="submit" value="Enregistrer"> <!--to submit the form in modify mode-->
+          <input v-if=isInModifyMod class="boutonsubmit roundButton" type="submit" value="Enregistrer"> <!--to submit the form in modify mode-->
         </form>
         <button class="modifyInfos squareButton" v-if="(!isInModifyMod && !this.viewInfoOthers)" @click="toggleModifyMod">Modifier mes informations</button>
         <button class="modifyPw deleteButton" @click="toogleModifyPwMode" v-if=isInModifyMod >{{ modifyPasswordMod ? 'Ne pas modifier mon mot de passe' : 'Modifier mon mot de passe' }}</button>
