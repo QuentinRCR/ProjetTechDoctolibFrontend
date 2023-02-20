@@ -224,12 +224,6 @@ export default {
 .home {
   position: absolute;
 
-  .SideMenu {
-    //border: solid red;
-    background-color: rgb(149, 187, 224);
-    /*$lightBlue;*/
-  }
-
   .content {
 
     .MakeAppoi {

@@ -7,9 +7,9 @@
           :class="{active: panel.id === currentPanel.id}"
           aria-current="page" href="#"
           @click="changePanel(panel)"
-        >{{panel.tabDisplay}}</div>
+        ><img :src=panel.iconPath> {{panel.tabDisplay}}</div>
       </div>
-      <div class="LogOutButton navbarItem" @click="LogOut">Se déconnecter</div>
+      <div class="LogOutButton navbarItem" @click="LogOut"><img src="/src/assets/disconnectIcon.png"> Se déconnecter</div>
     </div>
   </div>
 </template>
@@ -26,21 +26,25 @@ export default {
       panels: [{
         id: 0,
         name: 'panelA',
-        tabDisplay: 'Calendrier'
+        tabDisplay: 'Calendrier',
+        iconPath: "/src/assets/calendarIcon.png"
       }, {
         id: 1,
         name: 'panelB',
-        tabDisplay: 'Mon Compte'
+        tabDisplay: 'Mon Compte',
+        iconPath: "/src/assets/MyAccountItem.png"
       },
       {
         id: 2,
         name: 'panelC',
-        tabDisplay: 'Mes rendez-vous'
+        tabDisplay: 'Mes rendez-vous',
+        iconPath: "/src/assets/appointmentIcon.png"
       },
       {
         id: 3,
         name: 'panelD',
-        tabDisplay: 'Créneaux'
+        tabDisplay: 'Créneaux',
+        iconPath: "/src/assets/timeSlotIcon.png"
       },]
     }
   },
@@ -66,12 +70,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "./../scss/globalVariables.scss";
+
+@media (min-width: 600px){ //to prevent margin used in mobile version to space nav items
+  .navbarItem {
+    margin-top: 0 !important;
+  }
+}
+
+
   .SlideMenu {
     width: 100%;
     padding-top: 10px;
     padding-bottom: 10px;
     font-weight: 600;
     font-size: 16px;
+    background-color: $lightBlue;
+    //border-bottom: solid $secondColor;
+
+    //background: linear-gradient(180deg, $lightBlue 0%, $lightBlue 70%, rgba(149,187,224,0) 100%);
+
     //border: solid pink;
     .nav {
       display: flex;
@@ -80,17 +98,21 @@ export default {
       align-items: center;
 
       .active { //when the element is active
-        background-color: rgba(61, 28, 168, 0.162);
-        border-radius: 20px;
+        //background-color: rgba(61, 28, 168, 0.162);
+        //border-radius: 20px;
         transform: scale(1.15);
+        color: black;
       }
     }
   }
 
 
   .navbarItem{
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
       cursor: pointer;
-      color: black;
+      color: #444444;
       padding: 5px 7px 5px 7px;
       position: relative;
       transition: 0.1s;
@@ -109,10 +131,17 @@ export default {
       }
 
       &:hover{
+        color: black;
+
         &:after{
           transform: scaleX(1);
           transform-origin: bottom left;
         }
       }
+
+    img{
+      height: 1.3em;
+      margin-right: 6px ;
     }
+  }
 </style>
