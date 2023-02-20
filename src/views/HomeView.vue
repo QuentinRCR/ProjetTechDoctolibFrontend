@@ -6,37 +6,60 @@
     <div class="content">
       <div class="TopMenu">
         <div class="fillInDiv"></div>
-        <Transition name="buttonTransition"><button class="roundButton" @click="ToggleAppoi" v-if="currentPanel.name != 'panelB'">Prendre un rendez-vous</button></Transition>
-        <Transition name="buttonTransition"><button class="roundButton" v-if="this.$store.state.auth == 'ADMIN' && currentPanel.name != 'panelB'" @click="ToggleSlot">Ajouter un
-          créneau</button></Transition>
+        <Transition name="buttonTransition">
+          <button class="makeAppointmentButton roundButton" @click="ToggleAppoi" v-if="currentPanel.name != 'panelB'">
+            <img src="/src/assets/MakeAppointment.png">Prendre un rendez-vous
+          </button>
+        </Transition>
+        <Transition name="buttonTransition">
+          <button class="roundButton" v-if="this.$store.state.auth == 'ADMIN' && currentPanel.name != 'panelB'"
+                  @click="ToggleSlot">Ajouter un
+            créneau
+          </button>
+        </Transition>
         <div class="fillInDiv"></div>
       </div>
       <div class="pannels">
-        <Transition name="mainFrameTransition"><StudentArea ref="StudentArea" :realSlotsss=this.realSlot class="pannel"
-          v-if="currentPanel.name === 'panelA' && this.forceReload"></StudentArea></Transition>
-          <Transition name="myAccountTransition"><MyAccount @reset_studentInfos="reset_studentInfos" :studentInfos="studentInfos"
-            classe="pannel" v-if="currentPanel.name === 'panelB'"></MyAccount></Transition>
-            <Transition name="mainFrameTransition"><MyAppointements ref="Myrdvs" @get-student-info="getStudentInfos" @appointement-choice="modifyAppMod"
-          :AppModifyOrCreate="AppModifyOrCreate" classe="pannel"
-          v-if="currentPanel.name === 'panelC' && this.forceReload"></MyAppointements></Transition>
+        <Transition name="mainFrameTransition">
+          <StudentArea ref="StudentArea" :realSlotsss=this.realSlot class="pannel"
+                       v-if="currentPanel.name === 'panelA' && this.forceReload"></StudentArea>
+        </Transition>
+        <Transition name="myAccountTransition">
+          <MyAccount @reset_studentInfos="reset_studentInfos" :studentInfos="studentInfos"
+                     classe="pannel" v-if="currentPanel.name === 'panelB'"></MyAccount>
+        </Transition>
+        <Transition name="mainFrameTransition">
+          <MyAppointements ref="Myrdvs" @get-student-info="getStudentInfos" @appointement-choice="modifyAppMod"
+                           :AppModifyOrCreate="AppModifyOrCreate" classe="pannel"
+                           v-if="currentPanel.name === 'panelC' && this.forceReload"></MyAppointements>
+        </Transition>
         <!--AppModifyOrCreate is to handle modify mode-->
-        <Transition name="mainFrameTransition"><MySlots classe="pannel" @slot-choice="modifySlotMod" v-if="currentPanel.name === 'panelD' && this.forceReload">
-        </MySlots></Transition>
+        <Transition name="mainFrameTransition">
+          <MySlots classe="pannel" @slot-choice="modifySlotMod"
+                   v-if="currentPanel.name === 'panelD' && this.forceReload">
+          </MySlots>
+        </Transition>
       </div>
       <div class="MakeAppoi">
-        <Transition name="pupupTransition"><MakeAppoi @reload="reload" :realSlots=this.realSlot @close-popup="ToggleAppoi"
-          :enableModifyMod="enableModifyMod" :AppointementChoice="AppointementChoice" v-if="isAddAppointement">
-        </MakeAppoi></Transition>
+        <Transition name="pupupTransition">
+          <MakeAppoi @reload="reload" :realSlots=this.realSlot @close-popup="ToggleAppoi"
+                     :enableModifyMod="enableModifyMod" :AppointementChoice="AppointementChoice"
+                     v-if="isAddAppointement">
+          </MakeAppoi>
+        </Transition>
       </div>
       <div class="MakeAppoi">
-        <Transition name="pupupTransition"><AddSlot @reload="reload" @close-popup="ToggleSlot" :enableModifyModSlot="enableModifyModSlot"
-          :SlotChoice="SlotChoice" v-show="isAddSlot"></AddSlot></Transition>
+        <Transition name="pupupTransition">
+          <AddSlot @reload="reload" @close-popup="ToggleSlot" :enableModifyModSlot="enableModifyModSlot"
+                   :SlotChoice="SlotChoice" v-show="isAddSlot"></AddSlot>
+        </Transition>
       </div>
     </div>
 
     <div class="notConnect" v-if="this.notConnected">Vous avez été déconnecté. Veuillez vous reconnecter pour poursuivre
-      la navigaton</div>
-      <Transition name="smoothAppear"><p class="legalNotice" @click="legalNotice">Mension légales</p></Transition>
+      la navigaton
+    </div>
+    <Transition name="smoothAppear"><p class="legalNotice" @click="legalNotice">Mension légales</p></Transition>
   </div>
 </template>
 
@@ -52,7 +75,7 @@ import VueJwtDecode from 'vue-jwt-decode'; //to decode Jwt token
 
 
 import axios from 'axios'; //for api request
-import { API_HOST, timeBetweenRefreshs } from '../config';
+import {API_HOST, timeBetweenRefreshs} from '../config';
 
 export default {
   name: 'HomePage',
@@ -85,10 +108,10 @@ export default {
     if (this.$store.state.generalToken == null) { //if the page is reloaded the token is delete. This part is to get the tokens back from the url
       let token = this.$route.query.token; //we get the token back from the url
       let refresh_token = this.$route.query.refresh_token; //we get the refresh token back from the url
-      this.$store.commit('set', { token: `${token}` }) //set the value of the token to a global state
-      this.$store.commit('setAuth', { auth: `${VueJwtDecode.decode(token).roles[0]}` }) //Set the role as a global variable
-      this.$store.commit('setRefTok', { refresh_token: `${refresh_token}` }) ////Set the refresh token
-      this.$store.commit('setRefreshFunction', { refresh_token_function: setInterval(() => this.refreshToken(), timeBetweenRefreshs) }) //Set the function to periodicaly reset the token
+      this.$store.commit('set', {token: `${token}`}) //set the value of the token to a global state
+      this.$store.commit('setAuth', {auth: `${VueJwtDecode.decode(token).roles[0]}`}) //Set the role as a global variable
+      this.$store.commit('setRefTok', {refresh_token: `${refresh_token}`}) ////Set the refresh token
+      this.$store.commit('setRefreshFunction', {refresh_token_function: setInterval(() => this.refreshToken(), timeBetweenRefreshs)}) //Set the function to periodicaly reset the token
     }
 
 
@@ -132,7 +155,7 @@ export default {
     async createListRealSlots() {
       try {
         //to add slots
-        let response = await axios.get(`${import.meta.env.VITE_APP_API_HOST}/api/creneaux/user`, { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}` } }); //get slots from the API
+        let response = await axios.get(`${import.meta.env.VITE_APP_API_HOST}/api/creneaux/user`, {headers: {'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}`}}); //get slots from the API
         let slots = response.data; //extract the data
         this.slots = slots; //put it in a new variable
         this.realSlot = []
@@ -186,8 +209,7 @@ export default {
 
         }
         this.$refs.StudentArea.loadSlots(this.realSlot); //generate all the slots in the calendar
-      }
-      catch (error) {
+      } catch (error) {
         console.log();
         if (error.response.status == 403) {
           console.log("pas connn");
@@ -197,21 +219,24 @@ export default {
     }
     ,
     async refreshToken() { //function to get a new token from the refresh token and update the url
-      let response = await axios.get(`${import.meta.env.VITE_APP_API_HOST}/api/token/refresh`, { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.refreshToken}` } }); //get slots from the API
-      this.$store.commit('set', { token: `${response.data.access_token}` }) //set the value of the token to a global state
-      this.$store.commit('setAuth', { auth: `${VueJwtDecode.decode(response.data.access_token).roles[0]}` }) //Set the role as a global variable
-      this.$store.commit('setRefTok', { refresh_token: `${response.data.refresh_token}` }) ////Set the refresh token
-      this.$router.push({ path: 'home', query: { token: `${response.data.access_token}`, refresh_token: `${response.data.refresh_token}` } }) //change path and add token to url
+      let response = await axios.get(`${import.meta.env.VITE_APP_API_HOST}/api/token/refresh`, {headers: {'AUTHORIZATION': `Bearer ${this.$store.state.refreshToken}`}}); //get slots from the API
+      this.$store.commit('set', {token: `${response.data.access_token}`}) //set the value of the token to a global state
+      this.$store.commit('setAuth', {auth: `${VueJwtDecode.decode(response.data.access_token).roles[0]}`}) //Set the role as a global variable
+      this.$store.commit('setRefTok', {refresh_token: `${response.data.refresh_token}`}) ////Set the refresh token
+      this.$router.push({
+        path: 'home',
+        query: {token: `${response.data.access_token}`, refresh_token: `${response.data.refresh_token}`}
+      }) //change path and add token to url
       console.log("token mis à jour");
     },
     getStudentInfos(id) {
       this.studentInfos = id;
-      this.$refs.mainNavigation.changePanel({ id: 1, name: "panelB", tabDisplay: "Mon Compte" }) //force to got to the my account pannel
+      this.$refs.mainNavigation.changePanel({id: 1, name: "panelB", tabDisplay: "Mon Compte"}) //force to got to the my account pannel
     },
     reset_studentInfos() {
       this.studentInfos = null;
     },
-    legalNotice(){
+    legalNotice() {
       this.$router.push("/legalNotice");
     }
   }
@@ -249,7 +274,16 @@ export default {
       button {
       }
 
-      .fillInDiv {}
+      .makeAppointmentButton {
+        display: flex;
+
+
+        img {
+          height: 1.5em;
+          margin-right: 5px;
+          -webkit-filter: invert(100%);
+        }
+      }
 
     }
 
@@ -273,14 +307,14 @@ export default {
     text-align: center;
   }
 
-  .legalNotice{
+  .legalNotice {
     margin-top: 70px;
     text-align: center;
-    color:#444;
+    color: #444;
     cursor: pointer;
 
-    &:hover{
-      text-decoration:underline;
+    &:hover {
+      text-decoration: underline;
     }
   }
 }
@@ -291,21 +325,20 @@ export default {
   transition: all 0.3s ease-in-out;
 }
 
-.pupupTransition-enter-from{
+.pupupTransition-enter-from {
   transform: translateY(20px);
   opacity: 0;
 }
 
 .pupupTransition-leave-active {
-  
+
   transition: all 0.2s ease-in;
 }
 
-.pupupTransition-leave-to{
+.pupupTransition-leave-to {
   opacity: 0;
   transform: translateY(20px);
 }
-
 
 
 .myAccountTransition-enter-active {
@@ -319,7 +352,6 @@ export default {
 }
 
 
-
 .mainFrameTransition-enter-active {
   transition: all 0.4s ease-out;
 }
@@ -331,7 +363,7 @@ export default {
 
 
 .buttonTransition-leave-active {
-  
+
   transition: all 0.2s ease-in-out;
 }
 
@@ -339,7 +371,7 @@ export default {
   transition: all 0.4s ease-out;
 }
 
-.buttonTransition-leave-to{
+.buttonTransition-leave-to {
   opacity: 0;
   transform: translateY(-10px);
 }
@@ -351,10 +383,8 @@ export default {
 }
 
 
-
-
 .smoothAppear-leave-active {
-  
+
   transition: all 0.2s ease-in-out;
 }
 
@@ -362,7 +392,7 @@ export default {
   transition: all 0.4s ease-out;
 }
 
-.smoothAppear-leave-to{
+.smoothAppear-leave-to {
   opacity: 0;
   transform: translateY(-10px);
 }
