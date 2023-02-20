@@ -124,7 +124,7 @@ export default {
     width: calc(100% - 14px); //to adjust the padding and not have an underline that is too long
     transform: scaleX(0);
     height: 2px;
-    bottom: 3px;
+    bottom: 2px;
     left: 7px;
     background-color: black;
     transform-origin: bottom right;
