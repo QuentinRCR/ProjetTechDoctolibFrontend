@@ -59,7 +59,7 @@
     <div class="notConnect" v-if="this.notConnected">Vous avez été déconnecté. Veuillez vous reconnecter pour poursuivre
       la navigaton
     </div>
-    <Transition name="smoothAppear"><p class="legalNotice" @click="legalNotice">Mension légales</p></Transition>
+    <Transition name="smoothAppear"><p class="legalNotice" @click="legalNotice">Mention légales</p></Transition>
   </div>
 </template>
 

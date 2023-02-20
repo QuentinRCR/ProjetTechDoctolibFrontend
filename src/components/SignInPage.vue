@@ -49,7 +49,7 @@
                 </div>
             </div>
         </div>
-        <p class="legalNotice" @click="legalNotice">Mension légales</p>
+        <p class="legalNotice" @click="legalNotice">Mention légales</p>
     </div>
 
 </template>
