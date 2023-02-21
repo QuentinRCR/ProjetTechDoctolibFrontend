@@ -4,7 +4,6 @@
       <h1 v-if="!this.viewInfoOthers">Mes informations</h1>
       <h1 v-if="this.viewInfoOthers">Informations {{StudentData.firstName}} {{StudentData.lastName}} </h1>
       <div class="mainContent">
-        <div v-if="!viewInfoOthers" class="fillInDiv"></div>
         <form  class="personalInfos" @submit.prevent="submit" v-on:submit="SubmitForm(lastName,firstName,campus,phoneNumber,skypeAccount,Password)"> <!--form used in modify mode-->
           <div class="infoItem">
             <p  class="descrition">Nom</p>
@@ -46,7 +45,7 @@
             <p class="descrition">Confirmation de mot de passe</p>
             <input :pattern="Password" v-model="PasswordConfirmation" type="password" required>
           </div>
-          <input v-if=isInModifyMod class="boutonsubmit roundButton" type="submit" value="Enregistrer"> <!--to submit the form in modify mode-->
+          <input v-if=isInModifyMod class="submitButton roundButton" type="submit" value="Enregistrer"> <!--to submit the form in modify mode-->
         </form>
         <button class="modifyInfos squareButton" v-if="(!isInModifyMod && !this.viewInfoOthers)" @click="toggleModifyMod">Modifier mes informations</button>
         <button class="modifyPw deleteButton" @click="toogleModifyPwMode" v-if=isInModifyMod >{{ modifyPasswordMod ? 'Ne pas modifier mon mot de passe' : 'Modifier mon mot de passe' }}</button>
@@ -164,9 +163,15 @@ export default {
 <style lang="scss" scoped>
 @media (min-width: 600px){
   .mainContent{
-    display: flex;
+    //display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
     justify-content: center;
+
+    .personalInfos{
+      grid-column: 2;
+    }
 
     .modifyInfos{
       margin-left: 100px;
@@ -177,12 +182,9 @@ export default {
       margin-left: 100px;
       margin-right: 10px;
     }
-    
-    .fillInDiv{
-      width:260px;
-    }
 
-    .infoItem{  
+    .infoItem{
+
     }
 
     input[type="text"],input[type="password"],select{
@@ -227,7 +229,6 @@ export default {
 
     .personalInfos{
       //border: solid brown;
-      text-align: center;
 
       input[type="submit"] {
           margin-top: 10px;
@@ -270,7 +271,13 @@ export default {
           }
          }
       }
+
+      .submitButton{
+      }
+
     }
+
+
   }
 
   .deleteAcount{
