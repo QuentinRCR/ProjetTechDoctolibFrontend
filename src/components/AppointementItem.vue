@@ -25,17 +25,19 @@
         <div class="info">{{ appointement.moyenCommunication }}</div> <!--To print the date in a human readable manner-->
       </div>
 
-      <div class="expand-arrow"> <!--add the arrow to deploy the menu-->
-        {{ isExpanded ? '&#9660;' : '&#9658;' }} <!--Unicode charactere for the arrow-->
+      <div class="expand-arrow" :class="{expandArrowDown:isExpanded}"> <!--add the arrow to deploy the menu-->
+        &#9658 <!--Unicode character for the arrow-->
       </div>
     </div>
-    <template v-if="isExpanded"> <!--Expanded menu-->
+
+    <div class="expendedPart" :class="{collapsed:!isExpanded,extended:isExpanded}"> <!--Expanded menu-->
       <hr />
       <div class="details">
         <div class="cancelButton deleteButton" @click="deleteAppointement">Annuler le rendez-vous</div>
         <div class="moveButton squareButton" @click="modifyApp">Déplacer le rendez-vous</div>
       </div>
-    </template>
+    </div>
+
   </div>
 </template>
   
@@ -82,12 +84,12 @@ export default {
 </script>
   
 <style lang="scss" scoped>
+@import "./../scss/globalVariables.scss";
+
 .appointementitem {
-  margin: auto;
   font-size: 18px;
   cursor: pointer;
-  border: solid $secondColor;
-  border-width: 5px;
+  border: solid $secondColor 5px;
   border-radius: 20px;
   padding: 5px 5px 5px 5px;
   width: 95%;
@@ -122,13 +124,33 @@ export default {
       position: absolute;
       top: 3px;
       right: 10px;
+      transition: all 0.7s;
+    }
+
+    .expandArrowDown{
+      transform: rotate(90deg);
     }
   }
 
-  .details {
-    display: flex;
-    justify-content: space-around;
+  .expendedPart{
+    transition: all 0.5s ease-out;
+    transition-delay: 0.05s;
+    overflow: hidden;
+
+    .details {
+      display: flex;
+      justify-content: space-around;
+    }
   }
+
+  .collapsed{
+    max-height: 0;
+  }
+
+  .extended{ //use max-height to that it goes to the exact correct size
+    max-height: 100px;
+  }
+
 
 }
 
