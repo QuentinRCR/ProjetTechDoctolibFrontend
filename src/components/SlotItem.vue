@@ -15,7 +15,7 @@
         <div class="sentence">Jours: </div>
         <div class="info">{{ this.daysList.slice(0, -2) }}</div> <!--To print the date in a human readable manner-->
       </div>
-      <div class="lign"> <!--Ecrit les heures de début et de fin-->
+      <div class="lign"> <!--Write start and end dates-->
         <div class="sentence">Plage de temps: De</div>
         <div class="info spaceright">{{ slot.heuresDebutFin[0].tempsDebut.slice(0, -3).replace(":", "h") }}</div>
         <!--To print the date in a human readable manner-->
@@ -23,17 +23,17 @@
         <div class="info">{{ slot.heuresDebutFin[0].tempsFin.slice(0, -3).replace(":", "h") }}</div>
       </div>
 
-      <div class="expand-arrow"> <!--add the arrow to deploy the menu-->
-        {{ isExpanded ? '&#9660;' : '&#9658;' }}
+      <div class="expand-arrow" :class="{expandArrowDown:isExpanded}"> <!--add the arrow to deploy the menu-->
+        &#9658 <!--Unicode character for the arrow-->
       </div>
     </div>
-    <template v-if="isExpanded"> <!--Expanded menu-->
+    <div class="expendedPart" :class="{collapsed:!isExpanded,extended:isExpanded}"> <!--Expanded menu-->
       <hr />
       <div class="details d-flex">
         <button class="cancelButton deleteButton" @click="deleteSlot">Supprimer le créneau</button>
         <button class="moveButton squareButton" @click="ModifySlot">Modifier le créneau</button>
       </div>
-    </template>
+    </div>
   </div>
 </template>
   
@@ -138,19 +138,31 @@ export default {
       position: absolute;
       top: 3px;
       right: 10px;
+      transition: all 0.7s;
+    }
+
+    .expandArrowDown{
+      transform: rotate(90deg);
     }
   }
 
-  .details {
-    display: flex;
-    justify-content: space-around;
+  .expendedPart{
+    transition: all 0.5s ease-out;
+    transition-delay: 0.05s;
+    overflow: hidden;
 
-    .cancelButton {
+    .details {
+      display: flex;
+      justify-content: space-around;
     }
+  }
 
-    .moveButton {
-    }
+  .collapsed{
+    max-height: 0;
+  }
 
+  .extended{ //use max-height to that it goes to the exact correct size
+    max-height: 100px;
   }
 
 }
