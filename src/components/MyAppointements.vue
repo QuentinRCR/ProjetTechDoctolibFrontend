@@ -1,6 +1,5 @@
 <template>
   <div class="wrapingDiv">
-    <div v-if="this.$store.state.auth == 'ADMIN'" class="fillInDiv"></div>
     <div class="myAppoints">
       <h1>Mes rendez-vous</h1>
       <div class="appointements-list">
@@ -109,19 +108,22 @@ export default {
   
 <style lang="scss" scoped>
 .wrapingDiv {
-  display: flex;
-  justify-content: space-around;
-  align-items: flex-start; // to avoid right panel stretching 
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 50px;
+  //justify-content: space-around;
+  //align-items: flex-start; // to avoid right panel stretching
 
   .myAppoints {
+    grid-column: 2;
     display: flex;
     flex-direction: column;
     text-align: center;
-    align-items: stretch;
 
     h1 {}
 
     .appointements-list {
+      width: 100%;
 
       .AppItem {
         margin-bottom: 20px;
@@ -202,10 +204,6 @@ export default {
     }
   }
     
-  }
-
-  .fillInDiv {
-    width: 285px;
   }
 }
 </style>

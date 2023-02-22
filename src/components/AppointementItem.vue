@@ -86,6 +86,12 @@ export default {
 <style lang="scss" scoped>
 @import "./../scss/globalVariables.scss";
 
+@media (max-width: 500px) {
+  .appointementitem{
+    background-color: red;
+  }
+}
+
 .appointementitem {
   font-size: 18px;
   cursor: pointer;
@@ -163,11 +169,9 @@ export default {
     
 
       .cancelButton {
-        width: auto;
     }
 
       .moveButton {
-        width: auto;
 
     }
 
