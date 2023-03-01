@@ -157,7 +157,9 @@ export default {
     flex-direction: column;
     align-items: center;
 
-    h1 {}
+    h1 {
+      margin-top: 0;
+    }
 
     .appointements-list {
 

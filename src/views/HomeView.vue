@@ -7,12 +7,12 @@
       <div class="TopMenu">
         <div class="fillInDiv"></div>
         <Transition name="buttonTransition">
-          <button class="makeAppointmentButton roundButton" @click="ToggleAppoi" v-if="currentPanel.name != 'panelB'">
-            <img src="/src/assets/MakeAppointment.png">Prendre un rendez-vous
+          <button class="makeAppointmentButton roundButton" @click="ToggleAppoi" v-if="currentPanel.name !== 'panelB'">
+            <img src="/src/assets/MakeAppointment.png" alt="appointment icon">Prendre un rendez-vous
           </button>
         </Transition>
         <Transition name="buttonTransition">
-          <button class="roundButton" v-if="this.$store.state.auth == 'ADMIN' && currentPanel.name != 'panelB'"
+          <button class="roundButton" v-if="this.$store.state.auth === 'ADMIN' && currentPanel.name !== 'panelB'"
                   @click="ToggleSlot">Ajouter un
             créneau
           </button>
@@ -268,8 +268,8 @@ export default {
 
       display: flex;
       justify-content: space-around;
-      margin-top: 10px;
-      margin-bottom: 10px;
+      margin-top: 20px;
+      margin-bottom: 20px;
 
       button {
       }

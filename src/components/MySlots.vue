@@ -27,10 +27,6 @@ import SlotItem from './SlotItem.vue';
 
 
 export default {
-  data: function () {
-    return {
-    }
-  },
   components: {
     SlotItem,
   },
@@ -84,6 +80,10 @@ export default {
     flex-direction: column;
     text-align: center;
     align-items: stretch;
+
+    h1{
+      margin-top: 0;
+    }
 
     .slots-list {
 
