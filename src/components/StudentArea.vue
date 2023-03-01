@@ -122,6 +122,7 @@ export default {
 
 <style type="scss">
 
+
 .explanation{
   font-size:18px;
   margin-left:20px;
@@ -149,6 +150,7 @@ p{
   /*height: 500px;
   /*width: 1100px;*/
   margin: 0px 20px 20px 20px;
+  border-radius: 15px;
 }
 
 .vuecal__event.slots {
@@ -170,6 +172,12 @@ p{
   align-items: center;
   border-radius: 7px;
   border: solid 1px black;
+  transition: transform 0.2s ease-in-out;
+}
+
+.vuecal__event.apps:hover{
+  transform: scale(1.1);
+  border: black solid 3px;
 }
 
 .vuecal__event.myapps {
@@ -180,11 +188,45 @@ p{
   align-items: center;
   border-radius: 7px;
   border: solid 1px black;
+  transition: transform 0.2s ease-out;
+}
+
+.vuecal__event.myapps:hover{
+  transform: scale(1.1);
+  border: black solid 3px;
 }
 
 .vuecal__title-bar {
-  background-color: rgb(149, 187, 224)
+  background-color: rgb(149, 187, 224);
+  border-radius: 15px 15px 0 0 ;
 }
+
+.vuecal__title-bar button{
+  font-weight: bold;
+  font-family: inherit;
+  font-size: 17px;
+  transition: all 0.2s ease-out;
+}
+
+.vuecal__title-bar button:hover{
+  transform: scale(1.1);
+}
+
+
+.vuecal__arrow:hover{
+  transform: scale(1.3) !important;
+}
+
+.vuecal__arrow-prev:hover i{
+  color: black;
+  border-width: 10px 0 0 10px !important;
+}
+
+vuecal__arrow--next:hover i{
+  border-width:0 10px 10px 0 !important;
+  color: black;
+}
+
 
 .vuecal__event-time {
   display: none;
