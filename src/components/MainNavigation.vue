@@ -7,10 +7,10 @@
             :class="{active: panel.id === currentPanel.id}"
             aria-current="page" href="#"
             @click="changePanel(panel)"
-        ><img :src=panel.iconPath> {{ panel.tabDisplay }}
+        ><img :src=panel.iconPath> <span>{{ panel.tabDisplay }}</span>
         </div>
       </div>
-      <div class="LogOutButton navbarItem" @click="LogOut"><img src="/src/assets/disconnectIcon.png"> Se déconnecter
+      <div class="LogOutButton navbarItem" @click="LogOut"><img src="/src/assets/disconnectIcon.png" alt="logout Icon"> <span>Se déconnecter</span>
       </div>
     </div>
   </div>
@@ -61,6 +61,14 @@ export default {
     }
   },
   created: function () {
+    // console.log(window.innerHeight)
+    // if(window.innerHeight<500){
+    //   console.log("phone size")
+    //   this.panels.map(panel => {
+    //     panel.tabDisplay = ''
+    //   })
+    // }
+
     this.changePanel(this.panels[0]); //define default panel
     if (this.$store.state.auth != "ADMIN") { //hide the slot menu when connected as a client
       this.panels.splice(3, 1);
@@ -73,9 +81,12 @@ export default {
 @import "./../scss/globalVariables.scss";
 
 @media (min-width: 600px) { //to prevent margin used in mobile version to space nav items
-  .navbarItem {
-    margin-top: 0 !important;
-  }
+
+    .navbarItem{
+      span{
+        display: inline !important; //display texte in the navbar for the mobile version
+      }
+    }
 }
 
 
@@ -143,6 +154,10 @@ export default {
   img {
     height: 1.3em;
     margin-right: 6px;
+  }
+
+  span{
+    display: none; //to remove the text on mobile
   }
 }
 </style>
