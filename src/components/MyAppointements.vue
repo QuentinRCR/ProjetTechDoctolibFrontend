@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapingDiv">
+  <div class="wrappingDiv" :class="{adminMode : isAdmin}">
     <div class="myAppoints">
       <h1>Mes rendez-vous</h1>
       <div class="appointements-list">
@@ -10,7 +10,7 @@
       </div>
     </div>
 
-    <div v-if="this.$store.state.auth == 'ADMIN'" class="exportToExcel">
+    <div v-if="isAdmin" class="exportToExcel">
       <h3>Exporter les rendez-vous sous forme de document excel</h3>
       <form @submit.prevent="submit" v-on:submit="SubmitForm(dateSlot)">
         <div class="dateSelectorSlot">
@@ -40,7 +40,6 @@
   
 <script>
 import axios from 'axios';
-import { API_HOST } from '../config';
 import AppointementItem from './AppointementItem.vue';
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css' //to make datepicker work
@@ -62,13 +61,17 @@ export default {
       isInFormMod: false,
       idAppointementToDelete: null,
       showConfirmationBox: false,
-      dateSlot: null
+      dateSlot: null,
+      isAdmin: false
     }
   },
   created: async function () {
     let response = await axios.get(`${import.meta.env.VITE_APP_API_HOST}/api/rendez_vous/user/auth`, { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}` } });
     let appointements = response.data;
     this.appointements = appointements;
+    if (this.$store.state.auth === 'ADMIN'){
+      this.isAdmin=true;
+    }
   },
   methods: {
     deleteAppointement(identifient) {
@@ -107,23 +110,56 @@ export default {
   
   
 <style lang="scss" scoped>
-.wrapingDiv {
+@media (min-width:1100px) {
+  .wrappingDiv {
+    align-items: flex-start; // to avoid right panel stretching
+    grid-template-columns: 1fr auto 1fr;
+    column-gap: 30px;
+    justify-content: center;
+
+    .myAppoints {
+      grid-column: 2;
+    }
+
+    .exportToExcel{ //to adapt to the height of the title
+      margin-top: 80px;
+    }
+  }
+}
+
+@media (min-width:900px) and (max-width:1100px) {
+  .wrappingDiv{
+    align-items: flex-start; // to avoid right panel stretching
+
+    .myAppoints{
+      align-self: center;
+      margin-left: 25px;
+      margin-right: 25px;
+    }
+  }
+
+  .adminMode{ //to have 2 columns only when there is a excel exporter on the side
+    grid-template-columns: auto auto;
+  }
+
+  .exportToExcel{ //to adapt to the height of the title
+    margin-top: 80px;
+  }
+}
+
+
+
+.wrappingDiv {;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  column-gap: 50px;
-  //justify-content: space-around;
-  //align-items: flex-start; // to avoid right panel stretching
 
   .myAppoints {
-    grid-column: 2;
     display: flex;
     flex-direction: column;
-    text-align: center;
+    align-items: center;
 
     h1 {}
 
     .appointements-list {
-      width: 100%;
 
       .AppItem {
         margin-bottom: 20px;
@@ -171,11 +207,11 @@ export default {
   }
 
   .exportToExcel {
-    margin-top: 80px;
+    justify-self: center;
     border: solid $secondColor;
     padding: 5px 5px 5px 5px;
     border-radius: 10px;
-    margin-right: 10px;
+    margin-right: 20px;
     width: 265px;
     display:flex ;
     flex-direction: column;

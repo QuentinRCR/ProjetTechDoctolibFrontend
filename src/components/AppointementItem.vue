@@ -1,7 +1,7 @@
 <template>
   <div class="appointementitem" :class="{ expanded: isExpanded }"> <!--To show or not the modify and delete button-->
     <div class="appointementitemalwaysdisplay" @click="toggleExpand">
-      <div @click="getStudentInfos" v-if="this.$store.state.auth == 'ADMIN'" class="lign">
+      <div @click="getStudentInfos" v-if="this.$store.state.auth === 'ADMIN'" class="lign">
         <div class="sentence">&#0201lève: </div> <!--élève-->
         <div class="info studentname">{{ studentDescription }}</div> <!--To print the date in a human readable manner-->
       </div>
@@ -43,15 +43,14 @@
   
 <script>
 import axios from 'axios';
-import { API_HOST } from '../config';
 
 export default {
   name: 'AppointementItem',
-  props: ['appointement'], //to get the appointement from the for in MyAppointments
+  props: ['appointement'], //to get the appointment from the for in MyAppointments
   data: function () {
     return {
       isExpanded: false,
-      dateFormat: new Intl.DateTimeFormat('fr', { //to converte the date to human readable
+      dateFormat: new Intl.DateTimeFormat('fr', { //to convert the date to human readable
         year: 'numeric',
         month: 'long',
         day: 'numeric'
@@ -60,7 +59,7 @@ export default {
     }
   },
   created: async function () {
-    if (this.$store.state.auth == 'ADMIN' && this.appointement.idUser!=-15) { //to avoid error with prefilled info
+    if (this.$store.state.auth === 'ADMIN' && this.appointement.idUser!==-15) { //to avoid error with prefilled info that have the id -15
       let response = await axios.get(`${import.meta.env.VITE_APP_API_HOST}/api/users/admin/submit/${this.appointement.idUser}`, { headers: { 'AUTHORIZATION': `Bearer ${this.$store.state.generalToken}` } });
       let user = response.data;
       this.studentDescription = `${user.lastName} ${user.firstName}`;
@@ -86,9 +85,29 @@ export default {
 <style lang="scss" scoped>
 @import "./../scss/globalVariables.scss";
 
-@media (max-width: 500px) {
-  .appointementitem{
-    background-color: red;
+@media (min-width: 600px) {
+  .appointementitem {
+    width: 550px !important;
+    padding: 17.5px 20px 17.5px 20px;
+
+    .extended{ //use max-height to that it goes to the exact correct size
+      max-height: 100px !important;
+    }
+
+    .details {
+
+      .cancelButton {
+      margin-bottom: 0 !important;
+      }
+
+      .moveButton {
+      }
+    }
+  }
+
+  .details { //to allow buttons to be on top of each others on small screens
+    display: flex;
+    justify-content: space-around;
   }
 }
 
@@ -98,7 +117,8 @@ export default {
   border: solid $secondColor 5px;
   border-radius: 20px;
   padding: 5px 5px 5px 5px;
-  width: 95%;
+  width: 95vw ;
+  box-sizing: border-box; //take the border into consideration for the width of the element
 
 
   .appointementitemalwaysdisplay {
@@ -143,10 +163,16 @@ export default {
     transition-delay: 0.05s;
     overflow: hidden;
 
-    .details {
-      display: flex;
-      justify-content: space-around;
+
+    .details{
+
+      .cancelButton{
+        margin-bottom: 13px;
+      }
+
     }
+
+
   }
 
   .collapsed{
@@ -154,31 +180,12 @@ export default {
   }
 
   .extended{ //use max-height to that it goes to the exact correct size
-    max-height: 100px;
+    max-height: 180px;
   }
 
 
 }
 
-@media (min-width: 600px) {
-  .appointementitem {
-    width: 550px;
-    padding: 17.5px 20px 17.5px 20px;
 
-    .details {
-    
-
-      .cancelButton {
-    }
-
-      .moveButton {
-
-    }
-
-  }
-
-
-  }
-}
 </style>
   

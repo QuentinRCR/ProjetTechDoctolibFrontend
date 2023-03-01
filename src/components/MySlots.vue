@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapingDiv">
+  <div class="wrappingDiv">
     <div class="myAppoints">
       <h1>Créneaux</h1>
       <div class="slots-list">
@@ -74,7 +74,7 @@ export default {
   
   
 <style lang="scss" scoped>
-.wrapingDiv {
+.wrappingDiv {
   display: flex;
   justify-content: space-around;
   align-items: flex-start; // to avoid right panel stretching 
