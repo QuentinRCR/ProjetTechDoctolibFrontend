@@ -149,7 +149,7 @@ p{
 .VueCal {
   /*height: 500px;
   /*width: 1100px;*/
-  margin: 0px 20px 20px 20px;
+  margin: 0px 1.5% 20px 1.5%;
   border-radius: 15px;
 }
 
@@ -201,30 +201,29 @@ p{
   border-radius: 15px 15px 0 0 ;
 }
 
-.vuecal__title-bar button{
+.vuecal__title button{
   font-weight: bold;
   font-family: inherit;
   font-size: 17px;
   transition: all 0.2s ease-out;
 }
 
-.vuecal__title-bar button:hover{
+.vuecal__title button:hover{
   transform: scale(1.1);
 }
 
-
-.vuecal__arrow:hover{
-  transform: scale(1.3) !important;
+.vuecal__arrow--prev:hover i{
+  transition: all 0.1s;
+  color: black;
+  border-width: 4px 0 0 4px !important;
+  transform: translateY(2px) rotate(-45deg) scale(1.2);
 }
 
-.vuecal__arrow-prev:hover i{
+.vuecal__arrow--next:hover i{
+  transition: all 0.1s;
   color: black;
-  border-width: 10px 0 0 10px !important;
-}
-
-vuecal__arrow--next:hover i{
-  border-width:0 10px 10px 0 !important;
-  color: black;
+  border-width: 0 4px 4px 0 !important;
+  transform: translateY(2px) rotate(-45deg) scale(1.2);
 }
 
 
